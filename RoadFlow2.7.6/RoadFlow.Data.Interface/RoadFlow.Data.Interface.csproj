@@ -1,0 +1,87 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Interface.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{8ECFDF83-358A-4E7D-9C91-9378C52D21C2}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>RoadFlow.Data.Interface</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>RoadFlow.Data.Interface</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="IDBHelper.cs" />
+    <Compile Include="IAppLibrary.cs" />
+    <Compile Include="IAppLibraryButtons.cs" />
+    <Compile Include="IAppLibraryButtons1.cs" />
+    <Compile Include="IAppLibrarySubPages.cs" />
+    <Compile Include="IDBConnection.cs" />
+    <Compile Include="IDictionary.cs" />
+    <Compile Include="IDocumentDirectory.cs" />
+    <Compile Include="IDocuments.cs" />
+    <Compile Include="IDocumentsReadUsers.cs" />
+    <Compile Include="IHastenLog.cs" />
+    <Compile Include="IHomeItems.cs" />
+    <Compile Include="ILog.cs" />
+    <Compile Include="IMenu.cs" />
+    <Compile Include="IMenuUser.cs" />
+    <Compile Include="IOrganize.cs" />
+    <Compile Include="IProgramBuilder.cs" />
+    <Compile Include="IProgramBuilderButtons.cs" />
+    <Compile Include="IProgramBuilderExport.cs" />
+    <Compile Include="IProgramBuilderFields.cs" />
+    <Compile Include="IProgramBuilderQuerys.cs" />
+    <Compile Include="IProgramBuilderValidates.cs" />
+    <Compile Include="IShortMessage.cs" />
+    <Compile Include="ISMSLog.cs" />
+    <Compile Include="IUsers.cs" />
+    <Compile Include="IUserShortcut.cs" />
+    <Compile Include="IUsersRelation.cs" />
+    <Compile Include="IWeiXinMessage.cs" />
+    <Compile Include="IWorkCalendar.cs" />
+    <Compile Include="IWorkFlow.cs" />
+    <Compile Include="IWorkFlowArchives.cs" />
+    <Compile Include="IWorkFlowButtons.cs" />
+    <Compile Include="IWorkFlowComment.cs" />
+    <Compile Include="IWorkFlowData.cs" />
+    <Compile Include="IWorkFlowDelegation.cs" />
+    <Compile Include="IWorkFlowForm.cs" />
+    <Compile Include="IWorkFlowTask.cs" />
+    <Compile Include="IWorkGroup.cs" />
+    <Compile Include="IWorkTime.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RoadFlow.Data.Model\RoadFlow.Data.Model.csproj">
+      <Project>{e70e60b5-b17c-46f0-8ce2-5dd2cf9df652}</Project>
+      <Name>RoadFlow.Data.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
