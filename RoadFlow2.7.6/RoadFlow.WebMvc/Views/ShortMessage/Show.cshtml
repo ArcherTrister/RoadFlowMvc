@@ -1,0 +1,41 @@
+﻿@{
+    ViewBag.Title = "Show";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RoadFlow.Data.Model.ShortMessage message = null;
+    RoadFlow.Platform.ShortMessage MSG = new RoadFlow.Platform.ShortMessage();
+    if (!WebMvc.Common.Tools.CheckLogin() && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.Write("未登录用户不能查看!");
+        Response.End();
+        return;
+    }
+    string id = Request.QueryString["id"];
+    if (id.IsGuid())
+    {
+        message = MSG.Get(id.ToGuid());
+    }
+    if (message != null)
+    {
+        MSG.UpdateStatus(message.ID);
+    }
+    else
+    {
+        message = MSG.GetRead(id.ToGuid());
+    }
+
+    if (message == null)
+    {
+        Response.Write("未找到该消息!");
+        Response.End();
+        return;
+    }
+}
+
+<form id="form1">
+    <div>
+    <div style="margin:10px">@Html.Raw(message.Contents)</div>
+    <div>
+       @Html.Raw(RoadFlow.Platform.Files.GetFilesShowString(message.Files))
+    </div>
+    </div>
+</form>

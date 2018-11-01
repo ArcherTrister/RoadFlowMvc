@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "EditUserInfo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string filesWebSite = Url.Content("~/Controls/UploadFiles/");
+}
+@model RoadFlow.Data.Model.Users
+    <form id="form1" method="post">
+            <table cellpadding="0" cellspacing="1" border="0" width="96%" class="formtable" style="margin-top:15px;">
+            <tr>
+                <th style="width: 100px;">办公电话：</th>
+                <td>
+                    <input type="text" name="Tel" id="Tel" class="mytext" value="@Model.Tel" runat="server" style="width: 90%" />
+                </td>
+            </tr>
+            <tr>
+                <th>手机：</th>
+                <td>
+                    <input type="text" name="MobilePhone" id="MobilePhone" class="mytext" runat="server" value="@Model.Mobile" style="width: 90%" />
+                </td>
+            </tr>
+            <tr>
+                <th>传真：</th>
+                <td>
+                    <input type="text" name="Fax" id="Fax" class="mytext" value="@Model.Fax" style="width: 90%" />
+                </td>
+            </tr>
+            
+            <tr>
+                <th>邮箱：</th>
+                <td>
+                    <input type="text" name="Email" id="Email" class="mytext" value="@Model.Email" style="width: 90%" />
+                </td>
+            </tr>
+            <tr>
+                <th>QQ：</th>
+                <td>
+                    <input type="text" name="QQ" id="QQ" class="mytext" value="@Model.QQ" style="width: 90%" />
+                </td>
+            </tr>
+            <tr>
+                <th>微信号：</th>
+                <td>
+                    <input type="text" name="WeiXin" id="WeiXin" class="mytext" value="@Model.WeiXin" style="width: 90%" />
+                </td>
+            </tr>
+            <tr>
+                <th>其他联系方式：</th>
+                <td>
+                    <input type="text" name="OtherTel" id="OtherTel" class="mytext" value="@Model.OtherTel" style="width: 90%" />
+                </td>
+            </tr>
+            <tr>
+                <th>说明：</th>
+                <td>
+                    <textarea class="mytextarea" name="Note" id="Note" style="width:90%; height:90px;" >@Model.Note</textarea>
+                </td>
+            </tr>
+        </table>
+        <div class="buttondiv">
+            <input type="submit" value="确定保存" class="mybutton" />
+            <input type="button" class="mybutton" value="取消关闭" style="margin-left: 5px;" onclick="new RoadUI.Window().close();" />
+        </div>
+        <script type="text/javascript">
+            $(function ()
+            {
+                 @Html.Raw(ViewBag.script)
+            });
+        </script>
+ </form>

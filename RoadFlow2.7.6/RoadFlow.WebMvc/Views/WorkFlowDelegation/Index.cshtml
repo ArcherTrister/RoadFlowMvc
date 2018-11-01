@@ -1,0 +1,112 @@
+﻿@{
+    ViewBag.Title = "Index";
+    bool isOneSelf = "1" == Request.QueryString["isoneself"];
+}
+<form method="post" >
+@Html.AntiForgeryToken()
+<div class="querybar">
+    <table cellpadding="0" cellspacing="1" border="0" width="100%">
+        <tr>
+            <td>
+                委托人：<input type="text" class="mymember" @(isOneSelf?"disabled=\"disabled\"":"") style="width:150px;" id="S_UserID" name="S_UserID" value="" />
+                开始时间：<input type="text" class="mycalendar" style="width:100px;" id="S_StartTime" name="S_StartTime" />
+                结束时间：<input type="text" class="mycalendar" style="width:100px;" id="S_EndTime" name="S_EndTime" />
+                <input type="button" onclick="query(null, 1);" name="Search" value="&nbsp;&nbsp;查&nbsp;询&nbsp;&nbsp;" class="mybutton" />
+                <input type="button" onclick="add(); return false;" value="添加委托" class="mybutton" />
+                <input type="button" onclick="return del();" value="删除所选" class="mybutton" />
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="listtable"></table>
+<div class="buttondiv"></div>
+</form>
+<script type="text/javascript">
+    var appid = '@Request.QueryString["appid"]';
+    var iframeid = '@Request.QueryString["tabid"]';
+    var dialog = top.mainDialog;
+    var curPageSize = '@Request.QueryString["pagesize"]';
+    var curPageNumber = '@Request.QueryString["pagenumber"]';
+    $(function ()
+    {
+        $("#listtable").jqGrid({
+            url: RoadUI.Core.rooturl() + "/WorkFlowDelegation/Query",
+            postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), appid: appid },
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['委托人', '被委托人', '委托流程', '开始时间', '结束时间', '备注说明', '状态', '编辑'],
+            colModel: [
+                { name: 'UserID', index: 'UserID' },
+                { name: 'ToUserID', index: 'ToUserID' },
+                { name: 'FlowID', index: 'FlowID' },
+                { name: 'StartTime', index: 'StartTime', width: 110 },
+                { name: 'EndTime', index: 'EndTime', width: 110 },
+                { name: 'Note', index: 'Note', width: 110 },
+                { name: 'Status', index: 'Status', sortable: false, width: 110 },
+                { name: 'Edit', index: '', sortable: false, width: 100 }
+            ],
+            sortname: "EndTime",
+            sortorder: "desc",
+            height: '100%',
+            width: $(window).width(),
+            multiselect: true,
+            loadComplete: function ()
+            {
+                var gridObj = $("#listtable");
+                var records = gridObj.getGridParam("userData");
+                curPageSize = records.pagesize;
+                curPageNumber = records.pagenumber;
+                $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+            }
+        });
+
+    });
+    $(window).resize(function ()
+    {
+        $("#listtable").setGridWidth($(window).width());
+    });
+    function query(size, number)
+    {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            S_UserID: $("#S_UserID").val(), S_StartTime: $("#S_StartTime").val(),
+            S_EndTime: $("#S_EndTime").val(),
+            pagesize: size || curPageSize, pagenumber: number || curPageNumber
+        };
+        $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+    }
+    function add()
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "添加委托", width: 700, height: 360, url: '/WorkFlowDelegation/Edit?1=1' + '@Html.Raw(ViewBag.Query)' + '&pagesize=' + curPageSize + '&pagenumber=' + curPageNumber, opener: window, openerid: iframeid });
+    }
+    function edit(id)
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "编辑委托", width: 700, height: 360, url: '/WorkFlowDelegation/Edit?id=' + id + '@Html.Raw(ViewBag.Query)' + '&pagesize=' + curPageSize + '&pagenumber=' + curPageNumber, opener: window, openerid: iframeid });
+    }
+    function checkAll(checked)
+    {
+        $("input[name='checkbox_app']").prop("checked", checked);
+    }
+    function del()
+    {
+        var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+        if (rowIds.length == 0)
+        {
+            alert("您没有选择要删除的项!");
+            return false;
+        }
+        if (confirm('您真的要删除所选委托吗?'))
+        {
+            $.ajax({
+                url: RoadUI.Core.rooturl() + "/WorkFlowDelegation/Delete?1=1@(Html.Raw(ViewBag.Query))",
+                type: "post",
+                data: { "ids": rowIds.join(',') , __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val() },
+                success: function (txt)
+                {
+                    alert(txt);
+                    query(curPageSize, curPageNumber);
+                }
+            });
+        }
+    }
+</script>

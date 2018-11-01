@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "OutToExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string programID = Request.QueryString["programid"];
+    if (!programID.IsGuid())
+    {
+        Response.Write("导出参数错误!");
+        Response.End();
+        return;
+    }
+    RoadFlow.Platform.ProgramBuilder PB = new RoadFlow.Platform.ProgramBuilder();
+    string exportTemplate, exportHeaderText, exportFileName;
+    System.Data.DataTable dt = PB.GetExportDataTable(programID.ToGuid(), out exportTemplate, out exportHeaderText, out exportFileName);
+    RoadFlow.Utility.NPOIHelper.ExportByWeb(dt, exportHeaderText, exportFileName, exportTemplate);
+}

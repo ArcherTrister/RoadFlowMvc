@@ -1,0 +1,82 @@
+﻿@{
+    ViewBag.Title = "Set_Export_Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model RoadFlow.Data.Model.ProgramBuilderExport
+<form id="form1" method="post">
+    <div>
+    <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable" style="margin-top:10px;">
+        <tr>
+            <th style="width: 80px;">字段：</th>
+            <td><select class="myselect" name="Field" id="Field">
+                <option value=""></option>
+                @Html.Raw(ViewBag.FieldOptions)
+                </select></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">列标题：</th>
+            <td><textarea class="mytextarea" style="width:80%;height:60px;" validate="empty" name="ShowTitle" id="ShowTitle">@Model.ShowTitle</textarea></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">单元格格式：</th>
+            <td><select id="DataType" name="DataType" class="myselect">
+                @Html.Raw(ViewBag.DataTypeOptions)
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">显示类型：</th>
+            <td><select id="ShowType" name="ShowType" class="myselect" onchange="showCustomTR(this.value);">
+                @Html.Raw(ViewBag.ShowTypeOptions)
+                </select>
+                <span id="showformatspan" style="margin-left:10px; display:none;">格式：<input type="text" class="mytext" value="@Model.ShowFormat" id="ShowFormat" name="ShowFormat" style="width:200px" /></span>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">对齐方式：</th>
+            <td><select class="myselect" id="Align" name="Align">
+                @Html.Raw(ViewBag.AlignOptions)
+                </select>
+                &nbsp;&nbsp;列表宽度：<input type="text" class="mytext" name="Width" id="Width" value="@Model.Width" style="width:100px" />
+                &nbsp;&nbsp;显示顺序：<input type="text" class="mytext" name="Sort" id="Sort" value="@ViewBag.sort" style="width:100px" />
+            </td>
+        </tr>
+        <tr id="customtr" style="display:none;">
+            <th style="width: 80px;">自定义值：</th>
+            <td><textarea class="mytextarea" style="width:99%;height:60px;" id="CustomString" name="CustomString">@Model.CustomString</textarea></td>
+        </tr>
+    </table>
+    </div>
+    <div class="buttondiv">
+        <input type="submit" value=" 保 存 " class="mybutton" onclick="return new RoadUI.Validate().validateForm(document.forms[0]);"/>
+        <input type="button" class="mybutton" onclick="window.location = 'Set_Export@(Request.Url.Query)';" value=" 返 回 " />
+    </div>
+    </form>
+    <script type="text/javascript">
+        $(function(){
+            $("#ShowType option[value='7']").remove();
+            showCustomTR($("#ShowType").val());
+
+            @Html.Raw(ViewBag.script)
+        });
+        function showCustomTR(v)
+        {
+            if("6"==v)
+            {
+                $("#customtr").show();
+            }
+            else
+            {
+                $("#customtr").hide();
+            }
+
+            if("2"==v || "3"==v)
+            {
+                $("#showformatspan").show();
+            }
+            else
+            {
+                $("#showformatspan").hide();
+            }
+        }
+    </script>

@@ -1,0 +1,207 @@
+﻿@model RoadFlow.Data.Model.ProgramBuilderQuerys
+@{
+    ViewBag.Title = "Set_Query_Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string DataSource_Dict = "";
+    string DataSource_String="";
+    string DataSource_Dict_Value="";
+    string DataSource_Organize_Range = "";
+    string DataSource_Organize_Type_Unit = "";
+    string DataSource_Organize_Type_Dept="";
+    string DataSource_Organize_Type_Station = "";
+    string DataSource_Organize_Type_WorkGroup = "";
+    string DataSource_Organize_Type_Role="";
+    string DataSource_Organize_Type_User = "";
+    string DataSource_Organize_Type_More="";
+    string DataSource_Organize_Type_QueryUsers="";
+    if (Model.InputType == 6 || Model.InputType == 8)
+    {
+        DataSource_Dict = Model.DataSourceString;
+        DataSource_String = Model.DataSourceString;
+        DataSource_Dict_Value = Model.DataSourceString;
+    }
+    else if (Model.InputType == 7)
+    {
+        string[] dstring = (Model.DataSourceString ?? "").Split('|');
+        if (dstring.Length > 0)
+        {
+            DataSource_Organize_Range = dstring[0];
+        }
+        if (dstring.Length > 1)
+        {
+            DataSource_Organize_Type_Unit = "1" == dstring[1] ? "checked='checked'" : ""; 
+        }
+        if (dstring.Length > 2)
+        {
+            DataSource_Organize_Type_Dept = "1" == dstring[2] ? "checked='checked'" : ""; 
+        }
+        if (dstring.Length > 3)
+        {
+            DataSource_Organize_Type_Station = "1" == dstring[3] ? "checked='checked'" : ""; 
+        }
+        if (dstring.Length > 4)
+        {
+            DataSource_Organize_Type_WorkGroup = "1" == dstring[4] ? "checked='checked'" : ""; 
+        }
+        if (dstring.Length > 5)
+        {
+            DataSource_Organize_Type_Role = "1" == dstring[5] ? "checked='checked'" : ""; 
+        }
+        if (dstring.Length > 6)
+        {
+            DataSource_Organize_Type_User = "1" == dstring[6] ? "checked='checked'" : ""; 
+        }
+        if (dstring.Length > 7)
+        {
+            DataSource_Organize_Type_More = "1" == dstring[7] ? "checked='checked'" : ""; 
+        }
+        DataSource_Organize_Type_QueryUsers = 1 == Model.IsQueryUsers ? "checked='checked'" : ""; 
+    }
+}
+
+<form id="form1" method="post">
+    <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable" style="margin-top:10px;">
+        <tr>
+            <th style="width: 80px;">字段：</th>
+            <td><select class="myselect" name="Field" id="Field" onchange="setcontrolname(this.value);">
+                <option value=""></option>
+                @Html.Raw(ViewBag.FieldOptions)
+                </select></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">显示标题：</th>
+            <td><textarea class="mytextarea" style="width:80%;height:60px;" validate="empty" name="ShowTitle" id="ShowTitle">@Model.ShowTitle</textarea></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">控件名称：</th>
+            <td><input type="text" class="mytext" style="width:300px;" id="ControlName" name="ControlName" value="@Model.ControlName" />
+                <input type="hidden" id="ControlHidden" name="ControlHidden" value="@RoadFlow.Utility.Tools.GetRandomString(6)"/>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">匹配类型：</th>
+            <td><select class="myselect" id="Operators" name="Operators">
+                @Html.Raw(ViewBag.OperatorsOptions)
+                </select></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">输入类型：</th>
+            <td><select class="myselect" id="InputType" name="InputType" onchange="inptyTypeChange(this.value);">
+                @Html.Raw(ViewBag.InputTypeOptions)
+                </select>
+            </td>
+        </tr>
+        <tr id="ds_select" style="display:none;">
+            <th>数据来源：</th>
+            <td>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td style="text-align:left; height:35px;">
+                            @Html.Raw(ViewBag.DataSource)
+                            <span id="DataSource_String_SQL_Link" style="display:none; vertical-align:middle;">数据连接：
+                                <select class="myselect" name="DataSource_String_SQL_Link"><option value=""></option>@Html.Raw(ViewBag.DataSource_String_SQL_LinkOptions)</select></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:left;">
+                            <span id="DataSource_String_Span" style="display:none;"><textarea class="mytextarea" id="DataSource_String" name="DataSource_String" style="width:99%;height:80px;">@DataSource_String</textarea></span>
+                            <span id="DataSource_Dict_Span" style="display:none;"><input type="text" class="mydict" id="DataSource_Dict" name="DataSource_Dict" value="" style="width:280px;" />@DataSource_Dict</span>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr id="ds_organize" style="display:none;">
+            <th>数据来源：</th>
+            <td>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td style="text-align:left;">
+                            选择范围：<input type="text" runat="server" class="mymember" id="DataSource_Organize_Range" name="DataSource_Organize_Range" style="width:180px;" />
+                            选择类型：<input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_Unit" id="DataSource_Organize_Type_Unit" @DataSource_Organize_Type_Unit style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_Unit">单位</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_Dept" id="DataSource_Organize_Type_Dept" @DataSource_Organize_Type_Dept style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_Dept">部门</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_Station" id="DataSource_Organize_Type_Station" @DataSource_Organize_Type_Station style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_Station">岗位</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_WorkGroup" id="DataSource_Organize_Type_WorkGroup" @DataSource_Organize_Type_WorkGroup style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_WorkGroup">工作组</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_Role" id="DataSource_Organize_Type_Role" @DataSource_Organize_Type_Role style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_Role">角色</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_User" id="DataSource_Organize_Type_User" @DataSource_Organize_Type_User style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_User">人员</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_More" id="DataSource_Organize_Type_More" @DataSource_Organize_Type_More style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_More">多选</label>
+                            <input type="checkbox" runat="server" value="1" name="DataSource_Organize_Type_QueryUsers" id="DataSource_Organize_Type_QueryUsers" @DataSource_Organize_Type_QueryUsers style="vertical-align:middle;" /><label style="vertical-align:middle;" for="DataSource_Organize_Type_QueryUsers">查询时转换为人员</label>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr id="ds_dict" style="display:none;">
+            <th>数据来源：</th>
+            <td>
+                <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                    <tr>
+                        <td style="text-align:left;"><input type="text" class="mydict" runat="server" value="@DataSource_Dict_Value" id="DataSource_Dict_Value" name="DataSource_Dict_Value" style="width:280px;" /></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">显示样式：</th>
+            <td><input type="text" class="mytext" id="Width" name="Width" value="@Model.Width" /></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">显示顺序：</th>
+            <td><input type="text" class="mytext" id="Sort" name="Sort" value="@ViewBag.sort" /></td>
+        </tr>
+    </table>
+    <div class="buttondiv">
+        <input type="submit" value=" 保 存 " class="mybutton" onclick="return new RoadUI.Validate().validateForm(document.forms[0]);" />
+        <input type="button" class="mybutton" onclick="window.location = 'Set_Query@(Request.Url.Query)';" value=" 返 回 " />
+    </div>
+    </form>
+    <script type="text/ecmascript">
+        $(function(){
+            @Html.Raw(ViewBag.script)
+            inptyTypeChange($("#InputType").val());
+        });
+        function setcontrolname(v)
+        {
+            $("#ControlName").val(v+"_"+$("#ControlHidden").val());
+        }
+        function inptyTypeChange(v)
+        {
+            $("#ds_select").hide();
+            $("#ds_organize").hide();
+            $("#ds_dict").hide();
+            switch(v)
+            {
+                case "6":
+                    $("#ds_select").show();
+                    dataSourceChange($(":checked[name='DataSource']").val());
+                    break;
+                case "7":
+                    $("#ds_organize").show();
+                    break;
+                case "8":
+                    $("#ds_dict").show();
+                    break;
+            }
+        }
+        function dataSourceChange(v)
+        {
+            $("#DataSource_String_SQL_Link").hide();
+            if("1"==v)
+            {
+                $("#DataSource_String_Span").show();
+                $("#DataSource_Dict_Span").hide();
+            }
+            else if("3"==v)
+            {
+                $("#DataSource_String_Span").show();
+                $("#DataSource_Dict_Span").hide();
+                $("#DataSource_String_SQL_Link").show();
+            }
+            else if("2"==v)
+            {
+                $("#DataSource_String_Span").hide();
+                $("#DataSource_Dict_Span").show();
+            }
+        }
+    </script>

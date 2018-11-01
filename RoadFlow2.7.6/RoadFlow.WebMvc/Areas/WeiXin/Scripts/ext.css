@@ -1,0 +1,6 @@
+﻿.ext-input {
+    -webkit-appearance:none;border:1px solid #ccc; height:27px; border-radius:4px; padding-left:3px;
+}
+.ext-button {
+    -webkit-appearance:none; background:#3c87da; border:1px solid #0e66c8; color:#ffffff; border-radius:4px; box-shadow: 0 0 3px #95ccfb; line-height:28px; vertical-align:middle; height:28px;
+}

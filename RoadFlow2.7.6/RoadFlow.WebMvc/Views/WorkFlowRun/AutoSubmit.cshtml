@@ -1,0 +1,51 @@
+﻿@{
+    ViewBag.Title = "AutoSubmit";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title></title>
+    <script type="text/javascript">
+        function Close()
+        {
+            var ua = navigator.userAgent;
+            var ie = navigator.appName == "Microsoft Internet Explorer" ? true : false;
+            if (ie)
+            {
+                var IEversion = parseFloat(ua.substring(ua.indexOf("MSIE") + 5, ua.indexOf(";", ua.indexOf("MSIE"))));
+                if (IEversion < 5.5)
+                {
+                    var str = "<object id = 'noTipClose' classid='clsid:ADB880A6-D8FF-11CF-9377-00AA003B7A11'>";
+                    str += "<param name='Command' value='Close'/></object>";
+                    document.body.insertAdjacentHTML("beforeEnd", str);
+                    document.all.noTipClose.Click();
+                }
+                else
+                {
+                    window.parent.opener = null;
+                    window.parent.open('', '_self', '');
+                    window.parent.close();
+                }
+            }
+            else
+            {
+                window.parent.close();
+            }
+        }
+    </script>
+</head>
+<body>
+    <form id="form1">
+    <div>
+    @{
+        new RoadFlow.Platform.WorkFlowTask().ExpiredAutoSubmit();
+        <script type="text/javascript">Close();</script>   
+     }
+    </div>
+    </form>
+    
+</body>
+</html>
+

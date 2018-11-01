@@ -126,8 +126,7 @@ namespace RoadFlow.Platform.WeiXin
       jsonData3.Add((object) jsonData4);
       jsonData2["articles"] = jsonData3;
       jsonData1["mpnews"] = jsonData2;
-      //string json1 = jsonData1.ToJson(true);
-            string json1 = jsonData1.ToJson();
+      string json1 = jsonData1.ToJson(true);
             string json2 = HttpHelper.SendPost(url, json1);
       JsonData jsonData5 = JsonMapper.ToObject(json2);
       if (jsonData5.ContainsKey("errcode") && "0" == jsonData5["errcode"].ToString() && jsonData5.ContainsKey("media_id"))

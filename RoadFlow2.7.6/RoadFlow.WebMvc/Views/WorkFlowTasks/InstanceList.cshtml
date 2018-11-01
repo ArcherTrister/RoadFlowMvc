@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "InstanceList";
+}
+<form method="post" >
+@Html.AntiForgeryToken()
+<div class="querybar">
+    <table cellpadding="0" cellspacing="1" border="0" width="100%">
+        <tr>
+            <td>
+                标题：<input type="text" class="mytext" id="Title" style="width:100px;" name="Title" value="" />
+                流程：<select class="myselect2" style="width:130px;" id="FlowID" name="FlowID"><option value=""></option>@Html.Raw(ViewBag.FlowOptions)</select>
+                发送人：<input type="text" style="width:80px;"  class="mymember" id="SenderID" unit="0" dept="0" station="0" user="1" group="0" more="0" name="SenderID" value=""  />
+                发送时间：<input type="text" class="mycalendar" value="" style="width:80px;" name="Date1" id="Date1"/> 至 <input type="text" style="width:80px;" value="" class="mycalendar" name="Date2" id="Date2"/>
+                
+                <input type="button" name="Search" value="&nbsp;&nbsp;查询&nbsp;&nbsp;" class="mybutton" onclick="query(null, 1);" />
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="listtable"></table>
+<div class="buttondiv"></div>
+</form>
+<script type="text/javascript">
+    var curPageSize;
+    var curPageNumber;
+    var typeid = "@(Request.QueryString["typeid"])";
+    var appid = "@(Request.QueryString["appid"])";
+    $(function ()
+    {
+        $("#listtable").jqGrid({
+            url: RoadUI.Core.rooturl() + "/WorkFlowTasks/QueryInstanceList",
+            postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), "typeid": typeid, "appid": appid },
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['标题', '所属流程', '所在步骤', '处理者', '接收时间', '当前状态', ''],
+            colModel: [
+                { name: 'Title', index: 'Title', sortable: false },
+                { name: 'FlowName', index: 'FlowID', align: "left" },
+                { name: 'StepName', index: 'StepID', sortable: false, align: "left" },
+                { name: 'ReceiveName', index: 'ReceiveName', sortable: false, align: "left", width: 50 },
+                { name: 'ReceiveTime', index: 'SenderTime', align: "left", width: 110 },
+                { name: 'StatusTitle', index: 'Status', sortable: false, align: "left", width: 50 },
+                { name: 'Opation', index: '', sortable: false, align: "left", width: 100 }
+            ],
+            sortname: "SenderTime",
+            sortorder: "desc",
+            height: '100%',
+            width: $(window).width(),
+            loadComplete: function ()
+            {
+                var gridObj = $("#listtable");
+                var records = gridObj.getGridParam("userData");
+                curPageSize = records.pagesize;
+                curPageNumber = records.pagenumber;
+                $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+            }
+        });
+    });
+    $(window).resize(function ()
+    {
+        $("#listtable").setGridWidth($(window).width());
+    });
+    function query(size, number)
+    {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            Title: $("#Title").val(), FlowID: $("#FlowID").val(),
+            SenderID: $("#SenderID").val(), Date1: $("#Date1").val(), Date2: $("#Date2").val(), Status: $("#Status").val(), appid: appid,
+            pagesize: size, pagenumber: number, typeid: typeid
+        };
+        $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+    }
+    function openTask(url, title, id)
+    {
+        top.openApp(url, 0, title, id, 0, 0, false);
+    }
+    function manage(flowid, groupid)
+    {
+        top.mainDialog.open({
+            url: '/WorkFlowTasks/InstanceManage?flowid1=' + flowid + "&groupid=" + groupid + '@Html.Raw(ViewBag.Query)',
+            width: 1000, height: 500, title: "管理流程实例", opener: parent
+        });
+    }
+    function delete1(flowid, groupid)
+    {
+        if (confirm("您真的要删除该流程实例吗?"))
+        {
+            $.ajax({
+                url: "Delete?flowid1=" + flowid + "&groupid=" + groupid + "&appid=" + appid, async: false, cache: false, success: function (txt)
+                {
+                    alert(txt);
+                    query(curPageSize, curPageNumber);
+                }
+            });
+        }
+    }
+</script>

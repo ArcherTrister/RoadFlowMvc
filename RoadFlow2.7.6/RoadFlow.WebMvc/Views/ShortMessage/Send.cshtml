@@ -1,0 +1,69 @@
+﻿@{
+    ViewBag.Title = "Send";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script src="~/Scripts/Ueditor/ueditor.config.js"></script>
+<script src="~/Scripts/Ueditor/ueditor.all.min.js"></script>
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    <br />
+    <table cellpadding="0" cellspacing="1" border="0" width="98%" class="formtable">
+        <tr>
+            <th style="width: 80px;">标题：</th>
+            <td><input type="text" id="Title1" name="Title1" class="mytext" runat="server" style="width: 85%"/></td>
+        </tr>
+        <tr>
+            <th>接收人：</th>
+            <td><input type="text" id="ReceiveUserID" name="ReceiveUserID" class="mymember" runat="server" style="width: 55%" />
+                @if(RoadFlow.Platform.WeiXin.Config.IsUse){
+                <input type="checkbox" name="sendtoseixin" checked="checked" id="sendtoseixin" value="1" style="vertical-align:middle;"/><label for="sendtoseixin" style="vertical-align:middle;">同时发送到微信</label>
+                }
+            </td>
+        </tr>
+        <tr>
+            <th>内容：</th>
+            <td><textarea id="Contents" name="Contents" model="html" class="mytextarea" style="width:99%; height:350px;" runat="server"></textarea></td>
+        </tr>
+        <tr>
+            <th>附件：</th>
+            <td><input type="text" id="Files" name="Files" class="myfile" runat="server" style="width: 65%"/></td>
+        </tr>
+    </table>
+    <div class="buttondiv">
+        <input type="button" value="确定发送" onclick="return checkf(this); " class="mybutton"/>
+    </div>
+    </form>
+    <script type="text/javascript">
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+        });
+        function checkf(but)
+        {
+            but.disabled = true;
+            if($.trim($("#Title1").val()).length==0)
+            {
+                alert('标题不能为空!');
+                $("#Title1").focus();
+                but.disabled = false;
+                return false;
+            }
+            if ($.trim($("#ReceiveUserID").val()).length == 0)
+            {
+                alert('接收人不能为空!');
+                $("#ReceiveUserID").focus();
+                but.disabled = false;
+                return false;
+            }
+            var ue = UE.getEditor("Contents");
+            if (!ue.hasContents())
+            {
+                alert('内容不能为空!');
+                ue.focus(true);
+                but.disabled = false;
+                return false;
+            }
+            document.forms[0].submit();
+            return true;
+        }
+    </script>

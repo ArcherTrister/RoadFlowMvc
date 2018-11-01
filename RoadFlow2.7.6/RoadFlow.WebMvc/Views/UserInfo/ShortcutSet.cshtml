@@ -1,0 +1,91 @@
+﻿@{
+    ViewBag.Title = "ShortcutSet";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    string menuhtml = string.Empty;
+    RoadFlow.Platform.Menu bmenu = new RoadFlow.Platform.Menu();
+    string id = Request.QueryString["id"];
+    Guid userID = RoadFlow.Platform.Users.CurrentUserID;
+    System.Data.DataTable busDt = new RoadFlow.Platform.UserShortcut().GetDataTableByUserID(userID);
+    string json = busDt.ToJsonString();
+    menuhtml = bmenu.GetMenuTreeTableHtml(id, RoadFlow.Platform.Users.CurrentUserID);
+    
+}
+
+<form id="form1" method="post">
+    <table cellpadding="0" cellspacing="1" border="0" style="width:100%; margin:0 auto;">
+        <tr>
+            <td style="width:48%; vertical-align:top;">
+                <div style="width:100%; margin:0 auto;">
+                    <div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:999; width:100%; margin-right:auto;">
+                        <a href="javascript:void(0);" onclick="document.forms[0].submit();">
+                            <span style="background-image:url(../Images/ico/save.gif);">保存设置</span>
+                        </a>
+                        <a href="javascript:void(0);" onclick="sortsave();">
+                            <span style="background-image:url(../Images/ico/saveas.gif);">保存排序</span>
+                        </a>
+                    </div>
+                     <table id="treeTable1" style="width:100%; margin-top:37px;" class="listtable">
+                        <thead>
+                            <tr>
+                                <th style="width:26%;">标题</th>
+                                <th style="width:7%;">图标</th>
+                                <th style="width:7%; text-align:center"><input type="checkbox" id="checkall" onclick="$('input[type=\'checkbox\']').prop('checked', this.checked);" /></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @Html.Raw(menuhtml)
+                        </tbody>
+                    </table>
+                </div>
+            </td>
+            <td>
+                
+            </td>
+            <td style="width:48%; vertical-align:top; padding-top:5px;">
+                <div style="width:82%; margin:40px auto 0  auto; height:auto;" id="sortdiv">
+                   @foreach (System.Data.DataRow dr in busDt.Rows){
+                          var menu = bmenu.Get(dr["MenuID"].ToString().ToGuid());
+                          if (menu == null)
+                          {
+                              continue;
+                          }     
+                    
+                    <ul class="sortul">
+                        <input type="hidden" value="@dr["ID"]" name="sort" />
+                        @menu.Title
+                    </ul>
+                    }
+                </div>
+            </td>
+        </tr>
+    </table>
+    </form>
+    <script type="text/javascript">
+        var json=@Html.Raw(json);
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+            new RoadUI.DragSort($("#sortdiv"));
+            new RoadUI.TreeTable().init({ id: "treeTable1" });
+            $("#treeTable1 tbody tr").each(function ()
+            {
+                $("td:last", $(this)).hide();
+            });
+            for(var i=0;i<json.length;i++)
+            {
+                $("input[value='"+json[i].MenuID+"']").prop("checked",true);
+            }
+        });
+
+        function appboxclick(box)
+        {
+            return;
+        }
+        
+        function sortsave()
+        {
+            $(document.forms[0]).append('<input type="hidden" value="1" name="issort"/>');
+            document.forms[0].submit();
+        }
+    </script>

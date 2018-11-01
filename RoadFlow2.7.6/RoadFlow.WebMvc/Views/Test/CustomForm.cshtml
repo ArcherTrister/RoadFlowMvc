@@ -1,0 +1,24 @@
+﻿@{
+    ViewBag.Title = "CustomForm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" >
+    @Html.AntiForgeryToken()
+    <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable">
+        <tr>
+            <th style="width: 80px;">标题：</th>
+            <td><input type="text" name="Title" class="mytext" value="@ViewBag.title1" validate="empty" errmsg="标题不能为空!" style="width: 75%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">内容：</th>
+            <td><textarea class="mytextarea" name="Contents" style="width:75%; height:200px;" validate="empty" errmsg="内容不能为空!">@ViewBag.contents</textarea></td>
+        </tr>
+    </table>
+</form>
+<script>
+    $(function ()
+    {
+        @Html.Raw(ViewBag.script)
+    });
+</script>

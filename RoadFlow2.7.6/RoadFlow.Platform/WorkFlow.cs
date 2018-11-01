@@ -154,11 +154,11 @@ namespace RoadFlow.Platform
             string text2 = jsonData["name"].ToString();
             string text3 = jsonData["type"].ToString();
             Guid guid = default(Guid);
-            if (!MyExtensions.IsGuid(text, out guid))
+            if (!global::MyExtensions.IsGuid(text, out guid))
             {
                 return "请先新建或打开流程!";
             }
-            if (!MyExtensions.IsNullOrEmpty(text2))
+            if (!global::MyExtensions.IsNullOrEmpty(text2))
             {
                 RoadFlow.Platform.WorkFlow workFlow = new RoadFlow.Platform.WorkFlow();
                 RoadFlow.Data.Model.WorkFlow workFlow2 = workFlow.Get(guid);
@@ -176,7 +176,7 @@ namespace RoadFlow.Platform
                 workFlow2.InstanceManager = jsonData["instanceManager"].ToString();
                 workFlow2.Manager = jsonData["manager"].ToString();
                 workFlow2.Name = text2.Trim();
-                workFlow2.Type = (MyExtensions.IsGuid(text3) ? MyExtensions.ToGuid(text3) : new RoadFlow.Platform.Dictionary().GetIDByCode("FlowTypes"));
+                workFlow2.Type = (global::MyExtensions.IsGuid(text3) ? global::MyExtensions.ToGuid(text3) : new RoadFlow.Platform.Dictionary().GetIDByCode("FlowTypes"));
                 try
                 {
                     if (flag)
@@ -288,8 +288,7 @@ namespace RoadFlow.Platform
                 }
                 foreach (JsonData jsonData6 in (IEnumerable)jsonData5)
                     jsonData6["id"] = (JsonData)Guid.NewGuid().ToString();
-                //model.DesignJSON = jsonData1.ToJson(true);
-                model.DesignJSON = jsonData1.ToJson();
+                model.DesignJSON = jsonData1.ToJson(true);
             }
             this.dataWorkFlow.Add(model);
             this.ClaearCache();
@@ -620,8 +619,7 @@ namespace RoadFlow.Platform
                         CustomMethod = jsonData3["customMethod"].ToString(),
                         SqlWhere = jsonData3["sql"].ToString(),
                         NoAccordMsg = jsonData3.ContainsKey("noaccordMsg") ? jsonData3["noaccordMsg"].ToString() : "",
-                        //Organize = jsonData3.ContainsKey("organize") ? jsonData3["organize"].ToJson(true) : ""
-                        Organize = jsonData3.ContainsKey("organize") ? jsonData3["organize"].ToJson() : ""
+                        Organize = jsonData3.ContainsKey("organize") ? jsonData3["organize"].ToJson(true) : ""
                     });
             }
             workFlowInstalled.Lines = (IEnumerable<Line>)lineList;
@@ -1523,8 +1521,7 @@ namespace RoadFlow.Platform
 
         public string GetFormDataJsonString(JsonData jsonData)
         {
-            //string json = jsonData.ToJson(true);
-            string json = jsonData.ToJson();
+            string json = jsonData.ToJson(true);
             if (!json.IsNullOrEmpty())
                 return json;
             return "{}";

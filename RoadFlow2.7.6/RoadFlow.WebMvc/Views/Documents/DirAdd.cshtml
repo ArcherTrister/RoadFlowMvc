@@ -1,0 +1,68 @@
+﻿@{
+    ViewBag.Title = "DirAdd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RoadFlow.Platform.DocumentDirectory DocDir = new RoadFlow.Platform.DocumentDirectory();
+    string DirID = Request.QueryString["dirid"];
+}
+@model RoadFlow.Data.Model.DocumentDirectory
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    <div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:999; width:100%; margin-right:auto;">
+        <a href="javascript:void(0);" onclick="window.location='List@(Request.Url.Query)';return false;"><span style="background-image:url(../Images/ico/arrow_medium_left.png);">返回列表</span></a>
+        <span class="toolbarsplit">&nbsp;</span>
+        <a href="javascript:void(0);" onclick="save();return false;"><span style="background-image:url(../Images/ico/save.gif);">保存栏目</span></a>
+        <a href="javascript:void(0);" onclick="del();return false;"><span style="background-image:url(../Images/ico/cancel.gif);">删除栏目</span></a>
+    </div>
+    
+    <table cellpadding="0" cellspacing="1" border="0" width="90%;" class="formtable" style="margin-top:56px;">
+        <tr>
+            <th style="width: 100px;">上级栏目：</th>
+            <td>
+                <input type="hidden" name="DirectoryID" id="DirectoryID" value="@DirID" />
+                @DocDir.GetName(Model.ParentID)
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 100px;">栏目名称：</th>
+            <td><input type="text" id="Name" name="Name" validate="empty" class="mytext" value="@Model.Name" style="width: 85%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 100px;">文档发布人员:</th>
+            <td><input type="text" id="PublishUsers" name="PublishUsers" class="mymember" value="@Model.PublishUsers" style="width: 85%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 100px;">文档阅读人员:</th>
+            <td><input type="text" id="ReadUsers" name="ReadUsers" class="mymember" value="@Model.ReadUsers" style="width: 85%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 100px;">管理人员:</th>
+            <td><input type="text" id="ManageUsers" name="ManageUsers" class="mymember" value="@Model.ManageUsers" style="width: 85%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 100px;">排序：</th>
+            <td><input type="text" id="Sort" name="Sort" class="mytext" value="@Model.Sort" style="width: 85%"/></td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+        });
+        function save()
+        {
+            var flag = new RoadUI.Validate().validateForm(document.forms[0]);
+            if (flag)
+            {
+                document.forms[0].submit();
+            }
+        }
+        function del()
+        {
+            if (confirm('删除栏目将删除所有子栏目及其文档,真的删除吗?'))
+            {
+                document.forms[0].action = "DirDelete@(Html.Raw(Request.Url.Query))";
+                document.forms[0].submit();
+            }
+        }
+    </script>
+</form>

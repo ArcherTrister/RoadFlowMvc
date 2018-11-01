@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{8CD36CE0-E9D5-41BD-9017-D604C688ECC0}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <LangVersion>4</LangVersion>
+    <AssemblyName>RoadFlow.Data.Interface</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System.Data">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_32\System.Data\v4.0_4.0.0.0__b77a5c561934e089\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Data.Model">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.Model.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IAppLibrary.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IAppLibraryButtons.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IAppLibraryButtons1.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IAppLibrarySubPages.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IDBConnection.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IDBHelper.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IDictionary.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IDocumentDirectory.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IDocuments.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IDocumentsReadUsers.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IHastenLog.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IHomeItems.cs" />
+    <Compile Include="RoadFlow.Data.Interface\ILog.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IMenu.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IMenuUser.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IOrganize.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IProgramBuilder.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IProgramBuilderButtons.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IProgramBuilderExport.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IProgramBuilderFields.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IProgramBuilderQuerys.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IProgramBuilderValidates.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IShortMessage.cs" />
+    <Compile Include="RoadFlow.Data.Interface\ISMSLog.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IUsers.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IUserShortcut.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IUsersRelation.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWeiXinMessage.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkCalendar.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlow.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowArchives.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowButtons.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowComment.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowData.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowDelegation.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowForm.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkFlowTask.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkGroup.cs" />
+    <Compile Include="RoadFlow.Data.Interface\IWorkTime.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

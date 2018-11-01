@@ -1,0 +1,93 @@
+﻿@{
+    ViewBag.Title = "WaitList";
+}
+<form method="post" >
+@Html.AntiForgeryToken()
+<div class="querybar">
+    <table cellpadding="0" cellspacing="1" border="0" width="100%">
+        <tr>
+            <td>
+                任务标题：<input type="text" class="mytext" id="Title" name="Title" value="" style="width:200px;" />
+                所属流程：<select class="myselect2" id="FlowID" name="FlowID" style="width:150px;"><option></option>@Html.Raw(ViewBag.FlowOptions)</select>
+                发送人：<input type="text" class="mymember" id="SenderID" unit="0" dept="0" station="0" user="1" group="0" more="0" name="SenderID" value=""  />
+                接收时间：<input type="text" class="mycalendar" style="width:90px;" value="" name="Date1" id="Date1" /> 至 <input type="text" value="" style="width:90px;" class="mycalendar" name="Date2" id="Date2"/>
+                <input type="button" name="Search" onclick="query(null, 1);" value="查询" class="mybutton" />
+            </td>
+        </tr>
+    </table>
+</div>
+<table id="listtable"></table>
+<div class="buttondiv"></div>
+</form>
+<script type="text/javascript">
+    $(function ()
+    {
+        $("#listtable").jqGrid({
+            url: RoadUI.Core.rooturl() + "/WorkFlowTasks/QueryWaitList",
+            postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['任务标题', '流程', '步骤', '发送人', '接收时间', '状态', '备注', ''],
+            colModel: [
+                { name: 'Title', index: 'Title' },
+                { name: 'FlowName', index: 'FlowID', align: "left", width: 50 },
+                { name: 'StepName', index: 'StepID', align: "left", width: 50 },
+                { name: 'SenderName', index: 'SenderName', align: "left", width: 50 },
+                { name: 'ReceiveTime', index: 'ReceiveTime', align: "left", width: 90 },
+                { name: 'StatusTitle', index: 'CompletedTime', align: "left", width: 50 },
+                { name: 'Note', index: 'Note', sortable: false, align: "left", width: 50 },
+                { name: 'Opation', index: '', sortable: false, align: "left", width: 85 }
+            ],
+            sortname: "ReceiveTime",
+            sortorder: "desc",
+            height: '100%',
+            width: $(window).width(),
+            loadComplete: function ()
+            {
+                var gridObj = $("#listtable");
+                var records = gridObj.getGridParam("userData");
+                $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+            }
+        });
+        
+    });
+    $(window).resize(function ()
+    {
+        $("#listtable").setGridWidth($(window).width());
+    });
+    function query(size, number)
+    {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            title: $("#Title").val(), flowid: $("#FlowID").val(),
+            sender: $("#SenderID").val(), date1: $("#Date1").val(), date2: $("#Date2").val(),
+            pagesize: size, pagenumber: number
+        };
+        $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+    }
+    function openTask(url, title, id, openModel, width, height)
+    {
+        top.openApp(url, openModel, title, "tab_" + id, width, height, false);
+    }
+    function detail(flowid, groupid, taskid)
+    {
+        top.mainDialog.open({
+            url: '/WorkFlowTasks/Detail?flowid1=' + flowid + "&groupid=" + groupid + "&taskid=" + taskid + '@Html.Raw(ViewBag.query)',
+            width: 1024, height: 550, title: "查看流程处理过程", opener: window
+        });
+    }
+    function delTask(flowid, groupid, taskid)
+    {
+        if (!confirm('您真的要作废该待办吗?'))
+        {
+            return;
+        }
+        $.ajax({
+            url: "deleteTask?taskid=" + taskid + "&groupid=" + groupid, type: "post", success: function (txt)
+            {
+                alert(txt);
+                window.location = window.location;
+            }
+        });
+    }
+</script>

@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "AddWrite";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    <table cellpadding="0" cellspacing="1" border="0" width="95%" align="center" class="formtable" style="margin-top:6px;">
+        <tr>
+            <th style="width:80px;">加签类型：</th>
+            <td>
+                <input type="radio" id="addtype_1" name="addtype" value="1" validate="radio" style="vertical-align:middle;" /><label for="addtype_1" style="vertical-align:middle;">前加签</label>
+                <input type="radio" id="addtype_2" name="addtype" value="2" validate="radio" style="vertical-align:middle;" /><label for="addtype_2" style="vertical-align:middle;">后加签</label>
+                <input type="radio" id="addtype_3" name="addtype" value="3" validate="radio" style="vertical-align:middle;" /><label for="addtype_3" style="vertical-align:middle;">并签</label>
+            </td>
+        </tr>
+        <tr>
+            <th>审批方式：</th>
+            <td style="line-height:23px;">
+                <input type="radio" id="writetype_1" name="writetype" value="1" validate="radio" style="vertical-align:middle;" /><label for="writetype_1" style="vertical-align:middle;">所有加签人同意才通过</label><br />
+                <input type="radio" id="writetype_2" name="writetype" value="2" validate="radio" style="vertical-align:middle;" /><label for="writetype_2" style="vertical-align:middle;">一个加签人同意即通过</label><br />
+                <input type="radio" id="writetype_3" name="writetype" value="3" validate="radio" style="vertical-align:middle;" /><label for="writetype_3" style="vertical-align:middle;">按选择加签人顺序审批</label>
+                <span class="validate"></span>
+            </td>
+        </tr>
+        <tr>
+            <th>加签人员：</th>
+            <td>
+                <input type="text" class="mymember" id="writeuser" name="writeuser" validate="empty" style="width:60%;" />
+            </td>
+        </tr>
+        <tr>
+            <th>加签说明：</th>
+            <td>
+                <textarea class="mytextarea" id="note" name="note" style="width:98%; height:80px;"></textarea>
+            </td>
+        </tr>
+    </table>
+    <div class="buttondiv">
+        <input type="submit" ID="Button1" class="mybutton" value="&nbsp;确&nbsp;认&nbsp;" onclick="return new RoadUI.Validate().validateForm(document.forms[0]);" />
+        <input type="button" class="mybutton" value="&nbsp;取&nbsp;消&nbsp;" onclick="new RoadUI.Window().close();" />
+    </div>
+</form>
+<script>
+    $(function ()
+    {
+        @Html.Raw(ViewBag.script)
+    });
+</script>

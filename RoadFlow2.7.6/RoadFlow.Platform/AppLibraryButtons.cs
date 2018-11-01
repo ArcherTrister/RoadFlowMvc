@@ -80,8 +80,7 @@ namespace RoadFlow.Platform
           ["ico"] = (JsonData) appLibraryButtons.Ico,
           ["sort"] = (JsonData) appLibraryButtons.Sort
         });
-      //return jsonData.ToJson(true);
-            return jsonData.ToJson();
+      return jsonData.ToJson(true);
         }
 
     public string GetShowTypeOptions(string value = "")

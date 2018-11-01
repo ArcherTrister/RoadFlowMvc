@@ -60,6 +60,7 @@
     <Compile Include="ProgramBuilderFields.cs" />
     <Compile Include="ProgramBuilderQuerys.cs" />
     <Compile Include="ProgramBuilderValidates.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ShortMessage.cs" />
     <Compile Include="SMSLog.cs" />
     <Compile Include="Users.cs" />
@@ -94,7 +95,6 @@
     <Compile Include="8WorkFlowInstalled.cs" />
     <Compile Include="9WorkFlowInstalled.cs" />
     <Compile Include="10WorkFlowInstalled.cs" />
-    <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

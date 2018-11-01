@@ -1,0 +1,48 @@
+﻿@{
+    ViewBag.Title = "CustomForm1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" >
+    <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable">
+        <tr>
+            <th style="width: 80px;">标题：</th>
+            <td><input type="text" name="Title" id="Title" class="mytext" value="@ViewBag.title1" validate="empty" errmsg="标题不能为空!" style="width: 75%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">内容：</th>
+            <td><textarea class="mytextarea" name="Contents" id="Contents" style="width:75%; height:200px;" validate="empty" errmsg="内容不能为空!">@ViewBag.contents</textarea></td>
+        </tr>
+    </table>
+
+    <div style="width:95%; margin:10px auto 10px auto; text-align:center;">
+        <input type="button" class="mybutton" value="保存" onclick="saveForm(this);" />
+        <input type="button" class="mybutton" value="退回" onclick="    parent.flowBack();" />
+        <input type="button" class="mybutton" value="发送" onclick="parent.flowSend();"/>
+    </div>
+</form>
+<script>
+    $(function ()
+    {
+      
+    });
+    function saveForm(but)
+    {
+        var f = document.forms[0];
+        if (new RoadUI.Validate().validateForm(f))
+        {
+            var o = RoadUI.Core.serializeForm($(f));
+            $.ajax({
+                url: "saveCustomForm1"+"@Html.Raw(Request.Url.Query)", data: o, type: "post", dataType: "json", success: function (json)
+                {
+                    //alert(json.msg);
+                    $("#instanceid", parent.document).val(json.instanceid);
+                    $("#customformtitle", parent.document).val($("#Title").val());
+                    parent.flowSave();
+                    $(but).prop("disabled", false);
+                }
+            });
+        }
+    }
+</script>
+

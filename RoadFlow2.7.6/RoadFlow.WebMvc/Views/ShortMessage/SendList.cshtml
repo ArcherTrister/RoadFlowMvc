@@ -1,0 +1,123 @@
+﻿@{
+    ViewBag.Title = "NoRead";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string query = "&appid=" + Request.QueryString["appid"] + "&tabid=" + Request.QueryString["tabid"];
+}
+    <form id="form1" method="post">
+        @Html.AntiForgeryToken()
+        <div class="querybar">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        标题：<input type="text" class="mytext" id="Title1" name="Title1" value="" style="width:150px" />
+                        内容：<input type="text" class="mytext" id="Contents" name="Contents" style="width:150px" value="" />
+                        发送时间：<input type="text" class="mycalendar" style="width:80px;" value="" name="Date1" id="Date1"/> 至 <input type="text" style="width:80px;" class="mycalendar" name="Date2" value="" id="Date2"/>
+                        <input type="button" class="mybutton" onclick="query(null, 1);" value="&nbsp;&nbsp;查&nbsp;询&nbsp;&nbsp;" />
+                        <input type="button" class="mybutton" name="delete1" value="删除所选" onclick="return del();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table id="listtable"></table>
+        <div class="buttondiv"></div>
+    </form>
+    <script type="text/javascript">
+        var curPageSize = '@Request.QueryString["pagesize"]';
+        var curPageNumber = '@Request.QueryString["pagenumber"]';
+        $(function ()
+        {
+            $("#listtable").jqGrid({
+                url: RoadUI.Core.rooturl() + "/ShortMessage/QueryNoRead",
+                postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), status: "2" },
+                mtype: 'POST',
+                datatype: "json",
+                colNames: ['标题', '内容', '发送人', '发送时间'],
+                colModel: [
+                    { name: 'Title', index: 'Title' },
+                    { name: 'Contents', index: 'Contents' },
+                    { name: 'SendUserName', index: 'SendUserName', width: 80 },
+                    { name: 'SendTime', index: 'SendTime', width: 110 }
+                ],
+                sortname: "SendTime",
+                sortorder: "desc",
+                height: '100%',
+                width: $(window).width(),
+                multiselect: true,
+                onSelectRow: function ()
+                {
+                    
+                },
+                loadComplete: function ()
+                {
+                    var gridObj = $("#listtable");
+                    var records = gridObj.getGridParam("userData");
+                    curPageSize = records.pagesize;
+                    curPageNumber = records.pagenumber;
+                    $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+                    $("#listtable tbody tr").each(function ()
+                    {
+                        var trid = $(this).attr("id");
+                        if (!trid)
+                        {
+                            return true;
+                        }
+                        var status = $("#status_" + trid, $(this)).val();
+                        if ("0" != status)
+                        {
+                            $(".cbox", $(this)).attr("id","t_"+trid).prop("disabled",true);
+                        }
+                    });
+                }
+            });
+        });
+        $(window).resize(function ()
+        {
+            $("#listtable").setGridWidth($(window).width());
+        });
+        function query(size, number)
+        {
+            var data = {
+                __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+                Title1: $("#Title1").val(), Contents: $("#Contents").val(), status: "2",
+                SenderID: $("#SenderID").val(), Date1: $("#Date1").val(), Date2: $("#Date2").val(),
+                pagesize: size || curPageSize, pagenumber: number || curPageNumber
+            };
+            $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+        }
+        function del(id)
+        {
+            //var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+            if ($(".cbox:checked").size() == 0)
+            {
+                alert("您没有选择要删除的消息!");
+                return false;
+            }
+            if (!confirm('您真的要将所选消息删除吗?'))
+            {
+                return false;
+            }
+            var ids = [];
+            $(".cbox:checked").each(function ()
+            {
+                if ('rowheader' == $(this).parent().parent().parent().attr("role"))
+                {
+                    return true;
+                }
+                ids.push($(this).parent().parent().attr("id"));
+            });
+            $.ajax({
+                url: RoadUI.Core.rooturl() + "/ShortMessage/Delete?1=1" + "@Html.Raw(query)" + "&pagesize=" + curPageSize + "&pagenumber=" + curPageNumber,
+                data: { "ids": ids.join(","), "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+                type: "post",
+                success: function (txt)
+                {
+                    alert(txt);
+                    query();
+                }
+            });
+        }
+        function show(id)
+        {
+            new RoadUI.Window().open({ url: RoadUI.Core.rooturl() + "/ShortMessage/Show?id=" + id, width: 900, height: 500, title: "查看消息" });
+        }
+    </script>

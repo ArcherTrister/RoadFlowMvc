@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "SetList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Query = "&appid=" + Request.QueryString["appid"] + "&tabid=" + Request.QueryString["tabid"];
+}
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div class="querybar">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        名称：<input type="text" class="mytext" id="Name1" name="Name1" value="" style="width:150px" />
+                        标题：<input type="text" class="mytext" id="Title1" name="Title1" value="" style="width:150px" />
+                        类型：<select id="Type" name="Type" class="myselect"><option value=""></option>@Html.Raw(ViewBag.TypeOptions)</select>
+                        <input type="button" class="mybutton" onclick="query(null, 1);" value="&nbsp;查&nbsp;询&nbsp;" />
+                        <input type="button" onclick="edit(); return false;" value="&nbsp;添&nbsp;加&nbsp;" class="mybutton" />
+                        <input type="button" class="mybutton" name="deletebut" value="&nbsp;删&nbsp;除&nbsp;" onclick="del();" />
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <table id="listtable"></table>
+        <div class="buttondiv"></div>
+    </form>
+    <script type="text/javascript">
+        var appid = '@Request.QueryString["appid"]';
+        var curPageSize = '@Request.QueryString["pagesize"]';
+        var curPageNumber = '@Request.QueryString["pagenumber"]';
+        $(function ()
+        {
+            $("#listtable").jqGrid({
+                url: RoadUI.Core.rooturl() + "/Home/Query",
+                postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), appid: appid },
+                mtype: 'POST',
+                datatype: "json",
+                colNames: ['模块名称', '显示标题', '类型', '数据来源', '使用对象', '备注', ''],
+                colModel: [
+                    { name: 'Name', index: 'Name' },
+                    { name: 'Title', index: 'Title' },
+                    { name: 'Type', index: 'Type', align: "left" },
+                    { name: 'DataSourceType', index: 'DataSourceType', align: "left" },
+                    { name: 'UseOrganizes', index: 'UseOrganizes', align: "left"},
+                    { name: 'Note', index: 'Note', align: "left", width: 110 },
+                    { name: 'Opation', index: '', sortable: false, align: "left", width: 50 }
+                ],
+                sortname: "Type",
+                sortorder: "desc",
+                height: '100%',
+                multiselect: true,
+                width: $(window).width(),
+                loadComplete: function ()
+                {
+                    var gridObj = $("#listtable");
+                    var records = gridObj.getGridParam("userData");
+                    curPageSize = records.pagesize;
+                    curPageNumber = records.pagenumber;
+                    $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+                }
+            });
+
+        });
+        $(window).resize(function ()
+        {
+            $("#listtable").setGridWidth($(window).width());
+        });
+        function query(size, number)
+        {
+            var data = {
+                __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+                Name1: $("#Name1").val(), Title1: $("#Title1").val(), appid: appid,
+                Type: $("#Type").val(),
+                pagesize: size || curPageSize, pagenumber: number || curPageNumber
+            };
+            $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+        }
+        function edit(id)
+        {
+            window.location = RoadUI.Core.rooturl() + '/Home/SetAdd?id=' + (id || "") + "@Html.Raw(Query)";
+        }
+        function del()
+        {
+            var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+            if (rowIds.length == 0)
+            {
+                alert("您没有选择要删除的项!");
+                return false;
+            }
+            if (!confirm('真的要删除吗?'))
+            {
+                return false;
+            }
+            $.ajax({
+                url: RoadUI.Core.rooturl() + "/Home/Delete?1=1" + "@Html.Raw(Query)" + "&pagesize=" + curPageSize + "&pagenumber=" + curPageNumber,
+                 data: { "ids": rowIds.join(","), "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+                 type: "post",
+                 success: function (txt)
+                 {
+                     alert(txt);
+                     query();
+                 }
+             });
+             return true;
+
+        }
+    </script>

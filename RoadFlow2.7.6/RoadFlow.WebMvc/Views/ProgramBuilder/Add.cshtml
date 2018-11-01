@@ -1,0 +1,64 @@
+﻿@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string Query = "&appid=" + Request.QueryString["appid"] + "&tabid=" + Request.QueryString["tabid"] + "&typeid=" + Request.QueryString["typeid"] + "&Name1=" + Request.QueryString["Name1"] + "&pid=" + Request.QueryString["pid"]; 
+}
+
+<form id="form1" method="post">
+    <div class="toolbar" style="margin-top:0; border-top:none 0;">
+        <a href="#" onclick="return1(); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/arrow_medium_left.png")) no-repeat left center;">返回</span>
+        </a>
+        <span class="toolbarsplit">&nbsp;</span>
+        <a href="javascript:;" onclick="publish(); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/system-tick-alt-03.png")) no-repeat left center;">发布</span>
+        </a>
+        <span class="toolbarsplit">&nbsp;</span>
+        <a href="javascript:;" onclick="openurl('Set_Attr'); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/module.gif")) no-repeat left center;">属性</span>
+        </a>
+        <a href="javascript:;" onclick="openurl('Set_ListField'); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/table.gif")) no-repeat left center;">列表</span>
+        </a>
+        <a href="javascript:;" onclick="openurl('Set_Query'); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/search.png")) no-repeat left center;">查询</span>
+        </a>
+       
+        <a href="#" onclick="openurl('Set_Button'); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/select.gif")) no-repeat left center;">按钮</span>
+        </a>
+        <a href="#" onclick="openurl('Set_Validate'); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/right.gif")) no-repeat left center;">验证</span>
+        </a>
+        <a href="#" onclick="openurl('Set_Export'); return false;">
+            <span style="background:url(@Url.Content("~/Images/ico/arrow_medium_right.png")) no-repeat left center;">导出</span>
+        </a>
+    </div>
+    <div style="width:100%; overflow:auto; vertical-align:top;">
+        <iframe id="iframe_base" border="0" src="Set_Attr?1=1@(Query)" style="height:500px; width:100%; border:none;margin:0; padding:0;"></iframe>
+    </div>
+    </form>
+    <script type="text/javascript">
+        $(function ()
+        {
+            var height = $(window).height() - 40;
+            $("#iframe_base").height(height);
+        });
+        function return1()
+        {
+            window.location = "List?1=1@(Html.Raw(Query))";
+        }
+        function openurl(url)
+        {
+            $("#iframe_base").attr("src", url + "?1=1@(Html.Raw(Query))");
+        }
+        function publish()
+        {
+            $.ajax({
+                url: "Publish@(Html.Raw(Request.Url.Query))", async: false, cache: false, success: function (txt)
+                {
+                    alert(txt);
+                }
+            });
+        }
+    </script>

@@ -1,0 +1,94 @@
+﻿@{
+    ViewBag.Title = "Index";
+}
+@model IEnumerable<RoadFlow.Data.Model.DBConnection>
+
+<form method="post">
+@Html.AntiForgeryToken()
+<div class="toolbar" style="margin-top:0; border-top:0;">
+    <a href="javascript:void(0);" onclick="add();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/folder_classic_stuffed_add.png"));">添加连接</span></a>
+    <span class="toolbarsplit">&nbsp;</span>
+    <input type="submit" style="display:none;" value="d" id="DeleteBut" name="DeleteBut" />
+    <a href="javascript:void(0);" onclick="del();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/folder_classic_stuffed_remove.png"));">删除所选</span></a>
+</div>
+<table id="listtable"></table>
+<script type="text/javascript">
+    var appid = '@Request.QueryString["appid"]';
+    var iframeid = '@Request.QueryString["tabid"]';
+    var dialog = top.mainDialog;
+    var rows = @Html.Raw(ViewBag.list)
+    $(function ()
+    {
+        $("#listtable").jqGrid({
+            datatype: "local",
+            colNames: ['连接名称', '连接类型', '连接字符串', '备注', ''],
+            colModel: [
+                { name: 'Name', index: 'Name', width: 120 },
+                { name: 'Type', index: 'Type', width: 120 },
+                { name: 'ConnectionString', index: 'ConnectionString', width: 300 },
+                { name: 'Note', index: 'Note', width: 120 },
+                { name: 'Opation', index: 'Opation', sortable: false, width: 120 },
+            ],
+            multiselect: true,
+            height: "100%",
+            width: $(window).width(),
+            data: rows
+        });
+    });
+    $(window).resize(function ()
+    {
+        $("#listtable").setGridWidth($(window).width());
+    });
+
+    function table(connid, name)
+    {
+        var url = '/DBConnection/Table?connid=' + connid + '@Html.Raw(ViewBag.Query1)';
+        top.mainTab.addTab({ id: "tab_" + connid.replaceAll('-', ''), title: "管理表-" + name, src: url });
+    }
+    function add()
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "添加连接", width: 700, height: 320, url: '/DBConnection/Edit?1=1' + '@Html.Raw(ViewBag.Query1)', openerid: iframeid, opener: window });
+    }
+    function edit(id)
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "编辑连接", width: 700, height: 320, url: '/DBConnection/Edit?id=' + id + '@Html.Raw(ViewBag.Query1)', openerid: iframeid, opener: window });
+    }
+    function test(id)
+    {
+        $.ajax({
+            url: RoadUI.Core.rooturl() + "/DBConnection/Test?id=" + id + "&appid=" + appid, cache: false, async: false, success: function (txt)
+        {
+            alert(txt);
+        } 
+        });
+    }
+    function checkAll(checked)
+    {
+        $("input[name='checkbox_app']").prop("checked", checked);
+    }
+    function del()
+    {
+        var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+        if (rowIds.length == 0)
+        {
+            alert("您没有选择要删除的项!");
+            return false;
+        }
+        if (!confirm('您真的要删除所选连接吗?'))
+        {
+            return false;
+        }
+        $.ajax({
+            url: RoadUI.Core.rooturl() + "/DBConnection/Delete?1=1@(Html.Raw(ViewBag.Query1))",
+            type: "post",
+            data: { "ids": rowIds.join(','), __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val() },
+            success: function (txt)
+            {
+                alert(txt);
+                window.location = window.location;
+            }
+        });
+        return true;
+    }
+</script>
+</form>

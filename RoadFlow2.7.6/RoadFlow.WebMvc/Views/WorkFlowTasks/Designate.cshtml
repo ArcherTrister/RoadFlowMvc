@@ -1,0 +1,32 @@
+﻿@{
+    ViewBag.Title = "Designate";
+    if (!WebMvc.Common.Tools.CheckLogin() && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.End();
+        return;
+    }
+}
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div style="text-align:center; padding-top:50px;">
+    指派给：<input type="text" class="mymember" style="width:140px;" id="user" name="user" validate="empty" errmsg="请选择要指派的人员" />
+    <input type="button" class="mybutton" value="确&nbsp;定" onclick="checkform(this);" />
+    <span type="msg"></span>
+    </div>
+</form>
+<script type="text/javascript">
+    $(window).load(function ()
+    {
+        @Html.Raw(ViewBag.Script)
+    });
+    function checkform(but)
+    {
+        var f = document.forms[0];
+        var flag = new RoadUI.Validate().validateForm(f);
+        $(but).prop('disabled', flag);
+        if (flag)
+        {
+            f.submit();
+        }
+    }
+</script>

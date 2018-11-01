@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "Dir_Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Page.CheckApp = false;
+    string loginMsg;
+    if (!WebMvc.Common.Tools.CheckLogin(out loginMsg))
+    {
+        Response.End();
+        return;
+    }
+}
+
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    <div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:999; width:100%; margin-right:auto;">
+        <a href="javascript:void(0);" onclick="window.location='List@(Html.Raw(Request.Url.Query))';return false;"><i class='fa fa-mail-reply (alias)' style='font-size:16px;vertical-align:middle;margin-right:3px;'></i><label>返回</label></a>
+        <span class="toolbarsplit">&nbsp;</span>
+        <a href="javascript:void(0);" onclick="checkform();return false;"><i class='fa fa-save (alias)' style='font-size:16px;vertical-align:middle;margin-right:3px;'></i><label>保存</label></a>
+    </div>
+    <div style="margin-top:100px; margin-left:30px;">
+       文件夹名称：<input type="text" class="mytext" validate="dirname" style="width:300px" id="DirName" name="DirName" runat="server" />
+    </div>
+</form>
+<script type="text/javascript">
+    $(function ()
+    {
+        @Html.Raw(ViewBag.script)
+    });
+    function checkform()
+    {
+        if (new RoadUI.Validate().validateForm(document.forms[0]))
+        {
+            document.forms[0].submit();
+        }
+    }
+</script>

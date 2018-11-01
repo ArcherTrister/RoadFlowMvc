@@ -1,0 +1,356 @@
+﻿@{
+    if (!WebMvc.Common.Tools.CheckLogin() && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.Write("未登录");
+        Response.End();
+        return;
+    }
+    string params1 = Request.Form["params"];
+    string issign = Request.Form["issign"];
+    string comment = Request.Form["comment"];
+    string flowfiles = Request.Form["flowfiles"];//附件
+    
+    string flowid = Request.QueryString["flowid"];
+    string instanceid = Request.QueryString["instanceid"];
+    string taskid = Request.QueryString["taskid"];
+    string stepid = Request.QueryString["stepid"];
+    string groupid = Request.QueryString["groupid"];
+    bool ismobile = "1" == Request.QueryString["ismobile"];
+    
+    if(instanceid.IsNullOrEmpty())
+    {
+        instanceid = Request.Form["instanceid"];
+    }
+
+    if(params1.IsNullOrEmpty())
+    {
+        Response.Write("参数为空!");
+        Response.End();
+        return;
+    }
+    
+    var opationJSON = LitJson.JsonMapper.ToObject(params1);
+    string opation = opationJSON["type"].ToString().ToLower();
+
+    RoadFlow.Platform.WorkFlow bworkFlow = new RoadFlow.Platform.WorkFlow();
+    RoadFlow.Platform.WorkFlowTask btask = new RoadFlow.Platform.WorkFlowTask();
+    RoadFlow.Platform.WorkFlowDelegation bworkFlowDelegation = new RoadFlow.Platform.WorkFlowDelegation();
+    RoadFlow.Platform.Organize borganize = new RoadFlow.Platform.Organize();
+    RoadFlow.Platform.Users busers = new RoadFlow.Platform.Users();
+    
+    var wfInstalled=bworkFlow.GetWorkFlowRunModel(flowid);
+    if(wfInstalled==null)
+    {
+        Response.Write("未找到流程运行时实体,请确认流程是否已安装!");
+        Response.End();
+        return;
+    }
+
+    Guid userID = ismobile ? RoadFlow.Platform.WeiXin.Organize.CurrentUserID : RoadFlow.Platform.Users.CurrentUserID;
+    if(userID.IsEmptyGuid())
+    {
+        Response.Write("未登录!");
+        Response.End();
+        return;
+    }
+    
+    
+
+    RoadFlow.Data.Model.WorkFlowExecute.Execute execute = new RoadFlow.Data.Model.WorkFlowExecute.Execute();
+    execute.Comment = comment.IsNullOrEmpty() ? "" : comment.Trim();
+    switch(opation)
+    {
+        case "freesubmit":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit;
+            execute.OtherType = 1;//自由流程发送
+            break;
+        case "submit":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit;
+            break;
+        case "save":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Save;
+            break;
+        case "back":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Back;
+            break;
+        case "completed":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed;
+            break;
+        case "redirect":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Redirect;
+            break;
+        case "addwrite":
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.AddWrite;
+            break;
+        case "copyforcompleted": //抄送完成
+            execute.ExecuteType = RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.CopyforCompleted;
+            break;
+    }
+
+    execute.FlowID = flowid.ToGuid();
+    execute.GroupID = groupid.ToGuid();
+    execute.InstanceID = instanceid;
+    execute.IsSign = "1" == issign;
+    execute.Note = "";
+    execute.Sender = ismobile ? RoadFlow.Platform.WeiXin.Organize.CurrentUser : RoadFlow.Platform.Users.CurrentUser;
+    execute.StepID = stepid.IsGuid() ? stepid.ToGuid() : wfInstalled.FirstStepID;
+    execute.TaskID = taskid.ToGuid();
+    execute.Title = "";
+    execute.Files = flowfiles;
+
+    var currentSteps = wfInstalled.Steps.Where(p => p.ID == execute.StepID);
+    if (currentSteps.Count() == 0)
+    {
+        Response.Write("未找到当前步骤!");
+        Response.End();
+        return;
+    }
+    var currrentSetp = currentSteps.First();
+
+    LitJson.JsonData stepsjson = opationJSON["steps"];
+    if (stepsjson.IsArray)
+    {
+        foreach (LitJson.JsonData step in stepsjson)
+        {
+            string id = step["id"].ToString();
+            string member = step["member"].ToString();
+
+            Guid gid;
+            if (id.IsGuid(out gid))
+            {
+                if (step.ContainsKey("completedtime") && step["completedtime"].ToString().IsDateTime())
+                {
+                    execute.StepCompletedTimes.Add(gid, step["completedtime"].ToString().ToDateTime());
+                }
+
+                switch (execute.ExecuteType)
+                {
+                    case RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit:
+                        execute.Steps.Add(gid, borganize.GetAllUsers(member));
+                        break;
+                    case RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Back:
+                        execute.Steps.Add(gid, new List<RoadFlow.Data.Model.Users>());
+                        break;
+                    case RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Save:
+                        break;
+                    case RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed:
+                        break;
+                    case RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Redirect:
+                        break;
+                }
+            }
+            if (execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Redirect)
+            {
+                execute.Steps.Add(Guid.Empty, borganize.GetAllUsers(member));
+            }
+        }
+    }
+
+
+    RoadFlow.Data.Model.WorkFlowCustomEventParams eventParams = new RoadFlow.Data.Model.WorkFlowCustomEventParams();
+    eventParams.FlowID = execute.FlowID;
+    eventParams.GroupID = execute.GroupID;
+    eventParams.StepID = execute.StepID;
+    eventParams.TaskID = execute.TaskID;
+    eventParams.InstanceID = execute.InstanceID;
+
+    //保存业务数据 "1" != Request.QueryString["isSystemDetermine"]:当前步骤流转类型如果是系统判断，则先保存数据，在这里就不需要保存数据了。
+    if (execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Save ||
+        execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed ||
+        "1" != Request.QueryString["isSystemDetermine"]
+    )
+    {
+        instanceid = bworkFlow.SaveFromData(instanceid, eventParams);
+        if (execute.InstanceID.IsNullOrEmpty())
+        {
+            execute.InstanceID = instanceid;
+            eventParams.InstanceID = instanceid;
+        }
+    }
+
+    //流程标题
+    string title = string.Empty;
+    string titleExpression = Request.Form["Form_DBTableTitleExpression"];
+    if (titleExpression.IsNullOrEmpty())
+    {
+        string titleField = Request.Form["Form_TitleField"];
+        title = Request.Form[titleField];
+    }
+    else
+    {
+        string tableName = Request.Form["Form_DBTable"];
+        bool isEmptyField;
+        title = new RoadFlow.Platform.WorkFlowForm().ReplaceTitleExpression(titleExpression, tableName, instanceid, out isEmptyField);
+        if (isEmptyField)
+        {
+            title = "";
+        }
+    }
+    execute.Title = title;
+
+
+    Response.Write("执行参数：" + params1 + "<br/>");
+
+    var steps = wfInstalled.Steps.Where(p => p.ID == execute.StepID);
+    foreach (var step in steps)
+    {
+        //步骤提交前事件
+        if (!step.Event.SubmitBefore.IsNullOrEmpty() &&
+            (execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit
+            || execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed))
+        {
+            object obj = btask.ExecuteFlowCustomEvent(step.Event.SubmitBefore.Trim(), eventParams);
+            Response.Write(string.Format("执行步骤提交前事件：({0}) 返回值：{1}<br/>", step.Event.SubmitBefore.Trim(), obj.ToString()));
+        }
+        //步骤退回前事件
+        if (!step.Event.BackBefore.IsNullOrEmpty() && execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Back)
+        {
+            object obj = btask.ExecuteFlowCustomEvent(step.Event.BackBefore.Trim(), eventParams);
+            Response.Write(string.Format("执行步骤退回前事件：({0}) 返回值：{1}<br/>", step.Event.BackBefore.Trim(), obj.ToString()));
+        }
+    }
+
+
+    //处理委托
+    foreach (var executeStep in execute.Steps)
+    {
+        for (int i = 0; i < executeStep.Value.Count; i++)
+        {
+            Guid newUserID = bworkFlowDelegation.GetFlowDelegationByUserID(execute.FlowID, executeStep.Value[i].ID);
+            if (newUserID != Guid.Empty && newUserID != executeStep.Value[i].ID)
+            {
+                executeStep.Value[i] = busers.Get(newUserID);
+            }
+        }
+    }
+
+    var reslut = btask.Execute(execute);
+    Response.Write(string.Format("处理流程步骤结果：{0}<br/>", reslut.IsSuccess ? "成功" : "失败"));
+    Response.Write(string.Format("调试信息：{0}", reslut.DebugMessages));
+    string msg = string.Empty;
+    if (execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Back && !currrentSetp.BackShowMsg.IsNullOrEmpty()
+        && execute.ExecuteType != RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.AddWrite)
+    {
+        msg = currrentSetp.BackShowMsg;
+    }
+    else if (((execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed
+        || execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit) && !currrentSetp.SendShowMsg.IsNullOrEmpty())
+        && execute.ExecuteType != RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.AddWrite)
+    {
+        msg = currrentSetp.SendShowMsg;
+    }
+    else
+    {
+        msg = reslut.Messages;
+    }
+    string logContent = string.Format("处理参数：{0}<br/>处理结果：{1}<br/>调试信息：{2}<br/>返回信息：{3}",
+        params1,
+        reslut.IsSuccess ? "成功" : "失败",
+        reslut.DebugMessages,
+        reslut.Messages
+        );
+
+    RoadFlow.Platform.Log.Add(string.Format("处理了流程({0})", wfInstalled.Name), logContent, RoadFlow.Platform.Log.Types.流程相关);
+
+    foreach (var step in steps)
+    {
+        //步骤提交后事件
+        if (!step.Event.SubmitAfter.IsNullOrEmpty() &&
+            (execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit
+            || execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed))
+        {
+            object obj = btask.ExecuteFlowCustomEvent(step.Event.SubmitAfter.Trim(), eventParams);
+            Response.Write(string.Format("执行步骤提交后事件：({0}) 返回值：{1}<br/>", step.Event.SubmitAfter.Trim(), obj.ToString()));
+        }
+        //步骤退回后事件
+        if (!step.Event.BackAfter.IsNullOrEmpty() && execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Back)
+        {
+            object obj = btask.ExecuteFlowCustomEvent(step.Event.BackAfter.Trim(), eventParams);
+            Response.Write(string.Format("执行步骤退回后事件：({0}) 返回值：{1}<br/>", step.Event.BackAfter.Trim(), obj.ToString()));
+        }
+    }
+
+    //归档
+    if (execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Submit
+        || execute.ExecuteType == RoadFlow.Data.Model.WorkFlowExecute.EnumType.ExecuteType.Completed)
+    {
+        if (currrentSetp.Archives == 1)
+        {
+            string flowName, stepName;
+            string formHtml = Request.Form["form_body_div_textarea"];
+            string commentHtml = Request.Form["form_commentlist_div_textarea"];
+            stepName = bworkFlow.GetStepName(execute.StepID, execute.FlowID, out flowName, true);
+            string archivesContents = new RoadFlow.Platform.WorkFlowForm().GetArchivesString(formHtml, commentHtml);
+            RoadFlow.Data.Model.WorkFlowArchives wfr = new RoadFlow.Data.Model.WorkFlowArchives();
+            wfr.Comments = commentHtml;
+            wfr.Contents = archivesContents;
+            wfr.FlowID = execute.FlowID;
+            wfr.FlowName = flowName;
+            wfr.GroupID = execute.GroupID;
+            wfr.ID = Guid.NewGuid();
+            wfr.InstanceID = execute.InstanceID;
+            wfr.StepID = execute.StepID;
+            wfr.StepName = stepName;
+            wfr.Title = title.IsNullOrEmpty() ? flowName + "-" + stepName : title;
+            wfr.TaskID = execute.TaskID;
+            wfr.WriteTime = RoadFlow.Utility.DateTimeNew.Now;
+            new RoadFlow.Platform.WorkFlowArchives().Add(wfr);
+        }
+    }
+    
+    
+    <script type="text/javascript">
+        alert('@msg');
+        if (top.mainDialog)
+        {
+            top.mainDialog.close();
+        }
+    </script>
+
+    if (reslut.IsSuccess)
+    {
+        //判断是打开任务还是关闭窗口
+        var nextTasks = reslut.NextTasks.Where(p => p.Status.In(0, 1) && p.ReceiveID == userID);
+        var nextTask = nextTasks.Count() > 0 ? nextTasks.First() : null;
+        if (nextTask != null)
+        {
+            string url = string.Format(Url.Content("~/WorkFlowRun/{0}?flowid={1}&stepid={2}&taskid={3}&groupid={4}&instanceid={5}&appid={6}&tabid={7}&ismobile={8}"),
+                ismobile ? "Index_App" : "Index", nextTask.FlowID, nextTask.StepID, nextTask.ID, nextTask.GroupID, nextTask.InstanceID,
+                Request.QueryString["appid"], Request.QueryString["tabid"], ismobile ? "1" : ""
+                );
+            <script type="text/javascript">
+                if (top.refreshPage)
+                {
+                    top.refreshPage();
+                }
+                window.parent.location = '@Html.Raw(url)';
+            </script>
+        }
+        else
+        {
+            if (ismobile)
+            {
+            <script type="text/javascript">
+                top.location='@Url.Content("~/WeiXin/WaitTasks/Index")';
+            </script>
+            }
+            else
+            {
+            <script type="text/javascript">
+                if (top.refreshPage)
+                {
+                    top.refreshPage();
+                }
+                if (top.mainTab)
+                {
+                    top.mainTab.closeTab();
+                }
+                else
+                {
+                    top.close();
+                }
+            </script>
+            }
+        }
+    }
+}

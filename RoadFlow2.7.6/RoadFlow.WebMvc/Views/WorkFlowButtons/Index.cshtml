@@ -1,0 +1,97 @@
+﻿@{
+    ViewBag.Title = "Index";
+    string query = "&appid=" + Request.QueryString["appid"] + "&tabid=" + Request.QueryString["tabid"];
+}
+<form method="post" >
+    @Html.AntiForgeryToken()
+    <div class="querybar">
+        <table cellpadding="0" cellspacing="1" border="0" width="100%">
+            <tr>
+                <td>
+                    名称：<input type="text" class="mytext" style="width:190px;" id="Name" name="Name" value="" />
+                    <input type="button" name="Search" onclick="loadData();" value="&nbsp;&nbsp;查&nbsp;询&nbsp;&nbsp;" class="mybutton" />
+                    <input type="button" onclick="add(); return false;" value="添加按钮" class="mybutton" />
+                    <input type="button" onclick="return del();" name="DeleteBut" value="删除所选" class="mybutton" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table id="listtable"></table>
+    <script type="text/javascript">
+        var appid = '@Request.QueryString["appid"]';
+        var iframeid = '@Request.QueryString["tabid"]';
+        var dialog = top.mainDialog;
+        var rows = @Html.Raw(ViewBag.list)
+        $(function ()
+        {
+            $("#listtable").jqGrid({
+                datatype: "local",
+                colNames: ['按钮名称', '按钮图标', '按钮说明', '排序', ''],
+                colModel: [
+                    { name: 'Title', index: 'Title' },
+                    { name: 'Ico', index: 'Ico' },
+                    { name: 'Note', index: 'Note' },
+                    { name: 'Sort', index: 'Sort', width:50 },
+                    { name: 'Opation', index: 'Opation', sortable: false, width: 80 },
+                ],
+                multiselect: true,
+                height: $(window).height() - 80,
+                rowNum: rows.length,
+                width: $(window).width()
+            });
+            loadData();
+        });
+        $(window).resize(function ()
+        {
+            $("#listtable").setGridWidth($(window).width());
+        });
+        function loadData()
+        {
+            var name = $.trim($("#Name").val()).toLowerCase();
+            $("#listtable").jqGrid('clearGridData');
+            for (var i = 0; i < rows.length; i++)
+            {
+                if (name.length == 0 || rows[i].Title.toLowerCase().indexOf(name) >= 0)
+                {
+                    $("#listtable").jqGrid('addRowData', rows[i].id, rows[i]);
+                }
+            }
+        }
+        function add()
+        {
+            dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "添加按钮", width: 700, height: 450, url: '/WorkFlowButtons/Edit?1=1' + '@Html.Raw(query)', opener: window, openerid: iframeid });
+        }
+        function edit(id)
+        {
+            dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "编辑按钮", width: 700, height: 450, url: '/WorkFlowButtons/Edit?id=' + id + '@Html.Raw(query)', opener: window, openerid: iframeid });
+        }
+        function checkAll(checked)
+        {
+            $("input[name='checkbox_app']").prop("checked", checked);
+        }
+        function del()
+        {
+            var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+            if (rowIds.length==0)
+            {
+                alert("您没有选择要删除的项!");
+                return false;
+            }
+            if (!confirm('您真的要删除所选按钮吗?'))
+            {
+                return false;
+            }
+            $.ajax({
+                url: RoadUI.Core.rooturl() + "/WorkFlowButtons/Delete?1=1@(Html.Raw(query))",
+                type: "post",
+                data: { "ids": rowIds.join(','), __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val() },
+                success: function (txt)
+                {
+                    alert(txt);
+                    window.location = window.location;
+                }
+            });
+            return true;
+        }
+    </script>
+</form>

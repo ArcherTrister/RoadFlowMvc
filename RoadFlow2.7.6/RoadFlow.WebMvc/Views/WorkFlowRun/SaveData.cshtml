@@ -1,0 +1,33 @@
+﻿@{
+    if (!WebMvc.Common.Tools.CheckLogin() && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.End();
+        return;
+    }
+    string flowid = Request.QueryString["flowid"];
+    string instanceid = Request.QueryString["instanceid"];
+    string taskid = Request.QueryString["taskid"];
+    string stepid = Request.QueryString["stepid"];
+    string groupid = Request.QueryString["groupid"];
+    string opation = Request.QueryString["opation"];
+    
+    if (instanceid.IsNullOrEmpty())
+    {
+        instanceid = Request.Form["instanceid"];
+    }
+
+    RoadFlow.Platform.WorkFlow bworkFlow = new RoadFlow.Platform.WorkFlow();
+    RoadFlow.Data.Model.WorkFlowCustomEventParams eventParams = new RoadFlow.Data.Model.WorkFlowCustomEventParams();
+    eventParams.FlowID = flowid.ToGuid();
+    eventParams.GroupID = groupid.ToGuid();
+    eventParams.StepID = stepid.ToGuid();
+    eventParams.TaskID = taskid.ToGuid();
+    eventParams.InstanceID = instanceid;
+    string instanceid1 = bworkFlow.SaveFromData(instanceid, eventParams);
+    if (instanceid.IsNullOrEmpty())
+    {
+        instanceid = instanceid1;
+        eventParams.InstanceID = instanceid1;
+    }
+    <script>new RoadUI.Window().close();$('#instanceid',parent.document).val('@instanceid');parent.@(opation)(true);</script>
+}

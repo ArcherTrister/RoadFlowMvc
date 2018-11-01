@@ -52,8 +52,7 @@ namespace RoadFlow.Platform
         else
           jsonData1.Add((object) jsonData2);
       }
-      //return jsonData1.ToJson(true);
-            return jsonData1.ToJson();
+      return jsonData1.ToJson(true);
         }
 
     public List<RoadFlow.Data.Model.Files> GetList(string path)

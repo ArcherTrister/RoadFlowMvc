@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "Set_Button_Add";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var AppButton = new RoadFlow.Platform.AppLibraryButtons();
+    string buttonJson = AppButton.GetAllJson();
+}
+@model RoadFlow.Data.Model.ProgramBuilderButtons
+<form id="form1" method="post">
+    <script type="text/javascript">
+        var buttonJson=@Html.Raw(buttonJson);
+    </script>
+    <div>
+    <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable" style="margin-top:10px;">
+        <tr>
+            <th>按钮库：</th>
+            <td><select class="myselect" id="buttonid" name="buttonid" onchange="buttonchange(this)">
+                @Html.Raw(AppButton.GetOptions(Model.ButtonID.ToString()))
+                </select></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">按钮名称：</th>
+            <td><input type="text" class="mytext" id="buttonname" name="buttonname" value="@Model.ButtonName" validate="empty" style="width:80%" /></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">执行脚本：</th>
+            <td><textarea class="mytextarea" style="width:99%;height:150px; font-family:Verdana; font-size:14px;" name="ClientScript" id="ClientScript">@Model.ClientScript</textarea></td>
+        </tr>
+        <tr>
+            <th>图标：</th>
+            <td><input type="text" name="Ico" id="Ico" class="myico" source="/Images/ico" value="@Model.Ico" style="width:350px"/></td>
+        </tr>
+        <tr>
+            <th>显示类型：</th>
+            <td><select class="myselect" name="showtype" id="showtype">@Html.Raw(AppButton.GetShowTypeOptions(Model.ShowType.ToString()))</select></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">权限控制：</th>
+            <td>@Html.Raw(new RoadFlow.Platform.Dictionary().GetRadiosByCode("yesno","IsValidateShow",value:(Model==null? "1":Model.IsValidateShow.ToString()))) //如果不控制则不需要授权,每个人都能操作此按钮</td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">显示顺序：</th>
+            <td><input type="text" class="mytext" id="Sort" name="Sort" value="@Model.Sort"/></td>
+        </tr>
+    </table>
+
+    <div class="buttondiv">
+        <input type="submit" class="mybutton" value=" 保 存 " onclick="return new RoadUI.Validate().validateForm(document.forms[0]);"/>
+        <input type="button" class="mybutton" onclick="window.location = 'Set_Button@(Request.Url.Query)';" value=" 返 回 " />
+    </div>
+    </div>
+    </form>
+<script type="text/javascript">
+    $(function(){
+        @Html.Raw(ViewBag.script)
+    });
+    function buttonchange(sel)
+    {
+        for(var j=0;j<buttonJson.length;j++)
+        {
+            if(buttonJson[j].id==$(sel).val())
+            {
+                var json = buttonJson[j];
+                $("#buttonname").val(json.name);
+                $("#ClientScript").val(json.events);
+                $("#Ico").val(json.ico);
+                
+                new RoadUI.SelectIco().setIco($("#Ico"));
+            }
+        }
+    
+    }
+</script>

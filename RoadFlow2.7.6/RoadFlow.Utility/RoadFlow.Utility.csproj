@@ -37,10 +37,6 @@
       <HintPath>..\packages\SharpZipLib.0.86.0\lib\20\ICSharpCode.SharpZipLib.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="LitJSON, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\LitJson.0.13.0\lib\net40\LitJSON.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="NPOI, Version=2.2.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
       <HintPath>..\packages\NPOI.2.2.1\lib\net40\NPOI.dll</HintPath>
       <Private>True</Private>
@@ -80,11 +76,17 @@
     <Compile Include="ImgHelper.cs" />
     <Compile Include="Keys.cs" />
     <Compile Include="NPOIHelper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tools.cs" />
-    <Compile Include="AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LitJSON\LitJSON.csproj">
+      <Project>{1d3606aa-63b2-4a67-99f8-5f5f99f4a7cb}</Project>
+      <Name>LitJSON</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

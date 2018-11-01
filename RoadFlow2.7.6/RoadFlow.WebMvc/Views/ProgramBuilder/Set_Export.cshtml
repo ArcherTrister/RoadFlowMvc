@@ -1,0 +1,83 @@
+﻿@{
+    ViewBag.Title = "Set_Export";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RoadFlow.Platform.Dictionary BDict = new RoadFlow.Platform.Dictionary();
+}
+@model IEnumerable<RoadFlow.Data.Model.ProgramBuilderExport>
+<form id="form1" method="post">
+    <div>
+    <table class="listtable">
+        <thead>
+            <tr>
+                <th width="3%" style="text-align:center;"><input type="checkbox" onclick="checkAll(this.checked);" style="vertical-align:middle;" /></th>
+                <th>字段名称</th>
+                <th>列标题</th>
+                <th>显示方式</th>
+                <th>对齐方式</th>
+                <th>显示宽度</th>
+                <th>显示顺序</th>
+                <th width="10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+        @foreach(var filed in Model.OrderBy(p=>p.Sort)){    
+            <tr>
+                <td style="text-align:center;"><input type="checkbox" value="@filed.ID" name="checkbox_app" style="vertical-align:middle;"/></td>
+                <td>@filed.Field</td>
+                <td>@filed.ShowTitle</td>
+                <td>@BDict.GetTitle("programbuilder_showtype",filed.ShowType.ToString())</td>
+                <td>@(filed.Align==0?"左对齐":filed.Align==1?"居中":"右对齐")</td>
+                <td>@filed.Width</td>
+                <td>@filed.Sort</td>
+                <td>
+                    <a class="editlink" href="javascript:;" onclick="add('@filed.ID'); return false;">编辑</a>
+                </td>
+            </tr>
+        }    
+        </tbody>
+    </table>
+    </div>
+    <div class="buttondiv">
+        <input type="button" class="mybutton" onclick="copyListFiled();" value="复制列表字段" />
+        <input type="button" class="mybutton" onclick="add('');" value="添加字段" />
+        <input type="submit" class="mybutton" onclick="return del();" value=" 删 除 " name="delete" />
+    </div>
+        
+    </form>
+    <script type="text/javascript">
+        $(function ()
+        {
+
+        });
+        function checkAll(checked)
+        {
+            $("input[name='checkbox_app']").prop("checked", checked);
+        }
+        function add(id)
+        {
+            window.location = "Set_Export_Add?eid=" + (id || "") + "@Html.Raw(ViewBag.query)";
+        }
+        function del()
+        {
+            if ($(":checked[name='checkbox_app']").size() == 0)
+            {
+                alert("您没有选择要删除的项!");
+                return false;
+            }
+            return confirm('您真的要删除所选字段吗?');
+        }
+        function copyListFiled()
+        {
+            if (!confirm('复制列表字段将清空现有的字段设置，确定吗?'))
+            {
+                return false;
+            }
+            $.ajax({
+                url: "Set_Export_CopyForList"+"@Html.Raw(Request.Url.Query)", async: false, success: function (txt)
+                {
+                    alert(txt);
+                    window.location = window.location;
+                }
+            });
+        }
+    </script>

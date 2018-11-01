@@ -1,0 +1,41 @@
+﻿@{
+	string FlowID = Request.QueryString["flowid"];
+	string StepID = Request.QueryString["stepid"];
+	string GroupID = Request.QueryString["groupid"];
+	string TaskID = Request.QueryString["taskid"];
+	string InstanceID = Request.QueryString["instanceid"];
+	string DisplayModel = Request.QueryString["display"] ?? "0";
+	string DBConnID = "06075250-30dc-4d32-bf97-e922cb30fac8";
+	string DBTable = "Log";
+	string DBTablePK = "ID";
+	string DBTableTitle = "Title";
+	if(InstanceID.IsNullOrEmpty()){InstanceID = Request.QueryString["instanceid1"];}
+	RoadFlow.Platform.Dictionary BDictionary = new RoadFlow.Platform.Dictionary();
+	RoadFlow.Platform.WorkFlow BWorkFlow = new RoadFlow.Platform.WorkFlow();
+	RoadFlow.Platform.WorkFlowTask BWorkFlowTask = new RoadFlow.Platform.WorkFlowTask();
+	string fieldStatus = BWorkFlow.GetFieldStatus(FlowID, StepID);
+	LitJson.JsonData initData = BWorkFlow.GetFormData(DBConnID, DBTable, DBTablePK, InstanceID, fieldStatus, "{}");
+	string TaskTitle = BWorkFlow.GetFromFieldData(initData, DBTable, DBTableTitle);
+}
+<link href="~/Scripts/FlowRun/Forms/flowform.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/FlowRun/Forms/common.js" type="text/javascript" ></script>
+<script src="~/Scripts/Ueditor/ueditor.config.js" type="text/javascript" ></script>
+<script src="~/Scripts/Ueditor/ueditor.all.min.js" type="text/javascript" ></script>
+<script src="~/Scripts/Ueditor/lang/zh-cn/zh-cn.js" type="text/javascript" ></script>
+<input type="hidden" id="Form_HasUEditor" name="Form_HasUEditor" value="1" />
+<input type="hidden" id="Form_ValidateAlertType" name="Form_ValidateAlertType" value="1" />
+<input type="hidden" id="Form_TitleField" name="Form_TitleField" value="Log.Title" />
+<input type="hidden" id="Form_DBConnID" name="Form_DBConnID" value="06075250-30dc-4d32-bf97-e922cb30fac8" />
+<input type="hidden" id="Form_DBTable" name="Form_DBTable" value="Log" />
+<input type="hidden" id="Form_DBTablePk" name="Form_DBTablePk" value="ID" />
+<input type="hidden" id="Form_DBTableTitle" name="Form_DBTableTitle" value="Title" />
+<input type="hidden" id="Form_AutoSaveData" name="Form_AutoSaveData" value="1" />
+<script type="text/javascript">
+	var initData = @Html.Raw(BWorkFlow.GetFormDataJsonString(initData));
+	var fieldStatus = "1"=="@Request.QueryString["isreadonly"]" ? {} : @Html.Raw(fieldStatus);
+	var displayModel = '@DisplayModel';
+	$(window).load(function (){
+		formrun.initData(initData, "Log", fieldStatus, displayModel);
+	});
+</script>
+<table class="flowformtable" cellpadding="0" cellspacing="1"><tbody><tr class="firstRow"><td width="103" valign="top" style="word-break: break-all;">日志标题：</td><td width="1002" valign="top"><input type="text" id="Log.Title" type1="flow_text" name="Log.Title" value="" style="width:70%" valuetype="0" isflow="1" class="mytext" title=""/></td></tr><tr><td width="103" valign="top" style="word-break: break-all;">发生时间：</td><td width="1002" valign="top"><input type="text" type1="flow_datetime" id="Log.WriteTime" name="Log.WriteTime" value="" defaultvalue="" istime="1" daybefor="0" dayafter="1" currentmonth="0" isflow="1" class="mycalendar" title=""/></td></tr><tr><td width="103" valign="top" style="word-break: break-all;">日志类型：</td><td width="1002" valign="top" style="word-break: break-all;"><input type="text" id="Log.Type" type1="flow_text" name="Log.Type" value="" valuetype="0" isflow="1" class="mytext" title=""/> <select class="myselect" id="Log.NewXml" name="Log.NewXml" isflow="1" type1="flow_select"><option value=""></option><option value="yes">yes</option><option value="no">no</option></select></td></tr><tr><td width="103" valign="top" style="word-break: break-all;">日志内容：</td><td width="1002" valign="top"><textarea isflow="1" model="html" type1="flow_textarea" id="Log.Contents" name="Log.Contents" class="mytextarea" style="width:99%;height:150px">@Html.Raw(BWorkFlow.GetFromFieldData(initData, "Log","Contents"))</textarea></td></tr></tbody></table><p><br/></p>

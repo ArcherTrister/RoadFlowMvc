@@ -1,0 +1,13 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string applibaryid = Request.QueryString["applibaryid"];
+    var app = new RoadFlow.Platform.AppLibrary().Get(applibaryid.ToGuid());
+    if (app != null && !app.Address.IsNullOrEmpty())
+    {
+        string url = app.Address + (app.Address.IndexOf('?') >= 0 ? app.Params : "?" + app.Params) + "&" + Request.Url.Query.TrimStart('?');
+        Response.Redirect(url);
+    }
+}
+
+

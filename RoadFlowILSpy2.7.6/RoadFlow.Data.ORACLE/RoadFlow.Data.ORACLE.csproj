@@ -1,0 +1,98 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{E50CA535-4B36-4FEE-B047-EF9AC7C92DAD}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <LangVersion>4</LangVersion>
+    <AssemblyName>RoadFlow.Data.ORACLE</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RoadFlow.Data.Interface">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Data.Model">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_32\System.Data\v4.0_4.0.0.0__b77a5c561934e089\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Utility">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\AppLibrary.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\AppLibraryButtons.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\AppLibraryButtons1.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\AppLibrarySubPages.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\DBConnection.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\DBHelper.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\Dictionary.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\DocumentDirectory.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\Documents.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\DocumentsReadUsers.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\HastenLog.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\HomeItems.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\Log.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\Menu.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\MenuUser.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\Organize.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ProgramBuilder.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ProgramBuilderButtons.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ProgramBuilderExport.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ProgramBuilderFields.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ProgramBuilderQuerys.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ProgramBuilderValidates.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\ShortMessage.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\SMSLog.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\Users.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\UserShortcut.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\UsersRelation.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WeiXinMessage.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkCalendar.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlow.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowArchives.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowButtons.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowComment.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowData.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowDelegation.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowForm.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkFlowTask.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkGroup.cs" />
+    <Compile Include="RoadFlow.Data.ORACLE\WorkTime.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,62 @@
+﻿@{
+    ViewBag.Title = "InstanceManage";
+}
+<table id="listtable"></table>
+<script type="text/javascript">
+    var iframeid = '@Request.QueryString["iframeid"]';
+    var rows = @Html.Raw(ViewBag.list)
+    $(function(){
+        $("#listtable").jqGrid({
+            datatype: "local",
+            colNames: ['步骤名称', '发送人', '发送时间', '处理人', '完成时间', '状态', '意见', ''],
+            colModel: [
+                { name: 'StepID', index: 'StepID' },
+                { name: 'SenderName', index: 'SenderName' },
+                { name: 'ReceiveTime', index: 'ReceiveTime' },
+                { name: 'ReceiveName', index: 'ReceiveName' },
+                { name: 'CompletedTime1', index: 'CompletedTime1' },
+                { name: 'Status', index: 'Status' },
+                { name: 'Comment', index: 'Comment' },
+                { name: 'Opation', index: 'Opation', width:160 }
+            ],
+            //rownumbers: true,//显示序号列
+            height: 430,
+            width: $(window).width(),
+            data: rows
+        });
+    });
+    function back(taskid)
+    {
+        if (confirm("您真的要将该任务退回吗?"))
+        {
+            $.ajax({
+                url: "Back?taskid=" + taskid, async: false, cache: false, success: function (txt)
+            {
+                alert(txt);
+                window.location = window.location;
+            }
+            });
+        }
+    }
+    function designate(taskid)
+    {
+        new RoadUI.Window().open({
+            url: '/WorkFlowTasks/Designate?taskid=' + taskid,
+            width: 500, height: 200, title: "任务指派", openerid: iframeid
+        });
+    }
+    function goTo(taskid)
+    {
+        new RoadUI.Window().open({
+            url: '/WorkFlowTasks/GoTo?taskid=' + taskid,
+            width: 600, height: 400, title: "跳转任务", openerid: iframeid, opener: parent, resize: false
+        });
+    }
+    function cngStatus(taskid)
+    {
+        new RoadUI.Window().open({
+            url: '/WorkFlowTasks/ChangeStatus?taskid=' + taskid,
+            width: 400, height: 200, title: "改变任务状态", openerid: iframeid, opener: parent, resize: false
+        });
+    }
+</script>

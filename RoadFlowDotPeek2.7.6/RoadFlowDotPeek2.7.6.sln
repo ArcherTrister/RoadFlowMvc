@@ -1,0 +1,158 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{F9F24A8C-2F3F-4874-B156-0455D5DE13F3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Platform", "RoadFlow.Platform\RoadFlow.Platform.csproj", "{6C67400C-1D8C-49BA-806B-0B4B0CD91C83}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Cache", "Cache", "{F86FB2B8-1A32-46A0-A12B-BB314CA31405}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utility", "Utility", "{D11A96BC-EFC4-42CF-8D32-EA82A679EF5E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Web", "Web", "{C7D31E16-CD56-4C04-AE8A-01BD710BE8FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Cache.Factory", "RoadFlow.Cache.Factory\RoadFlow.Cache.Factory.csproj", "{064E0F7F-FC44-47AB-A181-3D619AA47DB8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Cache.InProc", "RoadFlow.Cache.InProc\RoadFlow.Cache.InProc.csproj", "{3B80E993-180B-43D3-8CE8-30F33057D9C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Cache.Interface", "RoadFlow.Cache.Interface\RoadFlow.Cache.Interface.csproj", "{0C411C6E-3C3C-411C-BAFF-86CC48D73513}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Data.Factory", "RoadFlow.Data.Factory\RoadFlow.Data.Factory.csproj", "{7B826891-4034-4493-9158-4F5C6D7E43A6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Cache.IO", "RoadFlow.Cache.IO\RoadFlow.Cache.IO.csproj", "{278FB545-EE09-4B1C-B9A6-721A335085F6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Data.Interface", "RoadFlow.Data.Interface\RoadFlow.Data.Interface.csproj", "{8ECFDF83-358A-4E7D-9C91-9378C52D21C2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Data.Model", "RoadFlow.Data.Model\RoadFlow.Data.Model.csproj", "{E70E60B5-B17C-46F0-8CE2-5DD2CF9DF652}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Data.MSSQL", "RoadFlow.Data.MSSQL\RoadFlow.Data.MSSQL.csproj", "{43725795-3333-46F8-B057-384FBC535AFE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Data.MySql", "RoadFlow.Data.MySql\RoadFlow.Data.MySql.csproj", "{2D06D9EB-DAA1-41C9-813F-0CA0FB8AC03F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Data.ORACLE", "RoadFlow.Data.ORACLE\RoadFlow.Data.ORACLE.csproj", "{7A149780-1757-47AD-801A-7C029E42CA41}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.Utility", "RoadFlow.Utility\RoadFlow.Utility.csproj", "{4C6656DE-5AA9-4EA8-8ED0-A5DF98708CE1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebMvc", "WebMvc\WebMvc.csproj", "{C8698F91-4F33-495D-9B77-49A01E051409}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RoadFlow.WebMvc", "RoadFlow.WebMvc\RoadFlow.WebMvc.csproj", "{CE989A64-F5F1-4F9D-B230-994CEBF76435}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sources", "Sources", "{27016671-C9EE-4A2C-8CE1-C3E8442BFAB3}"
+	ProjectSection(SolutionItems) = preProject
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\LitJSON.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\LitJSON.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\LitJSON.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\LitJSON.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Factory.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Factory.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Factory.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Factory.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.InProc.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.InProc.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.InProc.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.InProc.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Interface.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Interface.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Interface.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.Interface.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.IO.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.IO.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.IO.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Cache.IO.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Factory.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Factory.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Factory.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Factory.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Interface.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Interface.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Interface.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Interface.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Model.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Model.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Model.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.Model.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MSSQL.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MSSQL.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MSSQL.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MSSQL.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MySql.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MySql.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MySql.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.MySql.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.ORACLE.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.ORACLE.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.ORACLE.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Data.ORACLE.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Platform.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Platform.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Platform.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Platform.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Utility.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Utility.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Utility.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Utility.pdb
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\WebMvc.dll = C:\inetpub\wwwroot\RoadFlowMvc\bin\WebMvc.dll
+		C:\inetpub\wwwroot\RoadFlowMvc\bin\WebMvc.pdb = C:\inetpub\wwwroot\RoadFlowMvc\bin\WebMvc.pdb
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{6C67400C-1D8C-49BA-806B-0B4B0CD91C83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6C67400C-1D8C-49BA-806B-0B4B0CD91C83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6C67400C-1D8C-49BA-806B-0B4B0CD91C83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6C67400C-1D8C-49BA-806B-0B4B0CD91C83}.Release|Any CPU.Build.0 = Release|Any CPU
+		{064E0F7F-FC44-47AB-A181-3D619AA47DB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{064E0F7F-FC44-47AB-A181-3D619AA47DB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{064E0F7F-FC44-47AB-A181-3D619AA47DB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{064E0F7F-FC44-47AB-A181-3D619AA47DB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B80E993-180B-43D3-8CE8-30F33057D9C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B80E993-180B-43D3-8CE8-30F33057D9C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B80E993-180B-43D3-8CE8-30F33057D9C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B80E993-180B-43D3-8CE8-30F33057D9C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C411C6E-3C3C-411C-BAFF-86CC48D73513}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C411C6E-3C3C-411C-BAFF-86CC48D73513}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C411C6E-3C3C-411C-BAFF-86CC48D73513}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C411C6E-3C3C-411C-BAFF-86CC48D73513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B826891-4034-4493-9158-4F5C6D7E43A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B826891-4034-4493-9158-4F5C6D7E43A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B826891-4034-4493-9158-4F5C6D7E43A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B826891-4034-4493-9158-4F5C6D7E43A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{278FB545-EE09-4B1C-B9A6-721A335085F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{278FB545-EE09-4B1C-B9A6-721A335085F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{278FB545-EE09-4B1C-B9A6-721A335085F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{278FB545-EE09-4B1C-B9A6-721A335085F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ECFDF83-358A-4E7D-9C91-9378C52D21C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ECFDF83-358A-4E7D-9C91-9378C52D21C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ECFDF83-358A-4E7D-9C91-9378C52D21C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ECFDF83-358A-4E7D-9C91-9378C52D21C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E70E60B5-B17C-46F0-8CE2-5DD2CF9DF652}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E70E60B5-B17C-46F0-8CE2-5DD2CF9DF652}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E70E60B5-B17C-46F0-8CE2-5DD2CF9DF652}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E70E60B5-B17C-46F0-8CE2-5DD2CF9DF652}.Release|Any CPU.Build.0 = Release|Any CPU
+		{43725795-3333-46F8-B057-384FBC535AFE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{43725795-3333-46F8-B057-384FBC535AFE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{43725795-3333-46F8-B057-384FBC535AFE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{43725795-3333-46F8-B057-384FBC535AFE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D06D9EB-DAA1-41C9-813F-0CA0FB8AC03F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D06D9EB-DAA1-41C9-813F-0CA0FB8AC03F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D06D9EB-DAA1-41C9-813F-0CA0FB8AC03F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D06D9EB-DAA1-41C9-813F-0CA0FB8AC03F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A149780-1757-47AD-801A-7C029E42CA41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A149780-1757-47AD-801A-7C029E42CA41}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A149780-1757-47AD-801A-7C029E42CA41}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A149780-1757-47AD-801A-7C029E42CA41}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C6656DE-5AA9-4EA8-8ED0-A5DF98708CE1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C6656DE-5AA9-4EA8-8ED0-A5DF98708CE1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C6656DE-5AA9-4EA8-8ED0-A5DF98708CE1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C6656DE-5AA9-4EA8-8ED0-A5DF98708CE1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8698F91-4F33-495D-9B77-49A01E051409}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8698F91-4F33-495D-9B77-49A01E051409}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8698F91-4F33-495D-9B77-49A01E051409}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8698F91-4F33-495D-9B77-49A01E051409}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE989A64-F5F1-4F9D-B230-994CEBF76435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE989A64-F5F1-4F9D-B230-994CEBF76435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE989A64-F5F1-4F9D-B230-994CEBF76435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE989A64-F5F1-4F9D-B230-994CEBF76435}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{6C67400C-1D8C-49BA-806B-0B4B0CD91C83} = {F9F24A8C-2F3F-4874-B156-0455D5DE13F3}
+		{064E0F7F-FC44-47AB-A181-3D619AA47DB8} = {F86FB2B8-1A32-46A0-A12B-BB314CA31405}
+		{3B80E993-180B-43D3-8CE8-30F33057D9C2} = {F86FB2B8-1A32-46A0-A12B-BB314CA31405}
+		{0C411C6E-3C3C-411C-BAFF-86CC48D73513} = {F86FB2B8-1A32-46A0-A12B-BB314CA31405}
+		{7B826891-4034-4493-9158-4F5C6D7E43A6} = {BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}
+		{278FB545-EE09-4B1C-B9A6-721A335085F6} = {F86FB2B8-1A32-46A0-A12B-BB314CA31405}
+		{8ECFDF83-358A-4E7D-9C91-9378C52D21C2} = {BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}
+		{E70E60B5-B17C-46F0-8CE2-5DD2CF9DF652} = {BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}
+		{43725795-3333-46F8-B057-384FBC535AFE} = {BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}
+		{2D06D9EB-DAA1-41C9-813F-0CA0FB8AC03F} = {BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}
+		{7A149780-1757-47AD-801A-7C029E42CA41} = {BDFD94C8-CADD-4C7C-A0C1-7A5F7B6BE3D2}
+		{4C6656DE-5AA9-4EA8-8ED0-A5DF98708CE1} = {D11A96BC-EFC4-42CF-8D32-EA82A679EF5E}
+		{C8698F91-4F33-495D-9B77-49A01E051409} = {C7D31E16-CD56-4C04-AE8A-01BD710BE8FB}
+		{CE989A64-F5F1-4F9D-B230-994CEBF76435} = {C7D31E16-CD56-4C04-AE8A-01BD710BE8FB}
+	EndGlobalSection
+EndGlobal

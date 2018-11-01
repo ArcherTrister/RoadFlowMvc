@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "查看归档内容";
+    Page.CheckUrl = false;
+}
+@model RoadFlow.Data.Model.WorkFlowArchives
+<link href="~/Scripts/FlowRun/Forms/flowform_print.css" rel="stylesheet" />
+<style type="text/css" media="print">
+    .Noprint { display: none; }
+</style>
+
+<div id="buttondiv" class="Noprint" style="margin:5px 0 0 15px;">
+    <input type="button" onclick="print1();return false;" class="mybutton" style="margin-right:4px;" value="确认打印" />
+    <input type="button" class="mybutton" onclick="window.close();return false;" value="取消关闭"/>
+</div>
+
+    @Html.Raw(Model.Contents.Trim())
+    <div style="margin-top:-10px;">
+    @Html.Raw(Model.Comments.Trim())
+    </div>
+    <br />
+    <script type="text/javascript">
+        function print1()
+        {
+            window.print();
+        }
+    </script>

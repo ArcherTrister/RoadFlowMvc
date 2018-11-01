@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "ShowMenu";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string id = Request.QueryString["id"];
+}
+
+<div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:999; width:100%; margin-right:auto; height:30px;">
+    <a href="javascript:void(0);" onclick="window.location='@Html.Raw(Request.QueryString["prev"])';"><span style="background-image:url(../Images/ico/back.gif);">返回</span></a>
+     <span class="toolbarsplit">&nbsp;</span>
+     <a href="javascript:void(0);"><span style="background-image:url(../Images/ico/topic.gif);">查看@(new RoadFlow.Platform.Users().GetName(id.ToGuid()))的已分配菜单</span></a>
+</div>
+<div style="padding:40px 1px 1px 4px; overflow:auto;">
+    <div id="treeDiv" style="margin:0; overflow:auto;"></div>
+</div>
+
+<script type="text/javascript">
+        $(function ()
+        {
+            initMenu();
+        });
+        function initMenu()
+        {
+            mainTree = new RoadUI.Tree({
+                id: "treeDiv", path: "../Home/Menu?showsource=1&userid=@id",
+                refreshpath: "../Home/MenuRefresh?showsource=1&userid=@id",
+                showroot: false, showline: true, onclick: null
+            });
+        }
+    </script>

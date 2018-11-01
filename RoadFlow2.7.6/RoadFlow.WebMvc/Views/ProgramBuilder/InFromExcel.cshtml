@@ -1,0 +1,27 @@
+﻿@{
+    ViewBag.Title = "InFromExcel";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post" enctype="multipart/form-data">
+    @Html.AntiForgeryToken()
+    <div style="margin:45px auto 0 auto;">
+        <input type="hidden" name="TableName" id="TableName" value="@ViewBag.TableName" />
+        <input type="hidden" name="NumberFiled" id="NumberFiled" value="@ViewBag.NumberFiled" />
+        <table cellpadding="0" cellspacing="1" border="0" width="99%">
+            <tr>
+                <td style="text-align:center;">Excel文件：<input type="file" name="excel" id="excel" /></td>
+            </tr>
+        </table>
+        <div class="buttondiv">
+            <input type="submit" value="确定导入" class="mybutton" />
+        </div>
+    </div>  
+    <script type="text/javascript">
+        var connid = '@ViewBag.ConnID';
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+        });
+    </script>
+</form>

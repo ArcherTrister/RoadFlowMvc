@@ -1,0 +1,19 @@
+.webuploader-container {
+	position: relative;
+}
+.webuploader-element-invisible {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+    clip: rect(1px,1px,1px,1px);
+}
+.webuploader-pick-disable {opacity: 0.6;pointer-events:none;}
+
+.filelist { border:0px solid #e8e8e8; height:305px; margin-top:10px; padding:0; overflow:auto; word-break:break-all; }
+
+.fileitem {float:left; margin:8px 12px 5px 0; border:1px solid #e8e8e8; background:#e8e8e8; width:100px; height:97px; text-align:center; border-radius:5px;}
+.fileitemname { font-weight:normal; height:67px; color:#666; padding:3px; border:none 0; }
+.fileitem img { padding:0;border-radius:5px 5px 0 0;border:1px solid #e8e8e8;}
+.fileitemstate { text-align:center; width:100px; height:30px; line-height:25px; position:relative; }
+.fileitemstatebg { position:relative; left: 0;top: 0;z-index: 10; width:100px;height:25px; background-color:#000000;filter:Alpha(opacity=10);*background-color: rgba(0,0,0,0.1);opacity:0.1;border-radius:0 0 5px 5px;}
+.fileitemstateword { position: relative; z-index:12; margin-top:-25px; font-size:12px;}
+

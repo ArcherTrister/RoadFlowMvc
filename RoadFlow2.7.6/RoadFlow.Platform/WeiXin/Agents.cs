@@ -78,19 +78,6 @@ namespace RoadFlow.Platform.WeiXin
         public bool SetAgentInfo(WeiXinAgent agent)
         {
             string url = "https://qyapi.weixin.qq.com/cgi-bin/agent/set?access_token=" + this.GetAccessToken();
-            //string json = new JsonData()
-            //{
-            //    ["agentid"] = (JsonData)agent.agentid,
-            //    ["report_location_flag"] = (JsonData)agent.report_location_flag,
-            //    ["logo_mediaid"] = (JsonData)agent.logo_mediaid,
-            //    ["name"] = (JsonData)agent.name,
-            //    ["description"] = (JsonData)agent.description,
-            //    ["redirect_domain"] = (JsonData)agent.redirect_domain,
-            //    ["isreportuser"] = (JsonData)agent.isreportuser,
-            //    ["isreportenter"] = (JsonData)agent.isreportenter,
-            //    ["home_url"] = (JsonData)agent.home_url,
-            //    ["chat_extension_url"] = (JsonData)agent.chat_extension_url
-            //}.ToJson(false);
             string json = new JsonData()
             {
                 ["agentid"] = (JsonData)agent.agentid,
@@ -103,7 +90,7 @@ namespace RoadFlow.Platform.WeiXin
                 ["isreportenter"] = (JsonData)agent.isreportenter,
                 ["home_url"] = (JsonData)agent.home_url,
                 ["chat_extension_url"] = (JsonData)agent.chat_extension_url
-            }.ToJson();
+            }.ToJson(false);
             string data = json;
             string str = HttpHelper.SendPost(url, data);
             JsonData jsonData = JsonMapper.ToObject(str);

@@ -1,0 +1,50 @@
+﻿@{
+    ViewBag.Title = "Set_Validate";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@functions{
+    string getValidateOptions(int value)
+    {
+        Dictionary<int, string> dicts = new Dictionary<int, string>();
+        dicts.Add(0, "不检查");
+        dicts.Add(1, "允许为空,非空时检查");
+        dicts.Add(2, "不允许为空,并检查");
+        System.Text.StringBuilder sb = new System.Text.StringBuilder();
+        foreach(var dict in dicts)
+        {
+            sb.Append("<option value='" + dict.Key + "'" + (value == dict.Key ? " selected='selected'" : "") + ">" + dict.Value + "</option>");
+        }
+        return sb.ToString();
+    }
+}
+@model IEnumerable<RoadFlow.Data.Model.ProgramBuilderValidates>
+<form method="post">
+    <div style="margin:5px 0; padding-left:5px;">
+        将所有字段设置为：<select class="myselect" onchange="$('select[name^=\'valdate_\']').val(this.value);"><option></option>@Html.Raw(getValidateOptions(-1))</select>
+    </div>
+    <table class="listtable">
+        <thead>
+            <tr>
+                <th style="width:25%;">表名</th>
+                <th style="width:25%;">字段名</th>
+                <th style="width:30%;">说明</th>
+                <th style="width:20%;">验证类型</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var validate in Model)
+            {             
+            <tr>
+                <td>@validate.TableName</td>
+                <td>@validate.FieldName</td>
+                <td>@validate.FieldNote</td>
+                <td><select class="myselect" name="valdate_@(validate.TableName)_@validate.FieldName">@Html.Raw(getValidateOptions(validate.Validate))</select></td>
+            </tr>
+            }    
+        </tbody>
+    </table>
+    <div class="buttondiv">
+        <input type="submit" class="mybutton" value="保存设置" />
+    </div>
+</form>
+

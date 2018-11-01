@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{EDDCC441-AA7F-4697-852A-DDD8BB6F0174}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <LangVersion>4</LangVersion>
+    <AssemblyName>RoadFlow.Data.MSSQL</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="RoadFlow.Data.Interface">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.Interface.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Data.Model">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_32\System.Data\v4.0_4.0.0.0__b77a5c561934e089\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Utility">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\AppLibrary.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\AppLibraryButtons.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\AppLibraryButtons1.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\AppLibrarySubPages.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\DBConnection.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\DBHelper.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\Dictionary.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\DocumentDirectory.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\Documents.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\DocumentsReadUsers.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\HastenLog.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\HomeItems.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\Log.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\Menu.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\MenuUser.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\Organize.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ProgramBuilder.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ProgramBuilderButtons.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ProgramBuilderExport.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ProgramBuilderFields.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ProgramBuilderQuerys.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ProgramBuilderValidates.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\ShortMessage.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\SMSLog.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\Users.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\UserShortcut.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\UsersRelation.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WeiXinMessage.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkCalendar.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlow.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowArchives.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowButtons.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowComment.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowData.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowDelegation.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowForm.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkFlowTask.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkGroup.cs" />
+    <Compile Include="RoadFlow.Data.MSSQL\WorkTime.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

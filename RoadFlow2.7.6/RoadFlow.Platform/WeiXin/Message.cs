@@ -73,8 +73,7 @@ namespace RoadFlow.Platform.WeiXin
       };
       jsonData[nameof (safe)] = (JsonData) safe;
       this.agentId = agentid;
-      //string json = jsonData.ToJson(false);
-            string json = jsonData.ToJson();
+      string json = jsonData.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);
@@ -100,8 +99,7 @@ namespace RoadFlow.Platform.WeiXin
       };
       jsonData[nameof (safe)] = (JsonData) safe;
       this.agentId = agentid;
-      //string json = jsonData.ToJson(false);
-            string json = jsonData.ToJson();
+      string json = jsonData.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);
@@ -127,8 +125,7 @@ namespace RoadFlow.Platform.WeiXin
       };
       jsonData[nameof (safe)] = (JsonData) safe;
       this.agentId = agentid;
-      //string json = jsonData.ToJson(false);
-            string json = jsonData.ToJson();
+      string json = jsonData.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);
@@ -156,8 +153,7 @@ namespace RoadFlow.Platform.WeiXin
       };
       jsonData[nameof (safe)] = (JsonData) safe;
       this.agentId = agentid;
-      //string json = jsonData.ToJson(false);
-            string json = jsonData.ToJson();
+      string json = jsonData.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);
@@ -183,8 +179,7 @@ namespace RoadFlow.Platform.WeiXin
       };
       jsonData[nameof (safe)] = (JsonData) safe;
       this.agentId = agentid;
-      //string json = jsonData.ToJson(false);
-            string json = jsonData.ToJson();
+      string json = jsonData.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);
@@ -217,8 +212,7 @@ namespace RoadFlow.Platform.WeiXin
       jsonData2["articles"] = jsonData3;
       jsonData1["news"] = jsonData2;
       this.agentId = agentid;
-      //string json = jsonData1.ToJson(false);
-            string json = jsonData1.ToJson();
+      string json = jsonData1.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);
@@ -253,8 +247,7 @@ namespace RoadFlow.Platform.WeiXin
       jsonData2["articles"] = jsonData3;
       jsonData1["mpnews"] = jsonData2;
       this.agentId = agentid;
-      //string json = jsonData1.ToJson(false);
-            string json = jsonData1.ToJson();
+      string json = jsonData1.ToJson(false);
             if (!async)
         return this.send(json);
       this.sendAsync(json);

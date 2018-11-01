@@ -1,0 +1,113 @@
+﻿@{
+    ViewBag.Title = "List";
+}
+<form method="post" id="form1" >
+@Html.AntiForgeryToken()
+<div class="querybar">
+    <table cellpadding="0" cellspacing="1" border="0" width="100%">
+        <tr>
+            <td>
+                应用名称：<input type="text" class="mytext" id="Title" name="Title" value="" style="width:150px" />
+                应用地址：<input type="text" class="mytext" id="Address" name="address" value="" style="width:220px" />
+                <input type="button" name="Search" onclick="query();" value="&nbsp;&nbsp;查&nbsp;询&nbsp;&nbsp;" class="mybutton" />
+                <input type="button" onclick="add(); return false;" value="添加应用" class="mybutton" />
+                <input type="button" onclick="del(); return false;" value="删除所选" class="mybutton" />
+            </td>
+        </tr>
+    </table>
+</div>
+<input type="hidden" name="checkbox_app" id="checkbox_app" value="" />
+<table id="listtable"></table>
+<div class="buttondiv"></div>
+</form>
+
+<script type="text/javascript">
+    var appid = '@ViewBag.AppID';
+    var iframeid = '@ViewBag.TabID';
+    var typeid = '@ViewBag.TypeID';
+    var dialog = top.mainDialog;
+    var curPageSize;
+    var curPageNumber;
+    $(function ()
+    {
+        $("#listtable").jqGrid({
+            url: RoadUI.Core.rooturl() + "/AppLibrary/Query",
+            postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), "appid": appid, "typeid": typeid },
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['应用名称', '应用地址', '应用分类', '操作'],
+            colModel: [
+                { name: 'Title', index: 'Title' },
+                { name: 'Address', index: 'Address', align: "left" },
+                { name: 'TypeTitle', index: 'Type', align: "left", width: 50 },
+                { name: 'Opation', index: '', sortable: false, align: "left", width: 60 }
+            ],
+            sortname: "Title",
+            sortorder: "asc",
+            height: '100%',
+            multiselect: true,
+            width: $(window).width(),
+            loadComplete: function ()
+            {
+                var gridObj = $("#listtable");
+                var records = gridObj.getGridParam("userData");
+                curPageSize = records.pagesize;
+                curPageNumber = records.pagenumber;
+                $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+            }
+        });
+    });
+    $(window).resize(function ()
+    {
+        $("#listtable").setGridWidth($(window).width());
+    });
+    function query(size, number)
+    {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            Title: $("#Title").val(), Address: $("#Address").val(), typeid: typeid,
+            pagesize: size, pagenumber: number
+        };
+        $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+    }
+    function add()
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "添加应用程序", width: 900, height: 450, url: '/AppLibrary/Edit?pagesize=' + curPageSize + "&pagenumber=" + curPageNumber + '@ViewBag.Query1', opener: parent, openerid: iframeid });
+    }
+    function edit(id)
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "编辑应用程序", width: 900, height: 450, url: '/AppLibrary/Edit?pagesize=' + curPageSize + "&pagenumber=" + curPageNumber + '&id=' + id + '@ViewBag.Query1', opener: parent, openerid: iframeid });
+    }
+    function editsubpage(id)
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "编辑子页面", width: 900, height: 450, url: '/AppLibrary/SubPages?pagesize=' + curPageSize + "&pagenumber=" + curPageNumber + '&id=' + id + '@ViewBag.Query1', opener: parent, openerid: iframeid });
+    }
+    function checkAll(checked)
+    {
+        $("input[name='checkbox_app']").prop("checked", checked);
+    }
+    function del()
+    {
+        var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+        if (rowIds.length==0)
+        {
+            alert("您没有选择要删除的项!");
+            return false;
+        }
+        if (!confirm('您真的要删除所选应用吗?'))
+        {
+            return false;
+        }
+        $.ajax({
+            url: RoadUI.Core.rooturl() + "/AppLibrary/Delete?1=1" + "@Html.Raw(ViewBag.Query1)" + "&pagesize=" + curPageSize + "&pagenumber=" + curPageNumber,
+            data: { "ids": rowIds.join(","), "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+            type: "post",
+            success: function (txt)
+            {
+                alert(txt);
+                query();
+            }
+        });
+        return true;
+    }
+</script>

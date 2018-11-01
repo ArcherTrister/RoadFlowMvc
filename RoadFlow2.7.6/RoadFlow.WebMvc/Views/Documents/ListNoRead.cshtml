@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "ListNoRead";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <form id="form1">
+    @Html.AntiForgeryToken()
+    <div class="querybar">
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td>
+                标题：<input type="text" class="mytext" id="Title1" name="Title1" runat="server" style="width:200px" />
+                发布时间：<input type="text" class="mycalendar" id="Date1" name="Date1" runat="server" style="width:100px" />
+                至 <input type="text" class="mycalendar" id="Date2" name="Date2" runat="server" style="width:100px" />
+                <input type="button" value="&nbsp;查询&nbsp;" class="mybutton" onclick="query(null, 1);" />
+            </td>
+        </tr>
+    </table>
+    </div>
+    <table id="listtable"></table>
+    <div class="buttondiv"></div>
+    </form>
+    <script type="text/javascript">
+        var curPageSize, curPageNumber;
+        $(function ()
+        {
+            $("#listtable").jqGrid({
+                url: RoadUI.Core.rooturl() + "/Documents/QueryNoRead",
+                postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+                mtype: 'POST',
+                datatype: "json",
+                colNames: ['标题', '栏目', '发布人', '发布时间', '阅读次数'],
+                colModel: [
+                    { name: 'Title', index: 'Title', width: 400 },
+                    { name: 'DirectoryName', index: 'DirectoryName', align: "left", width: 110 },
+                    { name: 'WriteUserName', index: 'WriteUserName', align: "left", width: 90 },
+                    { name: 'WriteTime', index: 'WriteTime', align: "left", width: 110 },
+                    { name: 'ReadCount', index: 'ReadCount', align: "left", width: 40 }
+
+                ],
+                //rownumbers: true,//显示序号列
+                sortname: "WriteTime",
+                sortorder: "desc",
+                height: '100%',
+                width: $(window).width(),
+                loadComplete: function ()
+                {
+                    var gridObj = $("#listtable");
+                    var records = gridObj.getGridParam("userData");
+                    curPageSize = records.pagesize;
+                    curPageNumber = records.pagenumber;
+                    $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+                }
+            });
+        });
+        $(window).resize(function ()
+        {
+            $("#listtable").setGridWidth($(window).width());
+        });
+        function query(size, number)
+        {
+            var data = {
+                __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+                Title1: $("#Title1").val(),
+                Date1: $("#Date1").val(), Date2: $("#Date2").val(), DirID: "@Request.QueryString["dirid"]",
+                pagesize: size, pagenumber: number
+            };
+            $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+        }
+
+        function showDoc(id, title)
+        {
+            window.location = 'DocRead?docid=' + id + "@(Html.Raw(ViewBag.Query))";
+        }
+    </script>

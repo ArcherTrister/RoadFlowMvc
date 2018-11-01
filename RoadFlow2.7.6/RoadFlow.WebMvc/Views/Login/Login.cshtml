@@ -1,0 +1,131 @@
+﻿@{
+    ViewBag.Title = "RoadFlow-Mvc-Login";
+}
+
+<form method="post" id="form1">
+    @Html.AntiForgeryToken()
+    <br />
+    <input type="hidden" id="Force" name="Force" value="0" />
+    <table cellpadding="0" cellspacing="1" border="0" style="width:95%; margin:0 auto;">
+        <tr>
+            <td style="width:70px; height:45px; text-align:right;">帐号：</td>
+            <td><input type="text" class="mytext" id="Account" name="Account" value="" maxlength="50" style="width:170px;" /></td>
+        </tr>
+        <tr>
+            <td style="height:45px; text-align:right;">密码：</td>
+            <td><input type="password" class="mytext" id="Password" name="Password" maxlength="50" style="width:170px;" /></td>
+        </tr>
+        <tr id="novcode" style="display:none;">
+            <td style="height:45px; text-align:right;">验证码：</td>
+            <td><input type="text" class="mytext" id="VCode" name="VCode" maxlength="4" style="width:80px;" />
+                <img alt="" src="@Url.Content("~/Login/VCode?"+DateTime.Now.Ticks)" onclick="cngimg();" style="vertical-align:middle;" id="VcodeImg" />
+            </td>
+        </tr>
+        <tr>
+            <td>&nbsp;</td>
+            <td><input type="button" id="loginbutton" value=" 登 录 " class="mybutton" style="width:100px;" onclick="checkForm(this);" /></td>
+        </tr>
+    </table>
+</form>
+<script type="text/javascript">
+    var win = new RoadUI.Window();
+    var isVCode = "1" == "@Session["IsValidateCode"]";
+    $(function ()
+    {
+        $(document.body).bind("keydown", KeyDown);
+        if (isVCode)
+        {
+            showVCode();
+        }
+    });
+    function KeyDown()
+    {
+        var e = document.all ? window.event : arguments[0] ? arguments[0] : event;
+        if (e && e.keyCode == 13)
+        {
+            e.returnValue = false;
+            e.cancel = true;
+            $("#loginbutton").click();
+        }
+    }
+    function cngimg()
+    {
+        $('#VcodeImg').attr('src', '@Url.Content("~/Login/VCode?")' + new Date().toString());
+    }
+    function showVCode()
+    {
+        //win.resize(300, 250);
+        $("#novcode").show();
+    }
+    function checkForm()
+    {
+        var form1 = document.forms[0];
+        if ($.trim(form1.Account.value).length == 0)
+        {
+            alert("帐号不能为空!");
+            form1.Account.focus();
+            return false;
+        }
+        if ($.trim(form1.Password.value).length == 0)
+        {
+            alert("密码不能为空!");
+            form1.Password.focus();
+            return false;
+        }
+        if (isVCode && form1.VCode && $.trim(form1.VCode.value).length == 0)
+        {
+            alert("验证码不能为空!");
+            form1.VCode.focus();
+            return false;
+        }
+        var $but = $("#loginbutton");
+        $but.val("登录中...").prop("disabled", true);
+        var token = $('input[name="__RequestVerificationToken"]', form1).val();
+        $.ajax({
+            url: "@Url.Content("~/Login/CheckLogin")",
+            type: "POST",
+            dataType: "json",
+            async: true,
+            data: { __RequestVerificationToken: token, Account: form1.Account.value, Password: form1.Password.value, VCode: form1.VCode.value, Force: form1.Force.value },
+            success: function (json)
+            {
+                switch (json.status)
+                {
+                    case 0:
+                        alert(json.msg);
+                        showVCode();
+                        isVCode = true;
+                        cngimg();
+                        $but.val("登录").prop("disabled", false);
+                        break;
+                    case 1:
+                        try
+                        {
+                            if (top.lastURL && top.lastURL.length > 0)
+                            {
+                                top.currentWindow.location = RoadUI.Core.decodeUri(top.lastURL);
+                            }
+                            else
+                            {
+                                top.currentWindow.location = top.currentWindow.location;
+                            }
+                        }
+                        catch (e){ }
+                        win.close();
+                        break;
+                    case 2:
+                        if (confirm(json.msg))
+                        {
+                            $('#Force').val("1");
+                            checkForm();
+                        }
+                        else
+                        {
+                            $but.val("登录").prop("disabled", false);
+                        }
+                        break;
+                }
+            }
+        });
+    }
+</script>

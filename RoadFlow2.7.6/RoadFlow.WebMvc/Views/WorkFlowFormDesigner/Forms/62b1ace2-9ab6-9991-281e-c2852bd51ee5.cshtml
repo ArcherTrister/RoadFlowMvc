@@ -1,0 +1,36 @@
+﻿@{
+	string FlowID = Request.QueryString["flowid"];
+	string StepID = Request.QueryString["stepid"];
+	string GroupID = Request.QueryString["groupid"];
+	string TaskID = Request.QueryString["taskid"];
+	string InstanceID = Request.QueryString["instanceid"];
+	string DisplayModel = Request.QueryString["display"] ?? "0";
+	string DBConnID = "606b5253-dfb5-4b4b-81e3-5bba6d3b1558";
+	string DBTable = "TEMPTEST";
+	string DBTablePK = "ID";
+	string DBTableTitle = "TITLE";
+	RoadFlow.Platform.Dictionary BDictionary = new RoadFlow.Platform.Dictionary();
+	RoadFlow.Platform.WorkFlow BWorkFlow = new RoadFlow.Platform.WorkFlow();
+	RoadFlow.Platform.WorkFlowTask BWorkFlowTask = new RoadFlow.Platform.WorkFlowTask();
+	string fieldStatus = BWorkFlow.GetFieldStatus(FlowID, StepID);
+	LitJson.JsonData initData = BWorkFlow.GetFormData(DBConnID, DBTable, DBTablePK, InstanceID, fieldStatus);
+	string TaskTitle = BWorkFlow.GetFromFieldData(initData, DBTable, DBTableTitle);
+}
+<link href="~/Scripts/FlowRun/Forms/flowform.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/FlowRun/Forms/common.js" type="text/javascript" ></script>
+<input type="hidden" id="Form_ValidateAlertType" name="Form_ValidateAlertType" value="1" />
+<input type="hidden" id="Form_TitleField" name="Form_TitleField" value="TEMPTEST.TITLE" />
+<input type="hidden" id="Form_DBConnID" name="Form_DBConnID" value="606b5253-dfb5-4b4b-81e3-5bba6d3b1558" />
+<input type="hidden" id="Form_DBTable" name="Form_DBTable" value="TEMPTEST" />
+<input type="hidden" id="Form_DBTablePk" name="Form_DBTablePk" value="ID" />
+<input type="hidden" id="Form_DBTableTitle" name="Form_DBTableTitle" value="TITLE" />
+<input type="hidden" id="Form_AutoSaveData" name="Form_AutoSaveData" value="1" />
+<script type="text/javascript">
+	var initData = @Html.Raw(BWorkFlow.GetFormDataJsonString(initData));
+	var fieldStatus = @Html.Raw(fieldStatus);
+	var displayModel = '@DisplayModel';
+	$(function (){
+		formrun.initData(initData, "TEMPTEST", fieldStatus, displayModel);
+	});
+</script>
+<p><br/></p><p style="text-align: center;"><span style="font-size: 22px;"><strong><br/></strong></span></p><p style="text-align: center;"><span style="font-size: 22px;"><strong>请假申请</strong></span></p><p><br/></p><table class="flowformtable" cellpadding="0" cellspacing="1" data-sort="sortDisabled"><tbody><tr class="firstRow"><td width="113" valign="top" style="word-break: break-all;">标题：</td><td valign="top" colspan="3"><input type="text" id="TEMPTEST.TITLE" type1="flow_text" name="TEMPTEST.TITLE" value="@(RoadFlow.Platform.Users.CurrentUserName)的请假申请" style="width:80%" maxlength="500" valuetype="0" isflow="1" class="mytext" title=""/></td></tr><tr><td width="113" valign="top" style="word-break: break-all;">请假人：<br/></td><td width="423" valign="top"><input type="text" type1="flow_org" id="TEMPTEST.USERID" name="TEMPTEST.USERID" value="u_@RoadFlow.Platform.Users.CurrentUserID.ToString()" more="0" isflow="1" class="mymember" title="" dept="0" station="0" user="1" workgroup="0" unit="0" rootid=""/></td><td width="110" valign="top" style="word-break: break-all;">所在部门：</td><td width="426" valign="top" style="word-break: break-all;"><input type="text" type1="flow_org" id="TEMPTEST.DEPTID" name="TEMPTEST.DEPTID" value="@(RoadFlow.Platform.Users.CurrentDeptID)" more="0" isflow="1" class="mymember" title="" dept="1" station="0" user="0" workgroup="0" unit="0" rootid=""/></td></tr><tr><td width="113" valign="top" style="word-break: break-all;">请假日期：</td><td width="423" valign="top" style="word-break: break-all;"><input type="text" type1="flow_datetime" id="TEMPTEST.DATE1" name="TEMPTEST.DATE1" value="@(RoadFlow.Utility.DateTimeNew.ShortDate)" defaultvalue="@(RoadFlow.Utility.DateTimeNew.ShortDate)" istime="0" daybefor="0" dayafter="1" currentmonth="0" isflow="1" class="mycalendar" title=""/> 至 <input type="text" type1="flow_datetime" id="TEMPTEST.DATE2" name="TEMPTEST.DATE2" value="" defaultvalue="" istime="0" daybefor="0" dayafter="1" currentmonth="0" isflow="1" class="mycalendar" title=""/></td><td width="110" valign="top" style="word-break: break-all;">请假天数：</td><td width="426" valign="top"><input type="text" id="TEMPTEST.DAYS" type1="flow_text" name="TEMPTEST.DAYS" value="" valuetype="2" isflow="1" class="mytext" title=""/></td></tr><tr><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">请假类型：</td><td valign="top" colspan="3" rowspan="1"><input type="radio" name="TEMPTEST.TYPE" id="TEMPTEST.TYPE_0" value="事假" style="vertical-align:middle;" isflow="1" type1="flow_radio"/><label for="TEMPTEST.TYPE_0" style="vertical-align:middle;margin-right:3px;">事假</label><input type="radio" name="TEMPTEST.TYPE" id="TEMPTEST.TYPE_1" value="病假" style="vertical-align:middle;" isflow="1" type1="flow_radio"/><label for="TEMPTEST.TYPE_1" style="vertical-align:middle;margin-right:3px;">病假</label><input type="radio" name="TEMPTEST.TYPE" id="TEMPTEST.TYPE_2" value="产假" style="vertical-align:middle;" isflow="1" type1="flow_radio"/><label for="TEMPTEST.TYPE_2" style="vertical-align:middle;margin-right:3px;">产假</label><input type="radio" name="TEMPTEST.TYPE" id="TEMPTEST.TYPE_3" value="婚假" style="vertical-align:middle;" isflow="1" type1="flow_radio"/><label for="TEMPTEST.TYPE_3" style="vertical-align:middle;margin-right:3px;">婚假</label><input type="radio" name="TEMPTEST.TYPE" id="TEMPTEST.TYPE_4" value="陪护假" style="vertical-align:middle;" isflow="1" type1="flow_radio"/><label for="TEMPTEST.TYPE_4" style="vertical-align:middle;margin-right:3px;">陪护假</label><input type="radio" name="TEMPTEST.TYPE" id="TEMPTEST.TYPE_5" value="年假" style="vertical-align:middle;" isflow="1" type1="flow_radio"/><label for="TEMPTEST.TYPE_5" style="vertical-align:middle;margin-right:3px;">年假</label></td></tr><tr><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;">请假事由：<br/></td><td valign="top" colspan="3" rowspan="1"><textarea isflow="1" type1="flow_textarea" id="TEMPTEST.REASON" name="TEMPTEST.REASON" class="mytext" style="width:80%;height:80px"></textarea></td></tr></tbody></table><p><br/></p>

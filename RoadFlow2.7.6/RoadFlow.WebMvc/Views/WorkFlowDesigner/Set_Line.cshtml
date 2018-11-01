@@ -1,0 +1,315 @@
+﻿@{
+    ViewBag.Title = "Set_Line";
+    string lineID = Request.QueryString["id"];
+    string fromID = Request.QueryString["from"];
+    string toID = Request.QueryString["to"];
+}
+<form method="post">
+<div id="tabdiv">
+<div id="div_sql" style="width:96%; margin:8px auto 0 auto;" title="&nbsp;&nbsp;SQL条件&nbsp;&nbsp;">
+    <div>SQL条件：</div>
+    <div style="margin-top:8px;">
+        <textarea id="div_sql_value" style="width:98%; height:100px; font-family:Verdana;" rows="1" cols="1" class="mytextarea"></textarea>
+    </div>
+    <table border="0" style="width:99%;" align="center">
+        <tr>
+            <td>
+                <div style="margin-top:8px; line-height:21px;">
+                    <div>1.条件对应的表为流程对应的主表</div>
+                    <div>2.条件对应的字段为流程主表字段</div>
+                    <div>3.示例：a=1 and b='1'</div>
+                </div>
+            </td>
+            <td style="text-align:right; padding:15px 4px 0 0; vertical-align:top;"><input type="button" class="mybutton" value="测试SQL条件" onclick="test();" /></td>
+        </tr>
+    </table>
+
+    <div style="padding:8px;">条件标签：<input type="text" class="mytext" style="width:400px;" id="div_sql_title" /></div>
+
+</div>
+
+<div id="div_organize" style="width:99%; margin:8px auto 0 auto;" title="&nbsp;&nbsp;组织机构&nbsp;&nbsp;">
+    <div style="margin-top:8px;">
+        <table class="listtable" id="organizetable">
+            <thead>
+                <tr>
+                    <th style="width:80%">组织机构表达式</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <input type="hidden" name="organize_names" value="0" />
+                        <select class="myselect" name="organize_khleft_0">
+                            <option value=""></option>
+                            <option value="(">(</option>
+                        </select>
+                        <select class="myselect" name="organize_usertype_0">
+                            <option value=""></option>
+                            <option value="0">发送者</option>
+                            <option value="1">发起者</option>
+                        </select>
+                        
+                        <select class="myselect" name="organize_in_0">
+                            <option value="0">属于</option>
+                            <option value="1">不属于</option>
+                        </select>
+                        <select class="myselect" name="organize_users_0" onchange="organize_users_change(this);" style="width:110px;">
+                            <option value="0">选择组织机构</option>
+                            <option value="1">部门领导</option>
+                            <option value="2">部门分管领导</option>
+                        </select>
+                        <span>
+                        <input type="text" class="mymember" name="organize_selectorganize_0" id="organize_selectorganize_0" style="width:100px;" />
+                        </span>
+                        <select class="myselect" name="organize_khright_0">
+                            <option value=""></option>
+                            <option value=")">)</option>
+                        </select>
+                        
+                        <select class="myselect" name="organize_tjand_0">
+                            <option value=""></option>
+                            <option value="&&">并且</option>
+                            <option value="||">或者</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="button" class="mybutton" onclick="organizeadd(this)" value=" 添加 "/>
+                        <input type="button" class="mybutton" onclick="organizedel(this)" value=" 删除 "/>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="text/javascript">
+            function organizeadd(but)
+            {
+                var $tr = $(but).parent().parent();
+                var $tr1 = $tr.clone();
+
+                var index = $('tr', $tr.parent()).size() + 1;
+                $("[name='organize_names']", $tr1).val(index);
+                $("[name^='organize_khleft_']", $tr1).attr("name", "organize_khleft_" + index);
+                $("[name^='organize_in_']", $tr1).attr("name", "organize_in_" + index);
+                $("[name^='organize_users_']", $tr1).attr("name", "organize_users_" + index).next().show();
+                $("[name^='organize_usertype_']", $tr1).attr("name", "organize_usertype_" + index);
+                var $member = $("[name^='organize_selectorganize_']", $tr1);
+                $member.attr("name", "organize_selectorganize_" + index).attr("id", "organize_selectorganize_" + index).removeClass().addClass("mymember");
+                $member.prev("[type='hidden']").remove();
+                $member.next("[type='button']").remove();
+                $("[name^='organize_khright_']", $tr1).attr("name", "organize_khright_" + index);
+                $("[name^='organize_tjand_']", $tr1).attr("name", "organize_tjand_" + index);
+
+                new RoadUI.Member().init($(".mymember", $tr1));
+                new RoadUI.Button().init($(".button1,.button2", $tr1));
+                new RoadUI.Button().init($(".mybutton", $tr1));
+                new RoadUI.Text().init($(".mytext", $tr1));
+                $tr.after($tr1);
+            }
+            function organizedel(but)
+            {
+                var $tr = $(but).parent().parent();
+                if ($("tr", $tr.parent()).size() <= 1)
+                {
+                    return;
+                }
+                $tr.remove();
+            }
+            function organize_users_change(obj)
+            {
+                var $o = $(obj).next();
+                if ("0" != obj.value)
+                {
+                    $o.hide();
+                }
+                else
+                {
+                    $o.show();
+                }
+            }
+        </script>
+</div>
+
+<div id="div_custom" style="width:96%; margin:8px auto 0 auto;" title="&nbsp;&nbsp;自定义方法&nbsp;&nbsp;">
+    <div>
+        <div>方法名称：</div><div style="margin-top:8px;"><input type="text" class="mytext" id="custom_method" style="width:90%;" /></div>
+    </div>
+    <div style="height:10px;"></div>
+    <!--
+    <div>
+        <div>条件不满足提示信息：</div><div style="margin-top:8px;"><input type="text" class="mytext" id="custom_msg" style="width:90%;" /></div>
+    </div>
+    -->
+    <div style="margin-top:10px; font-weight:bold;">方法说明：</div>
+    <div style="line-height:21px; padding-left:12px;">
+        <div>1.方法名称格式为：DLL名称.命名空间.类名.方法名（例：WebMvc.Common.CustomFormSave.Test）</div>
+        <div>2.方法返回类型为 bool 类型的 True 时条件满足,返回其它类型且字符串值不为 "1" 时条件不满足</div>
+        <div>3.方法返回类型为 bool 类型时提示信息为上面输入的信息，否则提示返回的值</div>
+        <div>4.方法访问限定符为 Public</div>
+    </div>
+</div>
+</div>
+<div style="width:100%; margin:30px auto 10px auto; text-align:center;">
+    <input type="button" class="mybutton" value=" 确 定 " onclick="confirm1();" />
+    <input type="button" class="mybutton" value=" 取 消 " onclick="new RoadUI.Window().close();" />
+</div>
+</form>
+
+<script type="text/javascript">
+    var fieldsOptions = '';
+    var frame=null;
+    var openerid = "@Request.QueryString["openerid"]";
+    var lineid="@lineID";
+    var fromid="@fromID";
+    var toid = "@toID";
+    var table = "";
+    var dbconnid = "";
+    var dbtable = "";
+    var dbtablepk = "";
+    $(function ()
+    {
+        new RoadUI.Tab({ id: "tabdiv", replace: true, contextmenu: false, dblclickclose: false });
+        var iframes = top.frames;
+        for (var i = 0; i < iframes.length; i++)
+        {
+            var fname = "";
+            try
+            {
+                fname = iframes[i].name;
+            }
+            catch (e)
+            {
+                fname = "";
+            }
+            if (fname == openerid + "_iframe")
+            {
+                frame = iframes[i]; break;
+            }
+        }
+        if (frame == null) return;
+
+        var json=frame.wf_json;
+        var line=null;
+        if(json)
+        {
+            var lines=json.lines;
+            if(lines && lines.length>0)
+            {
+                for(var i=0;i<json.lines.length;i++)
+                {
+                    if(json.lines[i].id==lineid)
+                    {
+                        line=json.lines[i];
+                        break;
+                    }
+                }
+            }
+            var databases = json.databases;
+            if (databases && databases.length>0)
+            {
+                dbconnid = databases[0].link;
+                dbtable = databases[0].table;
+                dbtablepk = databases[0].primaryKey;
+            }
+        }
+        if(line)
+        {
+            $("#custom_method").val(line.customMethod);
+            //$("#custom_msg").val(line.noaccordMsg);
+            $("#div_sql_value").val(line.sql);
+            $("#div_sql_title").val(line.text);
+            
+            if (line.organize && $.isArray(line.organize))
+            {
+                var $tbody = $("#organizetable tbody");
+                var $tr;
+                if (line.organize.length > 0)
+                {
+                    $tr = $("tr:first", $tbody).clone();
+                    $("tr", $tbody).remove();
+                }
+                for (var i = 0; i < line.organize.length; i++)
+                {
+                    var $tr1 = $tr.clone();
+                    var index = $('tr', $tbody).size() + 1;
+                    $("[name='organize_names']", $tr1).val(index);
+                    $("[name^='organize_khleft_']", $tr1).attr("name", "organize_khleft_" + index).val(line.organize[i].khleft);
+                    $("[name^='organize_khright_']", $tr1).attr("name", "organize_khright_" + index).val(line.organize[i].khright);
+                    $("[name^='organize_in_']", $tr1).attr("name", "organize_in_" + index).val(line.organize[i].in1);
+                    $("[name^='organize_users_']", $tr1).attr("name", "organize_users_" + index).val(line.organize[i].users);
+                    $("[name^='organize_usertype_']", $tr1).attr("name", "organize_usertype_" + index).val(line.organize[i].usertype);
+                    var $member = $("[name^='organize_selectorganize_']", $tr1).val(line.organize[i].selectorganize);
+                    $member.attr("name", "organize_selectorganize_" + index).attr("id", "organize_selectorganize_" + index).removeClass().addClass("mymember");
+                    $member.prev("[type='hidden']").remove();
+                    $member.next("[type='button']").remove();
+                    $("[name^='organize_tjand_']", $tr1).attr("name", "organize_tjand_" + index).val(line.organize[i].tjand);
+
+                    new RoadUI.Member().init($(".mymember", $tr1));
+                    new RoadUI.Button().init($(".button1,.button2", $tr1));
+                    new RoadUI.Button().init($(".mybutton", $tr1));
+                    new RoadUI.Text().init($(".mytext", $tr1));
+                    if (0 != line.organize[i].users)
+                    {
+                        $member.parent().hide();
+                    }
+                    $tbody.append($tr1);
+                }
+            }
+        }
+    });
+        
+    function confirm1()
+    {
+        var line={};
+        line.id=lineid;
+        line.from=fromid;
+        line.to=toid;
+        line.customMethod=$("#custom_method").val()||"";
+        //line.noaccordMsg=$("#custom_msg").val()||"";
+        line.sql = $("#div_sql_value").val() || "";
+        line.text = $("#div_sql_title").val() || "";
+        
+        var organize = [];
+        var $tbody = $("#organizetable tbody");
+        var $names = $("[name='organize_names']", $tbody);
+        for (var i = 0; i < $names.size() ; i++)
+        {
+            var index = $names.eq(i).val();
+            var organize_usertype = $("[name='organize_usertype_" + index + "']").val();
+            var organize_in = $("[name='organize_in_" + index + "']").val();
+            var organize_users = $("[name='organize_users_" + index + "']").val();
+            var organize_selectorganize = $("[name='organize_selectorganize_" + index + "']").val();
+            var organize_tjand = $("[name='organize_tjand_" + index + "']").val();
+            var organize_khleft = $("[name='organize_khleft_" + index + "']").val();
+            var organize_khright = $("[name='organize_khright_" + index + "']").val();
+            if (!organize_usertype || !organize_in || !organize_users)
+            {
+                continue;
+            }
+
+            organize.push({ 'khleft': organize_khleft, 'usertype': organize_usertype, 'in1': organize_in, 'users': organize_users, 'selectorganize': organize_selectorganize, 'tjand': organize_tjand, 'khright': organize_khright });
+        }
+        line.organize = organize;
+        frame.addLine(line);
+        new RoadUI.Window().close();
+    }
+
+    function test()
+    {
+        var where = $("#div_sql_value").val();
+        if ($.trim(where).length == 0)
+        {
+            alert("条件为空!");
+            return;
+        }
+        $.ajax({
+            url: "TestLineSqlWhere", method: "POST",
+            data: { "connid": dbconnid, "table": dbtable, "tablepk": dbtablepk, "where": where },
+            async: false, cache: false, success: function (txt)
+            {
+                alert(txt);
+            }
+        });
+    }
+</script>

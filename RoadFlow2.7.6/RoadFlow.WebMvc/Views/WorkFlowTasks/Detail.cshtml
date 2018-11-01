@@ -1,0 +1,92 @@
+﻿@{
+    ViewBag.Title = "Detail";
+    RoadFlow.Platform.WorkFlowTask bworkFlowTask = new RoadFlow.Platform.WorkFlowTask();
+    RoadFlow.Platform.WorkFlow bworkFlow = new RoadFlow.Platform.WorkFlow();
+    if (!WebMvc.Common.Tools.CheckLogin() && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.End();
+        return;
+    }
+}
+@model IEnumerable<RoadFlow.Data.Model.WorkFlowTask>
+<div class="toolbar" style="margin-top:0; border-top:0;">
+    <a href="javascript:void(0);" onclick="window.location='Detail?displaymodel=1'+'@Html.Raw(ViewBag.query)';return false;"><span style="background-image:url(@Url.Content("~/Images/ico/shape_aling_left.png"));">图形方式</span></a>
+    <input type="submit" style="display:none;" value="d" id="DeleteBut" name="DeleteBut" />
+    <a href="javascript:void(0);" onclick="window.location='Detail?displaymodel=0'+'@Html.Raw(ViewBag.query)';return false;"><span style="background-image:url(@Url.Content("~/Images/ico/table.gif"));">列表方式</span></a>
+    <span class="toolbarsplit">&nbsp;</span>
+    <a href="javascript:void(0);" onclick="new RoadUI.Window().close();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/application_osx_remove.png"));">关闭窗口</span></a>
+</div>
+@if ("1" != ViewBag.displayModel)
+{
+<table id="listtable"></table>
+<script type="text/javascript">
+    $(function(){
+        $("#listtable").jqGrid({
+            datatype: "local",
+            colNames: ['步骤名称', '发送人', '发送时间', '处理人', '完成时间','状态','意见','备注'],
+            colModel: [
+                { name: 'StepName', index: 'StepName' },
+                { name: 'SenderName', index: 'SenderName', align: "left" },
+                { name: 'SenderTime', index: 'SenderTime', align: "left" },
+                { name: 'ReceiveName', index: 'ReceiveName', align: "left" },
+                { name: 'CompletedTime1', index: 'CompletedTime1', align: "left" },
+                { name: 'StatusTitle', index: 'StatusTitle', align: "left" },
+                { name: 'Comment', index: 'Comment', align: "left" },
+                { name: 'Note', index: 'Note', align: "left"}
+            ],
+            //rownumbers: true,//显示序号列
+            height: 440,
+            width: $(window).width(),
+            data:@Html.Raw(ViewBag.list)
+        });
+    });
+    function showSubFlow(taskid)
+    {
+        top.mainDialog.open({title: '查看子流程处理过程', 
+            url:  'DetailSubFlow?taskid='+ taskid + '@Html.Raw(ViewBag.query1)', width: 1000, height: 500,openerid:'@Request.QueryString["tabid"]_iframe' });
+    }
+</script>
+}
+else
+{
+    int taskCount = Model.Count();
+    System.Text.StringBuilder tasksjson = new System.Text.StringBuilder("[", taskCount * 60);
+    foreach (var task in Model)
+    {
+        if (task.Type == 5)
+        {
+            continue;
+        }
+        tasksjson.Append("{");
+        tasksjson.AppendFormat("\"stepid\":\"{0}\",\"prevstepid\":\"{1}\",\"status\":\"{2}\",\"sender\":\"{3}\",\"sendtime\":\"{4}\",\"receiver\":\"{5}\",\"statustitle\":\"{6}\"",
+            task.StepID, task.PrevStepID, task.Status, task.SenderName, task.SenderTime.ToDateTimeStringS(), task.ReceiveName, bworkFlowTask.GetStatusTitle(task.Status));
+        tasksjson.Append("}");
+        tasksjson.Append(",");
+    }
+    <div style="padding:8px 5px 0 10px;">
+        <span style="display:inline-block; height:12px; width:12px; background:#2b9425; border-radius:4px; margin-left:6px; vertical-align:middle;"></span>
+        <label style="vertical-align:middle;">已完成步骤</label>
+        <span style="display:inline-block; height:12px; width:12px; background:#d41d05; border-radius:4px; margin-left:12px; vertical-align:middle;"></span>
+        <label style="vertical-align:middle;">当前步骤</label>
+        <!--
+        <span style="display:inline-block; height:12px; width:12px; background:#7e7e7f; margin-left:6px; vertical-align:middle;"></span>
+        <label style="vertical-align:middle;">未经过步骤</label>
+        -->
+    </div>
+    <div id="flowdiv" style="margin:0; padding:0; overflow:auto;"></div>
+    <script type="text/javascript">
+        var isshowDesign = false;
+        var taskJSON=@Html.Raw(tasksjson.ToString().TrimEnd(',') + "]");
+    </script>
+    <script src="~/Scripts/FlowDesinger/draw-min.js" type="text/javascript"></script>
+    <script src="~/Scripts/FlowDesinger/workflow-show.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(function ()
+        {
+            openFlow1('@ViewBag.flowid');
+        });
+    </script>
+}
+    <script type="text/javascript">
+        var ismobile="1"=="@Request.QueryString["ismobile"]";
+    </script>

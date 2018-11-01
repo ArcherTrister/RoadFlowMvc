@@ -75,7 +75,7 @@
     <Compile Include="IWorkFlowTask.cs" />
     <Compile Include="IWorkGroup.cs" />
     <Compile Include="IWorkTime.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RoadFlow.Data.Model\RoadFlow.Data.Model.csproj">

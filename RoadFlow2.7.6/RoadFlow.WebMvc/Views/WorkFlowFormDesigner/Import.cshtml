@@ -1,0 +1,18 @@
+﻿@{
+    ViewBag.Title = "Import";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+    <form id="form1" method="post" enctype="multipart/form-data">
+        @Html.AntiForgeryToken()
+        <div style="margin:50px auto 0 auto; width:96%;">
+            <input type="file" id="FileUpload1" name="FileUpload1" />&nbsp;&nbsp;<input type="submit" class="mybutton" value="确定导入" />
+        </div>
+    </form>
+    <script>
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+        });
+    </script>
+

@@ -1,0 +1,40 @@
+﻿@{
+    ViewBag.Title = "ChangeStatus";
+    if (!WebMvc.Common.Tools.CheckLogin() && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.End();
+        return;
+    }
+    RoadFlow.Platform.WorkFlowTask BTask = new RoadFlow.Platform.WorkFlowTask();
+}
+
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <div style="text-align:center; padding-top:50px;">
+            <div>
+                将状态改变为：
+                <select id="Status" name="Status" class="myselect" validate="empty">
+                    <option value=""></option>
+                    @Html.Raw(BTask.GetStatusListItems(ViewBag.Status))
+                </select>
+                <input type="button" class="mybutton" value="确&nbsp;定" onclick="checkform(this);" />
+                <span type="msg"></span>
+            </div>
+        </div>
+    </form>
+    <script type="text/javascript">
+        $(window).load(function ()
+        {
+            @Html.Raw(ViewBag.Script)
+        });
+        function checkform(but)
+        {
+            var f = document.forms[0];
+            var flag = new RoadUI.Validate().validateForm(f);
+            $(but).prop('disabled', flag);
+            if (flag)
+            {
+                f.submit();
+            }
+        }
+    </script>

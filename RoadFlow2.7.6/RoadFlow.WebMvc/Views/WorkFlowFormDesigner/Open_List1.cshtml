@@ -1,0 +1,104 @@
+﻿@{
+    ViewBag.Title = "Open_List1";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+    <form method="post">
+        @Html.AntiForgeryToken()
+        <table cellpadding="0" cellspacing="1" border="0" width="99%" align="center">
+            <tr>
+                <td align="left" height="35">
+                    名称：<input type="text" class="mytext" style="width:160px;" id="form_name" value="" name="form_name" />
+                    <input type="button" class="mybutton" onclick="query(null, 1);" value=" 查 询 " />
+                    <input type="button" class="mybutton" onclick="newform();" value="新建表单" />
+                    <input type="button" class="mybutton" onclick="ImportForm();" value="导入表单" />
+                </td>
+            </tr>
+        </table>
+        <table id="listtable"></table>
+        <div class="buttondiv"></div>
+    </form>
+    <script type="text/javascript">
+        var curPageSize = '@Request.QueryString["pagesize"]';
+        var curPageNumber = '@Request.QueryString["pagenumber"]';
+        var appid = '@Request.QueryString["appid"]';
+        var iframeid = '@Request.QueryString["iframeid"]';
+        var typeid = '@Request.QueryString["typeid"]';
+        $(function ()
+        {
+            $("#listtable").jqGrid({
+                url: RoadUI.Core.rooturl() + "/WorkFlowFormDesigner/Query",
+                postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), appid: appid, typeid: typeid },
+                mtype: 'POST',
+                datatype: "json",
+                colNames: ['表单名称', '创建人', '创建时间', '修改时间', ''],
+                colModel: [
+                    { name: 'Name', index: 'Name', width: 310 },
+                    { name: 'CreateUserName', index: 'CreateUserName', width: 90 },
+                    { name: 'CreateTime', index: 'CreateTime', width: 90 },
+                    { name: 'LastModifyTime', index: 'LastModifyTime', width: 50 },
+                    { name: 'Edit', index: '', sortable: false, width: 110 }
+                ],
+                sortname: "CreateTime",
+                sortorder: "desc",
+                height: '100%',
+                width: $(window).width(),
+                loadComplete: function ()
+                {
+                    var gridObj = $("#listtable");
+                    var records = gridObj.getGridParam("userData");
+                    curPageSize = records.pagesize;
+                    curPageNumber = records.pagenumber;
+                    $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+                }
+            });
+
+        });
+        $(window).resize(function ()
+        {
+            $("#listtable").setGridWidth($(window).width());
+        });
+        function query(size, number)
+        {
+            var data = {
+                __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+                form_name: $("#form_name").val(), appid: appid, typeid: typeid,
+                pagesize: size || curPageSize, pagenumber: number || curPageNumber
+            };
+            $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+        }
+        function openform(id, formname)
+        {
+            top.openApp("/WorkFlowFormDesigner/Index?formid=" + id + "@Html.Raw(ViewBag.query)", 0, "编辑" + formname + "表单", id);
+        }
+        function newform()
+        {
+            top.openApp("/WorkFlowFormDesigner/Index?isnewform=1@(Html.Raw(ViewBag.query))", 0, "新建表单", RoadUI.Core.newid(false));
+        }
+        function delform(id)
+        {
+            if (!confirm("您真的要删除该表单吗?"))
+            {
+                return false;
+            }
+            $.ajax({
+                url: "../Scripts/FormDesinger/ueditor/plugins/dialogs/delete.aspx?id=" + id, async: false, cache: false, success: function (txt)
+                {
+                    if ("1" == txt)
+                    {
+                        alert("删除成功!");
+                        query();
+                    }
+                }
+            });
+        }
+        function ExportForm(formid)
+        {
+            var url = "Export?formid=" + formid + "@(Html.Raw(ViewBag.query))";
+            window.location = url;
+        }
+        function ImportForm()
+        {
+            var url = "/WorkFlowFormDesigner/Import?1=1@(Html.Raw(ViewBag.query))";
+            new RoadUI.Window().open({ title: "导入表单", width: 400, height: 200, url: url, opener: window, openerid: iframeid, resize: false });
+        }
+    </script>

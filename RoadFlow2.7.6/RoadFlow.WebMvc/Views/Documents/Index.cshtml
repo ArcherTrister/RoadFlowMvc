@@ -1,0 +1,26 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    Page.BodyStyle = "style=\"padding:0; overflow:hidden;\"";
+    string Query = "appid=" + Request.QueryString["appid"] + "&tabid=" + Request.QueryString["appid"];
+    string Iframeid = Request.QueryString["appid"] + "_iframe";
+}
+
+    <table cellpadding="0" cellspacing="0" border="0" width="100%">
+        <tr>
+            <td style="width:170px; vertical-align:top; padding:5px 5px 0 5px;">
+                <iframe id="Iframe1" frameborder="0" scrolling="auto" src="~/Documents/Tree?@Query" style="width:100%;margin:0;padding:0;"></iframe> 
+            </td>
+            <td class="organizesplit" style="padding:0;">
+                <iframe id="@Iframeid" frameborder="0" scrolling="auto" src="~/Documents/ListNoRead?@Query" style="width:100%;margin:0;padding:0;"></iframe> 
+            </td>
+        </tr>
+    </table>
+    <script type="text/javascript">
+        $(function ()
+        {
+            var height = $(window).height();
+            $('#Iframe1').attr('height', height-10);
+            $('#@Iframeid').attr('height', height-10);
+        });
+    </script>

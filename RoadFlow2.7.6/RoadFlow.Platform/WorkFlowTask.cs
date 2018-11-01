@@ -407,7 +407,7 @@ namespace RoadFlow.Platform
                   if (all2.Count > 1)
                   {
                     Decimal num2 = step1.Behavior.Percentage <= Decimal.Zero ? new Decimal(100) : step1.Behavior.Percentage;
-                    if (MyExtensions.Round((Decimal) (all2.Where<RoadFlow.Data.Model.WorkFlowTask>((Func<RoadFlow.Data.Model.WorkFlowTask, bool>) (p => p.Status == 2)).Count<RoadFlow.Data.Model.WorkFlowTask>() + 1) / (Decimal) all2.Count * new Decimal(100), 2) < num2)
+                    if (global::MyExtensions.Round((Decimal) (all2.Where((Func<Data.Model.WorkFlowTask, bool>) (p => p.Status == 2)).Count() + 1) / (Decimal) all2.Count * new Decimal(100), 2) < num2)
                     {
                       num1 = -1;
                     }
@@ -671,7 +671,7 @@ namespace RoadFlow.Platform
                                 if (this.IsPassing(step4, executeModel.FlowID, executeModel.GroupID, currentTask, prevStepId))
                                   ++num3;
                               }
-                              flag2 = MyExtensions.Round((Decimal) num3 / (Decimal) prevSteps.Count * new Decimal(100), 2) >= (step3.Behavior.CountersignaturePercentage <= Decimal.Zero ? new Decimal(100) : step3.Behavior.CountersignaturePercentage);
+                              flag2 = global::MyExtensions.Round((Decimal) num3 / (Decimal) prevSteps.Count * new Decimal(100), 2) >= (step3.Behavior.CountersignaturePercentage <= decimal.Zero ? new Decimal(100) : step3.Behavior.CountersignaturePercentage);
                               break;
                           }
                         }
@@ -1154,7 +1154,7 @@ namespace RoadFlow.Platform
                       if (all2.Count > 1)
                       {
                         Decimal num4 = step1.Behavior.Percentage <= Decimal.Zero ? new Decimal(100) : step1.Behavior.Percentage;
-                        if (MyExtensions.Round((Decimal) (all2.Where<RoadFlow.Data.Model.WorkFlowTask>((Func<RoadFlow.Data.Model.WorkFlowTask, bool>) (p => p.Status == 3)).Count<RoadFlow.Data.Model.WorkFlowTask>() + 1) / (Decimal) all2.Count * new Decimal(100), 2) < new Decimal(100) - num4)
+                        if (global::MyExtensions.Round((Decimal) (all2.Where((Func<Data.Model.WorkFlowTask, bool>) (p => p.Status == 3)).Count() + 1) / (Decimal) all2.Count * new Decimal(100), 2) < new Decimal(100) - num4)
                         {
                           num1 = -1;
                         }
@@ -1251,7 +1251,7 @@ namespace RoadFlow.Platform
                         if (this.IsBack(step2, executeModel.FlowID, currentTask.GroupID, currentTask.PrevID, currentTask.Sort))
                           ++num4;
                       }
-                      flag2 = MyExtensions.Round((Decimal) num4 / (Decimal) prevSteps.Count * new Decimal(100), 2) >= (step3.Behavior.CountersignaturePercentage <= Decimal.Zero ? new Decimal(100) : step3.Behavior.CountersignaturePercentage);
+                      flag2 = global::MyExtensions.Round((Decimal) num4 / (Decimal) prevSteps.Count * new Decimal(100), 2) >= (step3.Behavior.CountersignaturePercentage <= decimal.Zero ? new Decimal(100) : step3.Behavior.CountersignaturePercentage);
                       break;
                   }
                   if (flag2)
@@ -1859,7 +1859,7 @@ namespace RoadFlow.Platform
           flag = all2.Where<RoadFlow.Data.Model.WorkFlowTask>((Func<RoadFlow.Data.Model.WorkFlowTask, bool>) (p => p.Status == 2)).Count<RoadFlow.Data.Model.WorkFlowTask>() > 0;
           break;
         case 2:
-          flag = MyExtensions.Round((Decimal) (all2.Where<RoadFlow.Data.Model.WorkFlowTask>((Func<RoadFlow.Data.Model.WorkFlowTask, bool>) (p => p.Status == 2)).Count<RoadFlow.Data.Model.WorkFlowTask>() + 1) / (Decimal) all2.Count * new Decimal(100), 2) >= (step.Behavior.Percentage <= Decimal.Zero ? new Decimal(100) : step.Behavior.Percentage);
+          flag = global::MyExtensions.Round((Decimal) (all2.Where((Func<Data.Model.WorkFlowTask, bool>) (p => p.Status == 2)).Count() + 1) / (Decimal) all2.Count * new Decimal(100), 2) >= (step.Behavior.Percentage <= decimal.Zero ? new Decimal(100) : step.Behavior.Percentage);
           break;
       }
       if (flag)
@@ -1891,7 +1891,7 @@ namespace RoadFlow.Platform
           flag = all.Where<RoadFlow.Data.Model.WorkFlowTask>((Func<RoadFlow.Data.Model.WorkFlowTask, bool>) (p => p.Status.In(2, 4))).Count<RoadFlow.Data.Model.WorkFlowTask>() == 0;
           break;
         case 2:
-          flag = MyExtensions.Round((Decimal) (all.Where<RoadFlow.Data.Model.WorkFlowTask>((Func<RoadFlow.Data.Model.WorkFlowTask, bool>) (p => p.Status.In(3, 5))).Count<RoadFlow.Data.Model.WorkFlowTask>() + 1) / (Decimal) all.Count * new Decimal(100), 2) >= new Decimal(100) - (step.Behavior.Percentage <= Decimal.Zero ? new Decimal(100) : step.Behavior.Percentage);
+          flag = global::MyExtensions.Round((Decimal) (all.Where((Func<Data.Model.WorkFlowTask, bool>) (p => p.Status.In(3, 5))).Count() + 1) / (Decimal) all.Count * new Decimal(100), 2) >= new Decimal(100) - (step.Behavior.Percentage <= decimal.Zero ? new Decimal(100) : step.Behavior.Percentage);
           break;
       }
       return flag;

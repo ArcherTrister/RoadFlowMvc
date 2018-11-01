@@ -1,0 +1,78 @@
+﻿@{
+    ViewBag.Title = "Index";
+    string query1 = string.Format("&appid={0}&tabid={1}&isoneself={2}", Request.QueryString["appid"], Request.QueryString["tabid"], Request.QueryString["isoneself"]);
+    bool isOneSelf = "1" == Request.QueryString["isoneself"];
+    RoadFlow.Platform.Organize borganize = new RoadFlow.Platform.Organize();
+}
+<form method="post" >
+    @Html.AntiForgeryToken()
+    <div class="toolbar" style="margin-top:0; border-top:0;">
+        <a href="javascript:void(0);" onclick="add();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/add.gif"));">添加意见</span></a>
+        <span class="toolbarsplit">&nbsp;</span>
+        <a href="javascript:void(0);" onclick="del();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/cross.png"));">删除所选</span></a>
+    </div>
+    <table id="listtable"></table>
+</form>
+<script type="text/javascript">
+    var appid = '@Request.QueryString["appid"]';
+    var iframeid = '@Request.QueryString["tabid"]';
+    var dialog = top.mainDialog;
+    var rows=@Html.Raw(ViewBag.list);
+    var isOneSelf="@isOneSelf"=="True";
+    $(function(){
+        $("#listtable").jqGrid({
+            datatype: "local",
+            colNames: ['意见内容', '所属成员', '添加类型', '排序', '编辑'],
+            colModel: [
+                { name: 'Comment', index: 'Comment' },
+                { name: 'MemberID', index: 'MemberID' },
+                { name: 'Type', index: 'Type' },
+                { name: 'Sort', index: 'Sort' },
+                { name: 'Opation', index: 'Opation', width:80 },
+            ],
+            multiselect: true,
+            height: 440,
+            width: $(window).width(),
+            data: rows
+        });
+        if(isOneSelf)
+        {
+            $("#listtable").hideCol("MemberID").hideCol("Type").setGridWidth($(window).width());
+        }
+    });
+    $(window).resize(function(){  
+        $("#listtable").setGridWidth($(window).width());
+    });
+    function add()
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "添加意见", width: 700, height: 260, url: '/WorkFlowComments/Edit?1=1' + '@Html.Raw(query1)', opener:window, openerid: iframeid });
+    }
+    function edit(id)
+    {
+        dialog.open({ id: "window_" + appid.replaceAll('-', ''), title: "编辑意见", width: 700, height: 260, url: '/WorkFlowComments/Edit?id=' + id + '@Html.Raw(query1)', opener: window, openerid: iframeid });
+    }
+    function del()
+    {
+        var rowIds = $("#listtable").jqGrid('getGridParam', 'selarrrow');
+        if (rowIds.length==0)
+        {
+            alert("您没有选择要删除的项!");
+            return false;
+        }
+        if (!confirm('您真的要删除所选意见吗?'))
+        {
+            return false;
+        }
+        $.ajax({
+            url: RoadUI.Core.rooturl() + "/WorkFlowComments/Delete?1=1@(Html.Raw(query1))",
+            type: "post",
+            data: { "ids": rowIds.join(',') , __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val() },
+            success: function (txt)
+            {
+                alert(txt);
+                window.location = window.location;
+            }
+        });
+        return true;
+    }
+</script>

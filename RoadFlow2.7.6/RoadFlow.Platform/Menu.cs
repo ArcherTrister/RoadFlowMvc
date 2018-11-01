@@ -163,8 +163,7 @@ namespace RoadFlow.Platform
     {
       Menu menu = new Menu();
       AppLibrary appLibrary = new AppLibrary();
-      int num = 1;
-      DataTable allDataTable = menu.GetAllDataTable(num != 0);
+      DataTable allDataTable = menu.GetAllDataTable(true);
       if (allDataTable.Rows.Count == 0)
         return "";
       StringBuilder stringBuilder1 = new StringBuilder();
@@ -344,7 +343,40 @@ namespace RoadFlow.Platform
       return stringBuilder1.ToString();
     }
 
-    public string GetUserMenu1(Guid userID)
+
+    public void GetUserMenus(Guid userID) {
+
+    }
+
+        // 递归算法
+        //private void FillTree(RoadFlow.Data.Model.Menu treeNode, string ParentId, DataTable dt)
+        //{
+        //    DataRow[] drs = dt.Select(" ParentID='" + ParentId + "'");
+        //    if (drs == null || drs.Length < 0)
+        //    {
+        //        treeNode.hasChilds = false;
+        //    }
+        //    else
+        //    {
+        //        treeNode.hasChilds = true;
+        //        for (int i = 0; i < drs.Length; i++)
+        //        {
+        //            DataRow dr = drs[i];
+        //            RoadFlow.Data.Model.Menu nodeName = new RoadFlow.Data.Model.Menu();
+        //            nodeName.id = dr["ID"].ToString();
+        //            nodeName.title = dr["Title"].ToString();
+        //            nodeName.ico = dr["Ico"].ToString().IsNullOrEmpty() ? "" : dr["Ico"].ToString();
+        //            nodeName.link = getAddress(dr);
+        //            nodeName.model = dr["OpenMode"].ToString();
+        //            nodeName.width = dr["Width"].ToString();
+        //            nodeName.height = dr["Height"].ToString();
+
+        //            FillTree(nodeName, nodeName.id, dt);
+        //            treeNode.childs.Add(nodeName);
+        //        }
+        //    }
+        //}
+        public string GetUserMenu1(Guid userID)
     {
       Menu menu = new Menu();
       AppLibrary appLibrary = new AppLibrary();

@@ -57,20 +57,13 @@ namespace RoadFlow.Platform
 
     public static void SiganalR(Guid userID, string id, string title, string contents)
     {
-      //GlobalHost.ConnectionManager.GetConnectionContext<SignalRConnection>().Groups.Send(userID.ToString().ToLower(), (object) new JsonData()
-      //{
-      //  [nameof (id)] = (JsonData) id,
-      //  [nameof (title)] = (JsonData) title,
-      //  [nameof (contents)] = (JsonData) contents,
-      //  ["count"] = (JsonData) new ShortMessage().GetAllNoReadByUserID(userID).Count
-      //}.ToJson(true));
             GlobalHost.ConnectionManager.GetConnectionContext<SignalRConnection>().Groups.Send(userID.ToString().ToLower(), (object)new JsonData()
             {
                 [nameof(id)] = (JsonData)id,
                 [nameof(title)] = (JsonData)title,
                 [nameof(contents)] = (JsonData)contents,
                 ["count"] = (JsonData)new ShortMessage().GetAllNoReadByUserID(userID).Count
-            }.ToJson());
+            }.ToJson(true));
         }
 
     public int Add(RoadFlow.Data.Model.ShortMessage model)

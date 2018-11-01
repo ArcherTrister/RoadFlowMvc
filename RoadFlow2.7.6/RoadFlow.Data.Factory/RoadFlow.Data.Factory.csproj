@@ -34,7 +34,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Factory.cs" />
-    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\RoadFlow.Data.Interface\RoadFlow.Data.Interface.csproj">

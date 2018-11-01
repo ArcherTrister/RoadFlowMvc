@@ -1,0 +1,70 @@
+﻿@{
+    ViewBag.Title = "DocAdd";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RoadFlow.Platform.DocumentDirectory DocDir = new RoadFlow.Platform.DocumentDirectory();
+    string DirID = Request.QueryString["DirID"];
+}
+@model RoadFlow.Data.Model.Documents
+<script src="~/Scripts/Ueditor/ueditor.config.js"></script>
+<script src="~/Scripts/Ueditor/ueditor.all.min.js"></script>
+<script src="~/Scripts/Ueditor/ueditor.parse.min.js"></script>
+
+<form id="form1" method="post">
+@Html.AntiForgeryToken()
+<div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:999; width:100%; margin-right:auto;">
+    <a href="javascript:void(0);" onclick="window.location='List@(Request.Url.Query)';return false;"><span style="background-image:url(../Images/ico/arrow_medium_left.png);">返回列表</span></a>
+    <span class="toolbarsplit">&nbsp;</span>
+    <a href="javascript:void(0);" onclick="checkf(this);" id="LinkButton1" ><span style="background-image:url(../Images/ico/save.gif);">保存文档</span></a>
+</div>
+    
+<table cellpadding="0" cellspacing="1" border="0" width="99%;" class="formtable" style="margin-top:36px;">
+    <tr>
+        <th style="width: 80px;">栏目：</th>
+        <td>
+            <input type="hidden" name="DirectoryID" id="DirectoryID" value="@DirID" />
+            @DocDir.GetName(DirID.ToGuid())
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 80px;">标题：</th>
+        <td><input type="text" id="Title1" name="Title1" validate="empty" value="@Model.Title" class="mytext" style="width: 85%"/></td>
+    </tr>
+    <tr>
+        <th style="width: 80px;">阅读人员：</th>
+        <td><input type="text" id="ReadUsers" name="ReadUsers" class="mymember" value="@Model.ReadUsers" style="width: 200px;"/>
+            &nbsp;&nbsp;来源：<input type="text" class="mytext" id="Source" value="@Model.Source" name="Source"/>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 80px;">内容：</th>
+        <td style="padding-right:4px;">
+            <textarea class="mytextarea" id="Contents" name="Contents" validate="editor" model="html" style="width:100%;height:300px;">@Model.Contents</textarea>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 80px;">附件：</th>
+        <td><input type="text" id="Files" name="Files" class="myfile" value="@Model.Files" style="width: 85%"/></td>
+    </tr>
+</table>
+    <br /><br />
+</form>
+<script type="text/javascript">
+    $(function ()
+    {
+        @Html.Raw(ViewBag.script)
+    });
+    function checkf()
+    {
+        if ($("#Title1").val().trim().length==0)
+        {
+            alert("标题不能为空!");
+            return false;
+        }
+        if (!UE.getEditor("Contents").hasContents())
+        {
+            alert("内容不能为空!");
+            return false;
+        }
+        document.forms[0].submit();
+    }
+</script>

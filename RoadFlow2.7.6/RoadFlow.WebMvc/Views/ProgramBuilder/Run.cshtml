@@ -1,0 +1,189 @@
+﻿@model System.Data.DataTable
+@{
+    
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RoadFlow.Data.Model.ProgramBuilderCache PBModel = ViewBag.PBModel as RoadFlow.Data.Model.ProgramBuilderCache;
+    RoadFlow.Platform.ProgramBuilder PB = new RoadFlow.Platform.ProgramBuilder();
+    RoadFlow.Platform.ProgramBuilderQuerys PBQ = new RoadFlow.Platform.ProgramBuilderQuerys();
+    RoadFlow.Platform.Dictionary BDict = new RoadFlow.Platform.Dictionary();
+    RoadFlow.Platform.Organize BOrganize = new RoadFlow.Platform.Organize();
+    if (Model == null)
+    {
+        Response.Write("查询错误");
+        Response.End();
+        return;
+    }
+    ViewBag.Title = PBModel.Program.Name;
+    var buttonHtmlDicts = WebMvc.Common.Tools.GetAppButtonHtml();
+}
+
+    <form id="form1" method="post">
+        @Html.Raw(buttonHtmlDicts[0])
+        @if(!buttonHtmlDicts[0].IsNullOrEmpty())
+        {
+            <div style="height:35px;"></div>
+        }    
+        @if(PBModel.Querys.Count>0 && PBModel.Buttons.Count>0)
+        {
+        <div class="querybar">
+            <table cellpadding="0" cellspacing="0" border="0" width="100%">
+                <tr>
+                    <td>
+                        @Html.Raw(PBQ.GetQueryShowHtml(PBModel.Querys))
+                        @if(1==PBModel.Program.ButtonLocation)
+                        {
+                        @Html.Raw(PBQ.GetQueryButtonHtml(PBModel.Program))@Html.Raw(buttonHtmlDicts[1])
+                        }
+                    </td>
+                </tr>
+            </table>
+            @if(1!=PBModel.Program.ButtonLocation){
+            <table cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:8px;">
+                <tr>
+                    <td style="text-align:center">
+                        @Html.Raw(PBQ.GetQueryButtonHtml(PBModel.Program))@Html.Raw(buttonHtmlDicts[1])
+                    </td>
+                </tr>
+            </table>
+            }
+        </div>
+        }
+        <table class="@(PBModel.Program.TableStyle.IsNullOrEmpty()?"listtable":PBModel.Program.TableStyle)"@("reporttable"==PBModel.Program.TableStyle?" cellpadding=\"1\" cellspacing=\"0\" border=\"1\"":"")>
+            <thead>
+                @if(PBModel.Program.TableHead.IsNullOrEmpty()){
+                <tr>
+                    @foreach (var field in PBModel.Fields)
+                    {
+                        if (field.ShowType == 7 && buttonHtmlDicts[2].IsNullOrEmpty())
+                        {
+                            continue;//如果按钮列没有按钮则不显示该列
+                        }
+                    <th style="text-align:@field.Align;@(field.Width.IsNullOrEmpty() ? "" : "width:" + field.Width + ";")"><label>@Html.Raw(field.ShowTitle)</label></th>
+                    }
+                </tr>
+                }else{
+                   @Html.Raw(PBModel.Program.TableHead)   
+                }
+            </thead>
+            <tbody>
+            @{
+                int index = 1;
+                foreach (System.Data.DataRow dr in Model.Rows)
+                {
+           
+                <tr>
+                    @foreach (var field in PBModel.Fields)
+                    {
+                        if (field.ShowType == 7 && buttonHtmlDicts[2].IsNullOrEmpty())
+                        {
+                            continue;
+                        }
+                        string text = string.Empty;
+                        object obj = field.Field.IsNullOrEmpty() ? "" : dr[field.Field];
+                        switch (field.ShowType)
+                        {
+                            case 0://直接输出
+                                text = obj.ToString();
+                                break;
+                            case 1://序号
+                                text = index++.ToString();
+                                break;
+                            case 2://日期时间
+                                text = obj.ToString().ToDateTime().ToString(field.ShowFormat);
+                                break;
+                            case 3://数字
+                                text = obj.ToString().ToDecimal().ToString(field.ShowFormat);
+                                break;
+                            case 4://数据字典ID显示为标题
+                                text = BDict.GetTitle(obj.ToString().ToGuid());
+                                break;
+                            case 5://组织机构ID显示为名称
+                                text = BOrganize.GetNames(obj.ToString());
+                                break;
+                            case 6://自定义
+                                text = field.CustomString;
+                                break;
+                            case 7://按钮列
+                                text = RoadFlow.Platform.Wildcard.FilterWildcard(buttonHtmlDicts[2], "", dr);
+                                break;
+                            case 8://附件显示不换行
+                                text = RoadFlow.Platform.Files.GetFilesShowString(obj.ToString(), newRow: false);
+                                break;
+                            case 9://附件显示换行
+                                text = RoadFlow.Platform.Files.GetFilesShowString(obj.ToString());
+                                break;
+                        }
+                    <td style="text-align:@field.Align">@Html.Raw(text)</td>
+                    }
+                </tr>
+                }
+            }
+            </tbody>
+        </table>
+        <div class="buttondiv">
+            @Html.Raw(ViewBag.pager)
+        </div>
+    </form>
+    <script type="text/javascript">
+        var query = '@Html.Raw(ViewBag.query)';
+        var prevurl = '@Html.Raw(ViewBag.prevurl)';
+        var tabid = '@Request.QueryString["tabid"]';
+        var apptitle = '@PBModel.Program.Name';
+        var editmodel = '@(PBModel.Program.EditModel.HasValue ? PBModel.Program.EditModel.Value : 0)';
+        var formid = '@PBModel.Program.FormID';
+        var programid = '@PBModel.Program.ID';
+        
+        function add(id, title, isShow)
+        {
+            var url = RoadUI.Core.rooturl() + '/WorkFlowRun/SubTableEdit?secondtableeditform=' + formid + "&editmodel=" + editmodel + "&instanceid=" + (id || "") + "&display=" + (isShow ? "1" : "0") + query + "&prevurl=" + prevurl;
+            if ('0' == editmodel)
+            {
+                window.location = url;
+            }
+            else
+            {
+                var width = "@PBModel.Program.Width";
+                var height = "@PBModel.Program.Height";
+                if (isNaN(width))
+                {
+                    width = 800;
+                }
+                if (isNaN(height))
+                {
+                    height = 500;
+                }
+                new RoadUI.Window().open({ url: url, width: width, height: height, opener: window, openerid: tabid, title: title || "新增" });
+            }
+            return true;
+        }
+        function edit(id)
+        {
+            add(id, "编辑");
+            return true;
+        }
+        function del(id)
+        {
+            if (!confirm("您确定要删除该条数据吗?"))
+            {
+                return false;
+            }
+            var url = 'RunDelete?secondtableeditform=' + formid + "&editmodel=" + editmodel + "&instanceid=" + (id || "") + query + "&prevurl=" + prevurl;
+            window.location = url;
+            return true;
+        }
+        function view(id)
+        {
+            add(id, "查看", true);
+            return true;
+        }
+        function outToExcel()
+        {
+            window.location = "OutToExcel?programid=" + programid;
+        }
+        function inFromExcel()
+        {
+            var url = "InFromExcel?programid=" + programid;
+            new RoadUI.Window().open({ url: url, width: 450, height: 205, opener: window, openerid: tabid, title: "Excel导入数据" });
+        }
+        @Html.Raw(PBModel.Program.ClientScript.FilterWildcard())
+    </script>

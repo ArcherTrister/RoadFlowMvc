@@ -1,0 +1,80 @@
+﻿@{
+    ViewBag.Title = "List";
+    string query = string.Format("&appid={0}&tabid={1}",
+                        Request.QueryString["appid"],
+                        Request.QueryString["tabid"]
+                        );
+}
+<form method="post" >
+    @Html.AntiForgeryToken()
+    <div class="querybar">
+        <table cellpadding="0" cellspacing="1" border="0" width="100%">
+            <tr>
+                <td>
+                    标题：<input type="text" class="mytext" id="Title" name="Title" value="" style="width:180px" />
+                    流程：<select class="myselect2" id="FlowID" name="FlowID" style="width:150px;"><option></option>@Html.Raw(ViewBag.FlowOptions)</select>
+                    日期：<input type="text" class="mycalendar" style="width:90px;" value="" name="Date1" id="Date1" /> 至 <input type="text" value="" style="width:90px;" class="mycalendar" name="Date2" id="Date2"/>
+                    <input type="button" onclick="query(null, 1);" name="Search" value="查询" class="mybutton" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    <table id="listtable"></table>
+    <div class="buttondiv"></div>
+</form>
+
+<script type="text/javascript">
+    var appid = '@Request.QueryString["appid"]';
+    var iframeid = '@Request.QueryString["tabid"]';
+    var dialog = top.mainDialog;
+
+    var curPageSize = '@Request.QueryString["pagesize"]';
+    var curPageNumber = '@Request.QueryString["pagenumber"]';
+    $(function ()
+    {
+        $("#listtable").jqGrid({
+            url: RoadUI.Core.rooturl() + "/WorkFlowArchives/Query",
+            postData: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val(), appid: appid },
+            mtype: 'POST',
+            datatype: "json",
+            colNames: ['标题', '流程', '步骤', '归档时间'],
+            colModel: [
+                { name: 'Title', index: 'Title', width: 410 },
+                { name: 'FlowName', index: 'FlowID', align: "left", width: 110 },
+                { name: 'StepName', index: 'StepID', align: "left", width: 110 },
+                { name: 'WriteTime', index: 'WriteTime', align: "left", width: 110 },
+            ],
+            sortname: "WriteTime",
+            sortorder: "desc",
+            height: '100%',
+            width: $(window).width(),
+            loadComplete: function ()
+            {
+                var gridObj = $("#listtable");
+                var records = gridObj.getGridParam("userData");
+                curPageSize = records.pagesize;
+                curPageNumber = records.pagenumber;
+                $(".buttondiv").html(RoadUI.Core.getPager1(records.total, records.pagesize, records.pagenumber, "query"));
+            }
+        });
+    });
+    $(window).resize(function ()
+    {
+        $("#listtable").setGridWidth($(window).width());
+    });
+    function query(size, number)
+    {
+        var data = {
+            __RequestVerificationToken: $("input[name='__RequestVerificationToken']").val(),
+            title: $("#Title").val(), FlowID: $("#FlowID").val(), Date1: $("#Date1").val(), Date2: $("#Date2").val(), appid: appid, 
+            pagesize: size || curPageSize, pagenumber: number || curPageNumber
+        };
+        $("#listtable").setGridParam({ postData: data }).trigger("reloadGrid");
+    }
+
+    function show(id)
+    {
+        var url = RoadUI.Core.rooturl() + '/WorkFlowArchives/Show?id=' + id + '@Html.Raw(query)' + '&display=1';
+        RoadUI.Core.open(url, 1000, 500, "查看归档内容");
+    }
+</script>

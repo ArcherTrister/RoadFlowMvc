@@ -1,0 +1,85 @@
+﻿@{
+    ViewBag.Title = "DocRead";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string loginMsg;
+    if (!WebMvc.Common.Tools.CheckLogin(out loginMsg) && !RoadFlow.Platform.WeiXin.Organize.CheckLogin())
+    {
+        Response.End();
+        return;
+    }
+}
+@model RoadFlow.Data.Model.Documents
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=0"/>
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    @if("1"!=Request.QueryString["ismobile"]){
+    <div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:99999; width:100%; margin-right:auto;">
+
+        <a href="javascript:void(0);" onclick="window.location='List@(Request.Url.Query)';return false;"><span style="background-image:url(../Images/ico/arrow_medium_left.png);">返回列表</span></a>
+        <span class="toolbarsplit">&nbsp;</span>
+        @if(ViewBag.IsEdit){
+        <a href="javascript:void(0);" onclick="window.location='DocAdd@(Request.Url.Query)';"><span style="background-image:url(../Images/ico/topic_edit.gif);">编辑文档</span></a>
+        <a href="javascript:void(0);" onclick="del();return false;" ><span style="background-image:url(../Images/ico/cancel.gif);">删除文档</span></a>
+        }
+    </div>
+    }
+    <table cellpadding="0" cellspacing="0" border="0" width="98%;" class="formtable" style="@("1"!=Request.QueryString["ismobile"]?"margin-top:40px;":"")">
+        <tr>
+            <td style="height:28px; font-weight:bold; font-size:16px; text-align:left;">
+                @Html.Raw(Model.Title)
+            </td>
+        </tr>
+        <tr>
+            <td style="height:28px; color:#666; text-align:left;">
+                <span style="margin-right:12px;">栏目：@Model.DirectoryName</span>
+                <span style="margin-right:12px;">来源：@Model.Source</span>
+                <span style="margin-right:12px;">发布时间：@Model.WriteTime.ToDateTimeString()</span>
+                <span style="margin-right:12px;">发布人：@Model.WriteUserName</span>
+                <span style="margin-right:12px;">编辑时间：@(Model.EditTime.HasValue ? Model.EditTime.Value.ToDateTimeString() : "")</span>
+                <span style="margin-right:12px;">编辑人：@Model.EditUserName</span>
+                <span>阅读次数：@Model.ReadCount</span>
+            </td>
+        </tr>
+        <tr>
+            <td style="border-bottom:1px solid #ccc;">
+                
+            </td>
+        </tr>
+        <tr>
+            <td style="padding:8px 10px;text-align:left; line-height:21px;">
+                @Html.Raw(Model.Contents)
+            </td>
+        </tr>
+       
+        <tr>
+            <td style="height:28px;padding:8px 10px;">
+               附件：@Html.Raw(RoadFlow.Platform.Files.GetFilesShowString(Model.Files, WebMvc.Common.Tools.BaseUrl + "/Content/Show.ashx"))
+            </td>
+        </tr>
+    </table>
+    <br />
+</form>
+<script type="text/javascript">
+    function del()
+    {
+        if (confirm('您真的要删除该文档吗?'))
+        {
+            $.ajax({
+                url: "DocDelete@(Html.Raw(Request.Url.Query))", type: "post",
+                data: { "__RequestVerificationToken": $("input[name='__RequestVerificationToken']").val() },
+                success: function (txt)
+                {
+                    if ("1" == txt)
+                    {
+                        alert('删除成功!');
+                        window.location = 'List@(Html.Raw(Request.Url.Query))';
+                    }
+                    else
+                    {
+                        alert(txt);
+                    }
+                }
+            });
+        }
+    }
+</script>

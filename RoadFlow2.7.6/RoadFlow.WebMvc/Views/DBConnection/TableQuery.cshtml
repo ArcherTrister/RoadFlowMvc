@@ -1,0 +1,36 @@
+﻿@{
+    ViewBag.Title = "TableQuery";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .sqltextarea { width:100%; height:200px; vertical-align:top; padding:3px; font-family:Verdana; font-size:14px;}
+</style>
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    <div style="margin:8px auto 0 auto; width:98%;">
+        <div style="margin:6px 0;">SQL:</div>
+        <div>
+            <textarea id="sqltext" name="sqltext" class="sqltextarea">@ViewBag.sqltext</textarea>
+        </div>
+        <div style="margin:6px 0; text-align:center;">
+            <input type="submit" class="mybutton" value=" 执行SQL " />
+            <input type="button" class="mybutton" value=" 清空SQL " onclick="$('#sqltext').val('');" style="margin-left:8px;" />
+            <input type="button" class="mybutton" value=" 返回前页 " onclick="window.location='Table@(Request.Url.Query)'" style="margin-left:8px;" />
+        </div>
+        
+        @if(!string.IsNullOrEmpty(ViewBag.LiteralResult)){
+        <div style="margin:6px 0;" id="resultdiv">
+            <div style="margin:6px 0;">执行结果@(ViewBag.LiteralResultCount):</div>
+            <div id="tablediv" style="overflow:auto;">
+                @Html.Raw(ViewBag.LiteralResult)
+            </div>
+        </div>
+        }
+    </div>
+        <br /><br />
+    </form>
+    <script type="text/javascript">
+        $(function(){
+            $("#tablediv").width($(window).width-100);
+        });
+    </script>

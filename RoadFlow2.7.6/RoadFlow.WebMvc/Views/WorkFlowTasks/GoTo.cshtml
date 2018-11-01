@@ -1,0 +1,72 @@
+﻿@{
+    ViewBag.Title = "GoTo";
+    List<RoadFlow.Data.Model.WorkFlowInstalledSub.Step> nextSteps = new List<RoadFlow.Data.Model.WorkFlowInstalledSub.Step>();
+    string TaskID = string.Empty;
+    RoadFlow.Data.Model.WorkFlowTask Task = null;
+    RoadFlow.Platform.WorkFlowTask BTask = new RoadFlow.Platform.WorkFlowTask();
+
+    TaskID = Request.QueryString["taskid"];
+    Task = BTask.Get(TaskID.ToGuid());
+    if (Task == null)
+    {
+        Response.Write("未找到任务");
+        Response.End();
+        return;
+    }
+    var wfins = new RoadFlow.Platform.WorkFlow().GetWorkFlowRunModel(Task.FlowID);
+    if (wfins == null)
+    {
+        Response.Write("未找到流程运行时");
+        Response.End();
+        return;
+    }
+    nextSteps = wfins.Steps.ToList();
+}
+
+    <form method="post">
+    @Html.AntiForgeryToken()
+    <div>
+        <table class="listtable">
+            <thead>
+                <tr>
+                    <th><input type="checkbox" onclick="$('[name=\'step\']').prop('checked', this.checked);" style="vertical-align:middle;" id="checkall" /><label for="checkall">步骤</label></th>
+                    <th>处理人员</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var step in nextSteps)
+                {    
+                    string selectType;
+                    string selectRange;
+                    string defaultMember = BTask.GetDefultMember(Task.FlowID, step.ID, Task.GroupID, Task.StepID, Task.InstanceID, out selectType, out selectRange);
+                
+                <tr>
+                    <td><input type="checkbox" style="vertical-align:middle;" name="step" id="step_@step.ID" value="@step.ID" /><label style="vertical-align:middle;" for="step_@step.ID">@step.Name</label></td>
+                    <td><input type="text" @selectType value="@defaultMember" class="mymember" id="member_@step.ID" name="member_@step.ID" /></td>
+                </tr>
+                }
+            </tbody>
+        </table>
+        <div class="buttondiv" style="margin-top:10px;">
+            <input type="button" class="mybutton" value="确认跳转" onclick="checkgoto(this);" />
+            <input type="button" class="mybutton" value="关闭窗口" onclick="new RoadUI.Window().close();" />
+        </div>
+    </div>
+    </form>
+    <script type="text/javascript">
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+        });
+        function checkgoto(but)
+        {
+            var f = document.forms[0];
+            if ($(":checked[name='step']").size()==0)
+            {
+                alert("您没有选择要跳转的步骤!");
+                return;
+            }
+            $(but).prop('disabled', true);
+            f.submit();
+        }
+    </script>

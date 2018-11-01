@@ -1,0 +1,38 @@
+﻿@{
+	string FlowID = Request.QueryString["flowid"];
+	string StepID = Request.QueryString["stepid"];
+	string GroupID = Request.QueryString["groupid"];
+	string TaskID = Request.QueryString["taskid"];
+	string InstanceID = Request.QueryString["instanceid"];
+	string DisplayModel = Request.QueryString["display"] ?? "0";
+	string DBConnID = "06075250-30dc-4d32-bf97-e922cb30fac8";
+	string DBTable = "TempTest_CustomForm";
+	string DBTablePK = "ID";
+	string DBTableTitle = "Title";
+	if(InstanceID.IsNullOrEmpty()){InstanceID = Request.QueryString["instanceid1"];}
+	RoadFlow.Platform.Dictionary BDictionary = new RoadFlow.Platform.Dictionary();
+	RoadFlow.Platform.WorkFlow BWorkFlow = new RoadFlow.Platform.WorkFlow();
+	RoadFlow.Platform.WorkFlowTask BWorkFlowTask = new RoadFlow.Platform.WorkFlowTask();
+	string fieldStatus = BWorkFlow.GetFieldStatus(FlowID, StepID);
+	LitJson.JsonData initData = BWorkFlow.GetFormData(DBConnID, DBTable, DBTablePK, InstanceID, fieldStatus, "{\"temptest_customform.title\":\"###.00\"}");
+	string TaskTitle = BWorkFlow.GetFromFieldData(initData, DBTable, DBTableTitle);
+}
+<link href="~/Scripts/FlowRun/Forms/flowform.css" rel="stylesheet" type="text/css" />
+<script src="~/Scripts/FlowRun/Forms/common.js" type="text/javascript" ></script>
+<input type="hidden" id="Form_ValidateAlertType" name="Form_ValidateAlertType" value="1" />
+<input type="hidden" id="Form_TitleField" name="Form_TitleField" value="TempTest_CustomForm.Title" />
+<input type="hidden" id="Form_DBConnID" name="Form_DBConnID" value="06075250-30dc-4d32-bf97-e922cb30fac8" />
+<input type="hidden" id="Form_DBTable" name="Form_DBTable" value="TempTest_CustomForm" />
+<input type="hidden" id="Form_DBTablePk" name="Form_DBTablePk" value="ID" />
+<input type="hidden" id="Form_DBTableTitle" name="Form_DBTableTitle" value="Title" />
+<input type="hidden" id="Form_AutoSaveData" name="Form_AutoSaveData" value="1" />
+<textarea id="Form_DBTableTitleExpression" name="Form_DBTableTitleExpression" style="display:none;width:0;height:0;">test-{title}--{f7}</textarea>
+<script type="text/javascript">
+	var initData = @Html.Raw(BWorkFlow.GetFormDataJsonString(initData));
+	var fieldStatus = "1"=="@Request.QueryString["isreadonly"]" ? {} : @Html.Raw(fieldStatus);
+	var displayModel = '@DisplayModel';
+	$(window).load(function (){
+		formrun.initData(initData, "TempTest_CustomForm", fieldStatus, displayModel);
+	});
+</script>
+<table class="flowformtable" cellspacing="1" cellpadding="0" id="flowformtable1" width="1686" data-sort="sortDisabled"><tbody><tr class="firstRow"><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;" width="231">地区</td><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;" width="1454"><select class="myselect" id="TempTest_CustomForm.f1" name="TempTest_CustomForm.f1" isflow="1" type1="flow_select" linkagefield="TempTest_CustomForm.f2" linkagesource="dict" linkagesourcetext="" linkagesourceconn="06075250-30dc-4d32-bf97-e922cb30fac8" onchange="RoadUI.Core.loadOptions(this);"><option value=""></option>@Html.Raw(BDictionary.GetOptionsByID("4d143b01-e29b-48cc-9bf4-dc647fd1c07f".ToGuid(), RoadFlow.Platform.Dictionary.OptionValueField.ID, "", false))</select> <select class="myselect" id="TempTest_CustomForm.f2" name="TempTest_CustomForm.f2" isflow="1" type1="flow_select">@Html.Raw(BDictionary.GetOptionsByID("".ToGuid(), RoadFlow.Platform.Dictionary.OptionValueField.ID, "", false))</select>  <input type="hidden" id="TempTest_CustomForm.f20" name="TempTest_CustomForm.f20" isflow="1" type1="flow_hidden" value="路"/></td></tr><tr><td style="word-break: break-all;" valign="top" width="231">标题</td><td style="word-break: break-all;" valign="top" width="1454"><input type="text" id="TempTest_CustomForm.Title" type1="flow_text" name="TempTest_CustomForm.Title" value="" valuetype="2" format="###.00" isflow="1" class="mytext" title=""/></td></tr><tr><td style="word-break: break-all;" valign="top" width="231">类别</td><td valign="top" style="word-break: break-all;" width="1454"><input type="text" id="TempTest_CustomForm.Contents" type1="flow_selectdiv" name="TempTest_CustomForm.Contents" value="" style="width:200px" appid="b0a29668-e155-4585-9346-72a08bc7f16e" titlefield="name" pkfield="id" paramsvalue="%24(%22%23TempTest_CustomForm%5C%5C.Title%22).val()%2B%22%26tt1%3D%22%2B%24(%22%23TempTest_CustomForm%5C%5C.f1%22).val()" paramsname="tt" isflow="1" class="myselectdiv" title=""/></td></tr><tr><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;" width="231">签章</td><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;" width="1454"><input type="button" type1="flow_signature" isflow="1" id="TempTest_CustomForm.f19_text" class="mybutton" onclick="signature('TempTest_CustomForm.f19_text',false);" id1="TempTest_CustomForm.f19" name="TempTest_CustomForm.f19_text" value=" 签 章 " ispassword="1" src="@(string.Concat("/Content/UserSigns/", RoadFlow.Platform.Users.CurrentUserID, ".gif"))"/>    <input type="text" type1="flow_dict" id="TempTest_CustomForm.f6" name="TempTest_CustomForm.f6" value="" dialogtitle="" ismore="0" isroot="0" isparent="0" datasource="3" ds_url_gettitle="" class="mylrselect" title="" dbconn="06075250-30dc-4d32-bf97-e922cb30fac8" dbtable="applibrary" valuefield="ID" titlefield="Title" parentfield="" where="" isflow="1"/>   </td></tr><tr><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;" width="231">流水号</td><td valign="top" colspan="1" rowspan="1" style="word-break: break-all;" width="1454"><input type="text" type1="flow_serialnumber" id="TempTest_CustomForm.f7" maxfiled="f20" name="TempTest_CustomForm.f7" value="" style="width: 200px; background-color: rgb(232, 232, 232);" placeholder="自动生成流水号" sqlwhere="" length="8" isflow="1" class="mytext" title="" readonly=""/><input type="hidden" value="TempTest_CustomForm.f7" name="HasSerialNumber"/><input type="hidden" value="{'formatstring':'Road-$date&yyyyMMdd&$-$serialnumber$-ABC','sqlwhere':'','length':'8','maxfiled':'f20'}" name="HasSerialNumberConfig_TempTest_CustomForm.f7"/>    <select class="myselect" id="TempTest_CustomForm.f15" name="TempTest_CustomForm.f15" isflow="1" type1="flow_select">@Html.Raw(new RoadFlow.Platform.WorkFlowForm().GetOptionsFromSql("06075250-30dc-4d32-bf97-e922cb30fac8", "select    id,name from     users", "095ba7de-084a-41aa-a21e-4ccbb7cd4ff8"))</select></td></tr><tr><td valign="top" colspan="2" rowspan="1"><br/></td></tr></tbody></table><p> </p><p><br/></p>

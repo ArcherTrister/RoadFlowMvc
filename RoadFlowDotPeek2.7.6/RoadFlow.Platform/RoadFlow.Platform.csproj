@@ -1,0 +1,160 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <!--Project was exported from assembly: C:\inetpub\wwwroot\RoadFlowMvc\bin\RoadFlow.Platform.dll-->
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{6C67400C-1D8C-49BA-806B-0B4B0CD91C83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>RoadFlow.Platform</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <ApplicationVersion>1.0.0.0</ApplicationVersion>
+    <FileAlignment>512</FileAlignment>
+    <RootNamespace>RoadFlow.Platform</RootNamespace>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="LitJSON, Version=0.13.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\LitJson.0.13.0\lib\net40\LitJSON.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.8.8.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.8.8\lib\net40\MySql.Data.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Oracle.ManagedDataAccess, Version=4.122.18.3, Culture=neutral, PublicKeyToken=89b483f429c47342, processorArchitecture=MSIL">
+      <HintPath>..\packages\Oracle.ManagedDataAccess.18.3.0\lib\net40\Oracle.ManagedDataAccess.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Wildcard.cs" />
+    <Compile Include="AppLibrary.cs" />
+    <Compile Include="AppLibraryButtons.cs" />
+    <Compile Include="AppLibraryButtons1.cs" />
+    <Compile Include="AppLibrarySubPages.cs" />
+    <Compile Include="DBConnection.cs" />
+    <Compile Include="Dictionary.cs" />
+    <Compile Include="DocumentDirectory.cs" />
+    <Compile Include="Documents.cs" />
+    <Compile Include="DocumentsReadUsers.cs" />
+    <Compile Include="Email.cs" />
+    <Compile Include="Files.cs" />
+    <Compile Include="HastenLog.cs" />
+    <Compile Include="HomeItems.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="Menu.cs" />
+    <Compile Include="MenuUser.cs" />
+    <Compile Include="OnlineUsers.cs" />
+    <Compile Include="Organize.cs" />
+    <Compile Include="ProgramBuilder.cs" />
+    <Compile Include="ProgramBuilderButtons.cs" />
+    <Compile Include="ProgramBuilderExport.cs" />
+    <Compile Include="ProgramBuilderFields.cs" />
+    <Compile Include="ProgramBuilderQuerys.cs" />
+    <Compile Include="ProgramBuilderValidates.cs" />
+    <Compile Include="ShortMessage.cs" />
+    <Compile Include="SMSLog.cs" />
+    <Compile Include="Users.cs" />
+    <Compile Include="UsersEqualityComparer.cs" />
+    <Compile Include="UserShortcut.cs" />
+    <Compile Include="UsersRelation.cs" />
+    <Compile Include="WeiXinMessage.cs" />
+    <Compile Include="WorkCalendar.cs" />
+    <Compile Include="WorkFlow.cs" />
+    <Compile Include="WorkFlowArchives.cs" />
+    <Compile Include="WorkFlowButtons.cs" />
+    <Compile Include="WorkFlowComment.cs" />
+    <Compile Include="WorkFlowData.cs" />
+    <Compile Include="WorkFlowDelegation.cs" />
+    <Compile Include="WorkFlowForm.cs" />
+    <Compile Include="WorkFlowTask.cs" />
+    <Compile Include="WorkGroup.cs" />
+    <Compile Include="WorkTime.cs" />
+    <Compile Include="WeiXin\Agents.cs" />
+    <Compile Include="WeiXin\Config.cs" />
+    <Compile Include="WeiXin\Cryptography.cs" />
+    <Compile Include="WeiXin\Media.cs" />
+    <Compile Include="WeiXin\Message.cs" />
+    <Compile Include="WeiXin\Organize.cs" />
+    <Compile Include="WeiXin\WXBizMsgCrypt.cs" />
+    <Compile Include="SignalR\SignalRConnection.cs" />
+    <Compile Include="SignalR\SignalRHub.cs" />
+    <Compile Include="AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\RoadFlow.Cache.IO\RoadFlow.Cache.IO.csproj">
+      <Project>{278fb545-ee09-4b1c-b9a6-721a335085f6}</Project>
+      <Name>RoadFlow.Cache.IO</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Data.Factory\RoadFlow.Data.Factory.csproj">
+      <Project>{7b826891-4034-4493-9158-4f5c6d7e43a6}</Project>
+      <Name>RoadFlow.Data.Factory</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Data.Interface\RoadFlow.Data.Interface.csproj">
+      <Project>{8ecfdf83-358a-4e7d-9c91-9378c52d21c2}</Project>
+      <Name>RoadFlow.Data.Interface</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Data.Model\RoadFlow.Data.Model.csproj">
+      <Project>{e70e60b5-b17c-46f0-8ce2-5dd2cf9df652}</Project>
+      <Name>RoadFlow.Data.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Data.MSSQL\RoadFlow.Data.MSSQL.csproj">
+      <Project>{43725795-3333-46f8-b057-384fbc535afe}</Project>
+      <Name>RoadFlow.Data.MSSQL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Data.MySql\RoadFlow.Data.MySql.csproj">
+      <Project>{2d06d9eb-daa1-41c9-813f-0ca0fb8ac03f}</Project>
+      <Name>RoadFlow.Data.MySql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Data.ORACLE\RoadFlow.Data.ORACLE.csproj">
+      <Project>{7a149780-1757-47ad-801a-7c029e42ca41}</Project>
+      <Name>RoadFlow.Data.ORACLE</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\RoadFlow.Utility\RoadFlow.Utility.csproj">
+      <Project>{4c6656de-5aa9-4ea8-8ed0-a5df98708ce1}</Project>
+      <Name>RoadFlow.Utility</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

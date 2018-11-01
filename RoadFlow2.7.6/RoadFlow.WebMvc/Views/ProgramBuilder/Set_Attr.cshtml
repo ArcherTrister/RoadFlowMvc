@@ -1,0 +1,149 @@
+﻿@{
+    ViewBag.Title = "Set_Attr";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model RoadFlow.Data.Model.ProgramBuilder
+<form id="form1" method="post">
+    <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable" style="margin-top:10px;">
+        <tr>
+            <th style="width: 80px;">应用名称：</th>
+            <td><input type="text" id="Title1" name="Title1" value="@Model.Name" class="mytext" validate="empty" style="width: 85%"/></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">应用分类：</th>
+            <td><select class="myselect" name="Type" validate="empty">
+                @Html.Raw(ViewBag.TypeOptions)
+                </select>
+                <!--
+                &nbsp;&nbsp;是否新增：<select class="myselect" name="IsAdd">
+                    @{//Html.Raw(ViewBag.IsAddOptions)
+                    }
+                                 </select>
+                -->
+                &nbsp;&nbsp;数据连接：<select class="myselect" name="DBConnID" id="DBConnID" onchange="loadTables(this.value);">
+                    @Html.Raw(ViewBag.DbConnOptions)
+                                 </select>
+                &nbsp;&nbsp;按钮显示位置：<select class="myselect" name="ButtonLocation" id="ButtonLocation">
+                    <option value="0" @(0==Model.ButtonLocation?"selected='selected'":"")>新行</option>
+                    <option value="1" @(1==Model.ButtonLocation?"selected='selected'":"")>查询后面</option>
+                                   </select>
+                &nbsp;&nbsp;是否分页：<select class="myselect" name="IsPager">
+                    @Html.Raw(ViewBag.IsPagerOptions)
+                                 </select>
+                &nbsp;&nbsp;列表样式：<select class="myselect" name="TableStyle" id="TableStyle" runat="server">
+                    <option value="listtable" @("listtable"==Model.TableStyle?"selected='selected'":"")>常规样式</option>
+                    <option value="reporttable" @("reporttable"==Model.TableStyle?"selected='selected'":"")>报表样式</option>
+                                   </select>
+            </td>
+        </tr>
+        <tr>
+            <th>表单：</th>
+            <td>
+                <select class="myselect" style="width:130px; max-height:200px;" onchange="form_types_change(this.value);" id="form_types">
+                    <option value=""></option>
+                    @Html.Raw(ViewBag.TypeOptions1)
+                </select>
+                <select class="myselect" id="form_forms" name="form_forms" runat="server"></select>
+                &nbsp;&nbsp;编辑方式：<select id="form_editmodel" onchange="form_editmodel_change(this.value)" class="myselect" name="form_editmodel">
+                    <option value="0" @(Model.EditModel==0?"selected='selected'":"")>当前窗口</option>
+                    <option value="1" @(Model.EditModel==1?"selected='selected'":"")>弹出层</option>
+                                 </select> 
+                <span id="form_editmodel_span">&nbsp;&nbsp;弹出层宽度：<input type="text" class="mytext" id="form_editmodel_width" name="form_editmodel_width" value="@Model.Width" style="width:60px" />
+                    高度：<input type="text" id="form_editmodel_height" name="form_editmodel_height" value="@Model.Height" class="mytext" style="width:60px" />
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">查询SQL：</th>
+            <td><textarea style="width:99%; height:280px; font-family:Verdana; font-size:14px;" id="sql" name="sql" validate="empty" class="mytextarea">@Model.SQL</textarea></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">页面脚本：</th>
+            <td><textarea style="width:99%; height:100px; font-family:Verdana; font-size:14px;" id="ClientScript" name="ClientScript" class="mytextarea">@Model.ClientScript</textarea></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">列表表头：</th>
+            <td><textarea style="width:99%; height:100px; font-family:Verdana; font-size:14px;" id="TableHead" name="TableHead" class="mytextarea">@Model.TableHead</textarea></td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">导出：</th>
+            <td>模板：<input type="text" id="ExportTemplate" name="ExportTemplate" value="@Model.ExportTemplate" class="myfile"/>
+                &nbsp;&nbsp;表头：<input type="text" class="mytext" value="@Model.ExportHeaderText" id="ExportHeaderText" name="ExportHeaderText" style="width:400px" />
+                &nbsp;&nbsp;文件名：<input type="text" class="mytext" value="@Model.ExportFileName" id="ExportFileName" name="ExportFileName" style="width:200px" />
+            </td>
+        </tr>
+        <tr>
+            <th style="width: 80px;">导入：</th>
+            <td>表：<select class="myselect2" name="DBTable" id="DBTable" style="width:180px;" onchange="getFields($('#DBConnID').val(), this.value, '');"></select>
+                &nbsp;&nbsp;标识字段：<select class="myselect2" name="DBFiled" id="DBFiled" style="width:150px;"></select>
+
+            </td>
+        </tr>
+    </table>
+    <div class="buttondiv">
+        <input type="submit" value=" 保 存 " onclick="return new RoadUI.Validate().validateForm(document.forms[0]);" class="mybutton"/>
+    </div>
+    </form>
+    <script type="text/javascript">
+        $(function ()
+        {
+            @Html.Raw(ViewBag.script)
+            form_types_change($("#form_types").val());
+            form_editmodel_change($("#form_editmodel").val());
+            loadTables($("#DBConnID").val(), '@ViewBag.TableName', '@ViewBag.InDataNumberFiledName');
+        });
+        function form_types_change(value)
+        {
+            $.ajax({
+                url: "../AppLibrary/GetApps", data: { type: value }, async: false, type: "post", success: function (txt)
+                {
+                    $("#form_forms").html('<option value=""></option>' + txt);
+                    $("#form_forms").val('@ViewBag.formid');
+                }
+            });
+        }
+        function form_editmodel_change(value)
+        {
+            if ("1" == value)
+            {
+                $("#form_editmodel_span").show();
+            }
+            else
+            {
+                $("#form_editmodel_span").hide();
+            }
+        }
+        function loadTables(connid, tableName, filedName)
+        {
+            var tables = "<option></option>";
+            $.ajax({
+                url: RoadUI.Core.rooturl() + "/WorkFlowDesigner/GetTables?connid=" + connid, dataType: "json", async: false, cache: false, success: function (json)
+                {
+                    for (var i = 0; i < json.length; i++)
+                    {
+                        tables += '<option value="' + json[i].name + '"' + (json[i].name.toLowerCase() == tableName.toLowerCase() ? ' selected="selected"' : '') + '>' + json[i].name + '</option>';
+                    }
+                    $("#DBTable").html(tables);
+                    if (tableName && tableName.length > 0)
+                    {
+                        getFields(connid, tableName, filedName);
+                    }
+                }
+            });
+        }
+        //得到一个表所有字段
+        function getFields(connid, tableName, filedName)
+        {
+            var fields1 = '<option></option>';
+            $.ajax({
+                url: RoadUI.Core.rooturl() + "/WorkFlowDesigner/GetFields?connid=" + connid + "&table=" + tableName, dataType: "json", async: false, cache: false, success: function (json)
+                {
+                    for (var i = 0; i < json.length; i++)
+                    {
+                        fields1 += '<option value="' + json[i].name + '"' + (json[i].name.toLowerCase() == filedName.toLowerCase() ? ' selected="selected"' : '') + '>' + json[i].name + '</option>';
+                    }
+                    $("#DBFiled").html(fields1);
+                }
+            });
+        }
+    </script>

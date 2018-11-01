@@ -1,0 +1,223 @@
+﻿@model RoadFlow.Data.Model.AppLibrary
+@{
+    ViewBag.Title = "Edit";
+    var AppButton = new RoadFlow.Platform.AppLibraryButtons();
+    string buttonOptions = AppButton.GetOptions();
+    string buttonJson = AppButton.GetAllJson();
+    string buttonShowTypeOptions = AppButton.GetShowTypeOptions();
+}
+
+<link href="~/Scripts/bigcolorpicker/css/jquery.bigcolorpicker.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="~/Scripts/bigcolorpicker/js/jquery.bigcolorpicker.js"></script>
+<script type="text/javascript" src="~/Scripts/bigcolorpicker/js/syntaxHighlighter/shCore.js"></script>
+<script type="text/javascript" src="~/Scripts/bigcolorpicker/js/syntaxHighlighter/shBrushJScript.js"></script>
+<script type="text/javascript" src="~/Scripts/bigcolorpicker/js/syntaxHighlighter/shBrushJava.js"></script>
+<link href="~/Scripts/bigcolorpicker/css/syntaxHighlighter/shCore.css" rel="stylesheet" type="text/css"/>
+<link href="~/Scripts/bigcolorpicker/css/syntaxHighlighter/shCoreDefault.css" rel="stylesheet" type="text/css"/>
+<link href="~/Scripts/bigcolorpicker/css/syntaxHighlighter/shThemeDefault.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript">
+    var buttonJson=@Html.Raw(buttonJson)
+</script>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div id="tabdiv">
+        <div id="div_base" title="基本信息">
+            <div style="height:8px;"></div>
+            <table cellpadding="0" cellspacing="1" border="0" width="99%" class="formtable">
+                <tr>
+                    <th style="width: 80px;">应用名称：</th>
+                    <td><input type="text" name="Title" class="mytext" value="@Model.Title" validate="empty" style="width: 75%"/></td>
+                </tr>
+                <tr>
+                    <th>应用地址：</th>
+                    <td><input type="text" name="Address" class="mytext" value="@Model.Address" validate="empty" style="width: 75%"/></td>
+                </tr>
+                <tr>
+                    <th>应用分类：</th>
+                    <td>
+                        <select name="Type" id="Type" class="myselect" runat="server" validate="empty">
+                        <option value=""></option>
+                        @Html.Raw(ViewBag.TypeOptions)
+                        </select>
+                        <span style="msg"></span>
+                    </td>
+                </tr>
+                <tr>
+                    <th>打开方式：</th>
+                    <td>
+                        <select name="OpenModel" id="OpenModel" class="myselect" runat="server" onchange="openModelChange(this.value);">
+                        @Html.Raw(ViewBag.OpenOptions)
+                        </select>
+                    </td>
+                </tr>
+                <tr id="winsizetr" style="display: none;">
+                    <th>窗口大小：</th>
+                    <td>
+                        宽度：<input type="text" name="Width" class="mytext" value="@Model.Width" validate="int,canempty" style="width: 80px;"/>
+                        高度：<input type="text" name="Height" class="mytext" value="@Model.Height" validate="int,canempty" style="width: 80px;"/>
+                    </td>
+                </tr>
+                <tr>
+                    <th>相关参数：</th>
+                    <td><input type="text" name="Params" class="mytext" value="@Model.Params" style="width: 95%"/></td>
+                </tr>
+                <tr>
+                    <th>图标：</th>
+                    <td><input type="text" name="Ico" id="Ico" class="myico" source="/Images/ico" value="@Model.Ico" style="width: 50%"/>
+                        &nbsp;&nbsp;颜色：<input type="text" id="IcoColor" name="IcoColor" value="@Model.Color" class="mytext" style="width:150px" />
+                    </td>
+                </tr>
+                <tr>
+                    <th>备注说明：</th>
+                    <td><textarea class="mytextarea" name="Note" id="Note" cols="1" rows="1" style="width: 95%; height: 50px;">@Model.Note</textarea></td>
+                </tr>
+            </table>
+        </div>
+        <div id="div_button" title="页面按钮">
+            <div style="height:8px;"></div>
+            <table cellpadding="0" cellspacing="1" border="0" width="99%" style="width:99%" class="listtable" id="button_listtable">
+                <thead>
+                    <tr>
+                        <th style="width:14%">按钮库</th>
+                        <th style="width:20%">名称</th>
+                        <th style="width:20%">脚本</th>
+                        <th style="width:20%">图标</th>
+                        <th style="width:10%">类型</th>
+                        <th style="width:10%">排序</th>
+                        <th style="width:6%"><img onclick="addbutton();" title="添加一行" style="vertical-align:middle; cursor:pointer;" src="~/Images/Ico/table_add.gif" /></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @{
+                        var subbuttons = new RoadFlow.Platform.AppLibraryButtons1().GetAllByAppID(Model.ID);
+                        foreach (var but in subbuttons.OrderBy(p=>p.Sort))
+                        {   
+                     <tr>
+                         <td>
+                             <input type="hidden" name="buttonindex" value="@but.ID"/>
+                             <select class="myselect" data-val="@but.ButtonID" onchange="buttonchange(this);" style="width:90%" id="button_@but.ID" name="button_@but.ID">
+                                 @Html.Raw(buttonOptions)
+                             </select>
+                         </td>
+                         <td><input type="text" class="mytext" value="@but.Name" style="width:90%" name="buttonname_@but.ID"/></td>
+                         <td><textarea class="mytextarea" style="width:90%;height:50px;" name="buttonevents_@but.ID">@but.Events</textarea></td>
+                         <td><input type="text" class="myico" value="@but.Ico" source="/Images/ico" style="width:60%" id="buttonico_@but.ID" name="buttonico_@but.ID"/></td>
+                         <td><select data-val="@but.ShowType" class="myselect" style="width:80px" name="showtype_@but.ID" id="showtype_@but.ID">@Html.Raw(buttonShowTypeOptions)</select></td>
+                         <td><input type="text" class="mytext" value="@but.Sort" style="width:90%" name="buttonsort_@but.ID"/></td>
+                         <td><img style="vertical-align:middle; cursor:pointer;" src="@Url.Content("~/Images/Ico/table_del.gif")" onclick="delbutton(this);"/></td>
+                     </tr>
+                        }
+                     }
+                </tbody>
+            </table>
+            <script type="text/javascript">
+                function addbutton()
+                {
+                    var $table = $("#button_listtable");
+                    var index = $("tbody tr", $table).size() + 1;
+                    var maxsort = parseInt($("tbody tr:last td:eq(5) input", $table).val()||"-5") + 5;
+                    var tr = '<tr>';
+                    tr += '<td>';
+                    tr += '<input type="hidden" name="buttonindex" value="' + index + '"/>';
+                    tr += '<select class="myselect" onchange="buttonchange(this);" style="width:90%" id="button_' + index + '" name="button_' + index + '">';
+                    tr += '@Html.Raw(buttonOptions)';
+                    tr += '</select>';
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input type="text" class="mytext" style="width:90%" name="buttonname_' + index + '"/>';
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<textarea class="mytextarea" style="width:90%;height:50px;" name="buttonevents_' + index + '"></textarea>';
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input type="text" class="myico" source="/Images/ico" style="width:60%" id="buttonico_' + index + '" name="buttonico_' + index + '"/>';
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<select class="myselect" style="width:80px" name="showtype_'+index+'" id="showtype_'+index+'">@Html.Raw(buttonShowTypeOptions)</select>';
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<input type="text" class="mytext" style="width:90%" name="buttonsort_' + index + '" value="' + maxsort + '"/>';
+                    tr += '</td>';
+                    tr += '<td>';
+                    tr += '<img style="vertical-align:middle; cursor:pointer;" src="@Url.Content("~/Images/Ico/table_del.gif")" onclick="delbutton(this);"/>';
+                    tr += '</td>';
+                    tr += '</tr>';
+                    var $tr = $(tr);
+                    $("tbody", $table).append($tr);
+                    
+                    new RoadUI.Select().init($(".myselect", $tr));
+                    new RoadUI.SelectIco({ obj: $(".myico", $tr) });
+                    new RoadUI.Button().init($(".mybutton", $tr));
+                    new RoadUI.Text().init($(".mytext", $tr));
+                }
+                function delbutton(img)
+                {
+                    $(img).parent().parent().remove();
+                }
+                function buttonchange(sel)
+                {
+                    var $tr = $(sel).parent().parent();
+                    for(var j=0;j<buttonJson.length;j++)
+                    {
+                        if(buttonJson[j].id==$(sel).val())
+                        {
+                            var json = buttonJson[j];
+                            $("input[name^='buttonname_']", $tr).val(json.name);
+                            $("textarea[name^='buttonevents_']", $tr).val(json.events);
+                            $("input[name^='buttonico_']", $tr).val(json.ico);
+                            $("input[name^='buttonsort_']", $tr).val(json.sort);
+                            new RoadUI.SelectIco().setIco($("input[name^='buttonico_']", $tr));
+                        }
+                    }
+                }
+            </script>
+        </div>
+    </div>
+    <div class="buttondiv">
+        <input type="button" value="确定保存" style="" class="mybutton" onclick="checkform(this);"/>
+        <input type="button" class="mybutton" value="取消关闭" style="margin-left: 5px;" onclick="closewin();" />
+    </div>
+    <script type="text/javascript">
+        var win = new RoadUI.Window();
+        $(window).load(function ()
+        {
+            new RoadUI.Tab({ id: "tabdiv", replace: true, contextmenu: false, dblclickclose: false });
+            $("#OpenModel").change();
+            @Html.Raw(ViewBag.Script)
+            $("#button_listtable tbody tr").each(function ()
+            {
+                var $sel = $("select[id^='button_']", $(this));
+                $sel.val($sel.attr("data-val"));
+                var $showtype = $("select[id^='showtype_']", $(this));
+                $showtype.val($showtype.attr("data-val"));
+            });
+            $("#IcoColor").bigColorpicker();
+        });
+        function openModelChange(value)
+        {
+            if ("0" == value)
+            {
+                $("#winsizetr").hide();
+            }
+            else
+            {
+                $("#winsizetr").show();
+            }
+        }
+        function closewin()
+        {
+            win.close();
+            return false;
+        }
+        function checkform(but)
+        {
+            var f = document.forms[0];
+            var flag = new RoadUI.Validate().validateForm(f);
+            $(but).prop('disabled', flag);
+            if (flag)
+            {
+                f.submit();
+            }
+        }
+    </script>
+</form>

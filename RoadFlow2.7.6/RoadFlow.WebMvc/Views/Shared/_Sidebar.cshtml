@@ -1,0 +1,93 @@
+﻿<script type="text/javascript">
+					try{ace.settings.loadState('sidebar')}catch(e){}
+</script>
+
+<div class="sidebar-shortcuts" id="sidebar-shortcuts">
+    <div class="sidebar-shortcuts-large" id="sidebar-shortcuts-large">
+        <button class="btn btn-success">
+            <i class="ace-icon fa fa-signal"></i>
+        </button>
+
+        <button class="btn btn-info">
+            <i class="ace-icon fa fa-pencil"></i>
+        </button>
+
+        <button class="btn btn-warning">
+            <i class="ace-icon fa fa-users"></i>
+        </button>
+
+        <button class="btn btn-danger">
+            <i class="ace-icon fa fa-cogs"></i>
+        </button>
+    </div>
+
+    <div class="sidebar-shortcuts-mini" id="sidebar-shortcuts-mini">
+        <span class="btn btn-success"></span>
+
+        <span class="btn btn-info"></span>
+
+        <span class="btn btn-warning"></span>
+
+        <span class="btn btn-danger"></span>
+    </div>
+</div><!-- /.sidebar-shortcuts -->
+
+<ul class="nav nav-list">
+
+    @{
+        string roleID = "efb111aa-2308-48e2-b1fc-54181ec35e3f";
+        string userID = "eb03262c-ab60-4bc6-a4c0-96e66a4229fe";
+        Guid rid, uid;
+        if (roleID.IsGuid(out rid) && userID.IsGuid(out uid))
+        {
+            List<RoadFlow.Data.Model.Menu> menus = new List<RoadFlow.Data.Model.Menu>();
+            menus = new RoadFlow.Platform.RoleApp().GetMenu(rid, uid);
+            foreach (var item in menus)
+            {
+                foreach (var c in item.childs)
+                {
+                    if (c.hasChilds)
+                    {
+                        <li class="">
+                            <a href="#" class="dropdown-toggle">
+                                <i class="menu-icon fa fa-pencil-square-o"></i>
+                                <span class="menu-text"> @c.title </span>
+
+                                <b class="arrow fa fa-angle-down"></b>
+                            </a>
+
+                            <b class="arrow"></b>
+
+                            <ul class="submenu">
+                                @foreach (var cc in c.childs)
+                                {
+                                    <li class="">
+                                        <a href="@cc.link">
+                                            <i class="menu-icon fa fa-caret-right"></i>
+                                            @cc.title
+                                        </a>
+                                        <b class="arrow"></b>
+                                    </li>
+                                }
+                            </ul>
+                        </li>
+                    }
+                    else
+                    {
+                        <li class="">
+                            <a href="@c.link">
+                                <i class="menu-icon fa fa-tachometer"></i>
+                                <span class="menu-text"> @c.title </span>
+                            </a>
+                            <b class="arrow"></b>
+                        </li>
+                    }
+                }
+            }
+        }
+    }
+</ul><!-- /.nav-list -->
+
+<div class="sidebar-toggle sidebar-collapse" id="sidebar-collapse">
+    <i id="sidebar-toggle-icon" class="ace-icon fa fa-angle-double-left ace-save-state" data-icon1="ace-icon fa fa-angle-double-left" data-icon2="ace-icon fa fa-angle-double-right"></i>
+</div>

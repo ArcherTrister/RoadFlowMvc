@@ -1,0 +1,33 @@
+﻿@{
+    ViewBag.Title = "FlowCopyFor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form id="form1" method="post">
+    @Html.AntiForgeryToken()
+    <br /><br />
+    <div style="text-align:center;">
+        接收人：<input type="text" id="user" name="user" validate="empty" class="mymember" style="width:200px;" />
+    </div><br />
+    <div style="text-align:center;">
+        <input type="button" class="mybutton" onclick="checkform(this);" value="&nbsp;确&nbsp;定&nbsp;"/>
+        <input type="button" class="mybutton" value="&nbsp;取&nbsp;消&nbsp;" onclick="new RoadUI.Window().close();" />
+    </div>
+   
+</form>
+<script type="text/javascript">
+    $(function ()
+    {
+        @Html.Raw(ViewBag.script)
+    });
+    function checkform(but)
+    {
+        var f = document.forms[0];
+        var flag = new RoadUI.Validate().validateForm(f);
+        $(but).prop('disabled', flag);
+        if (flag)
+        {
+            f.submit();
+        }
+    }
+</script>

@@ -1,0 +1,73 @@
+﻿@{
+    ViewBag.Title = "Set_ListField";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    RoadFlow.Platform.Dictionary BDict = new RoadFlow.Platform.Dictionary();
+}
+@model List<RoadFlow.Data.Model.ProgramBuilderFields>
+<form id="form1" method="post">
+    <div>
+    <table class="listtable">
+        <thead>
+            <tr>
+                <th width="3%" style="text-align:center;"><input type="checkbox" onclick="checkAll(this.checked);" style="vertical-align:middle;" /></th>
+                <th>字段名称</th>
+                <th>显示名称</th>
+                <th>显示方式</th>
+                <th>对齐方式</th>
+                <th>显示宽度</th>
+                <th>显示顺序</th>
+                <th width="10%"></th>
+            </tr>
+        </thead>
+        <tbody>
+        
+            @foreach(var filed in Model.OrderBy(p=>p.Sort))
+            {    
+       
+            <tr>
+                <td style="text-align:center;"><input type="checkbox" value="@filed.ID" name="checkbox_app" style="vertical-align:middle;"/></td>
+                <td>@filed.Field</td>
+                <td>@Html.Raw(filed.ShowTitle)</td>
+                <td>@BDict.GetTitle("programbuilder_showtype",filed.ShowType.ToString())</td>
+                <td>@BDict.GetTitle("programbuilder_align",filed.Align)</td>
+                <td>@filed.Width</td>
+                <td>@filed.Sort</td>
+                <td>
+                    <a class="editlink" href="javascript:;" onclick="add('@filed.ID'); return false;">编辑</a>
+                </td>
+            </tr>
+        
+            }    
+        
+        </tbody>
+    </table>
+    </div>
+    <div class="buttondiv">
+        <input type="button" class="mybutton" onclick="add('');" value="添加字段" />
+        <input type="submit" value=" 删 除 " name="delete" onclick="return del();" class="mybutton"/>
+    </div>
+        
+    </form>
+    <script type="text/javascript">
+        $(function ()
+        {
+            
+        });
+        function checkAll(checked)
+        {
+            $("input[name='checkbox_app']").prop("checked", checked);
+        }
+        function add(id)
+        {
+            window.location = "Set_ListField_Add?fid=" + (id || "") + "@Html.Raw(ViewBag.query)";
+        }
+        function del()
+        {
+            if ($(":checked[name='checkbox_app']").size() == 0)
+            {
+                alert("您没有选择要删除的项!");
+                return false;
+            }
+            return confirm('您真的要删除所选字段吗?');
+        }
+    </script>

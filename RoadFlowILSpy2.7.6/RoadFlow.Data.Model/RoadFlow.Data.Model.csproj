@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{11FCCAA5-8516-451B-9482-5D92FD90539D}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <LangVersion>4</LangVersion>
+    <AssemblyName>RoadFlow.Data.Model</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowExecute\EnumType.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowExecute\Execute.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowExecute\Result.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub.StepSet\Behavior.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub.StepSet\Button.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub.StepSet\CopyFor.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub.StepSet\Event.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub.StepSet\FieldStatus.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub.StepSet\Form.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub\DataBases.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub\Line.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub\Step.cs" />
+    <Compile Include="RoadFlow.Data.Model.WorkFlowInstalledSub\TitleField.cs" />
+    <Compile Include="RoadFlow.Data.Model\AppLibrary.cs" />
+    <Compile Include="RoadFlow.Data.Model\AppLibraryButtons.cs" />
+    <Compile Include="RoadFlow.Data.Model\AppLibraryButtons1.cs" />
+    <Compile Include="RoadFlow.Data.Model\AppLibrarySubPages.cs" />
+    <Compile Include="RoadFlow.Data.Model\DBConnection.cs" />
+    <Compile Include="RoadFlow.Data.Model\Dictionary.cs" />
+    <Compile Include="RoadFlow.Data.Model\DocumentDirectory.cs" />
+    <Compile Include="RoadFlow.Data.Model\Documents.cs" />
+    <Compile Include="RoadFlow.Data.Model\DocumentsReadUsers.cs" />
+    <Compile Include="RoadFlow.Data.Model\Files.cs" />
+    <Compile Include="RoadFlow.Data.Model\HastenLog.cs" />
+    <Compile Include="RoadFlow.Data.Model\HomeItems.cs" />
+    <Compile Include="RoadFlow.Data.Model\Log.cs" />
+    <Compile Include="RoadFlow.Data.Model\Menu.cs" />
+    <Compile Include="RoadFlow.Data.Model\MenuUser.cs" />
+    <Compile Include="RoadFlow.Data.Model\OnlineUsers.cs" />
+    <Compile Include="RoadFlow.Data.Model\Organize.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilder.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilderButtons.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilderCache.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilderExport.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilderFields.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilderQuerys.cs" />
+    <Compile Include="RoadFlow.Data.Model\ProgramBuilderValidates.cs" />
+    <Compile Include="RoadFlow.Data.Model\ShortMessage.cs" />
+    <Compile Include="RoadFlow.Data.Model\SMSLog.cs" />
+    <Compile Include="RoadFlow.Data.Model\Users.cs" />
+    <Compile Include="RoadFlow.Data.Model\UserShortcut.cs" />
+    <Compile Include="RoadFlow.Data.Model\UsersRelation.cs" />
+    <Compile Include="RoadFlow.Data.Model\WeiXinAgent.cs" />
+    <Compile Include="RoadFlow.Data.Model\WeiXinMessage.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkCalendar.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlow.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowArchives.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowButtons.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowComment.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowCustomEventParams.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowData.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowDelegation.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowForm.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowInstalled.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowStart.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkFlowTask.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkGroup.cs" />
+    <Compile Include="RoadFlow.Data.Model\WorkTime.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

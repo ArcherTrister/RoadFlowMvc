@@ -1,0 +1,63 @@
+﻿@{
+    ViewBag.Title = "搜索文档";
+    Layout = "~/Views/Shared/_Layout_App1.cshtml";
+}
+    <link href="~/Areas/WeiXin/Scripts/weui.min.css" rel="stylesheet" />
+    <link href="~/Areas/WeiXin/Scripts/ext.css" rel="stylesheet" />
+    <link href="~/Areas/WeiXin/Scripts/jquery-weui.min.css" rel="stylesheet" />
+    <!-- body 顶部加上如下代码 -->
+    <div class="weui-pull-to-refresh__layer">
+        <div class='weui-pull-to-refresh__arrow'></div>
+        <div class='weui-pull-to-refresh__preloader'></div>
+        <div class="down">下拉刷新</div>
+        <div class="up">释放刷新</div>
+        <div class="refresh">正在刷新</div>
+    </div>
+    <form id="form1">
+        @{
+            RoadFlow.Platform.DocumentDirectory docDir = new RoadFlow.Platform.DocumentDirectory();
+            RoadFlow.Platform.Documents bdoc = new RoadFlow.Platform.Documents();
+            Guid userID = RoadFlow.Platform.Users.CurrentUserID;
+            string dirID = Request.QueryString["dirid"];
+            Dictionary<Guid, string> dicts = new Dictionary<Guid, string>();
+            dicts.Add(docDir.GetRoot().ID, ViewBag.searchText);
+            foreach (var dict in dicts)
+            {
+                long count;
+                string dirIdString = docDir.GetAllChildIdString(dict.Key, userID);
+                var docs = bdoc.GetList(out count, 10000, 1, dirIdString, userID.ToString(), ViewBag.searchText);
+                
+       
+        <div class="weui-cells__title" style="font-weight:bold;"><a class="weui-cell_access">共搜索到 @count 篇文档</a></div>
+         <div class="weui-cells">
+            @foreach (System.Data.DataRow dr in docs.Rows)
+                    {
+                        string address = WebMvc.Common.Tools.BaseUrl + "/Documents/DocRead?ismobile=1&docid=" + dr["id"].ToString();
+           
+            <a class="weui-cell weui-cell_access" href="@address">
+                <div class="weui-cell__bd">
+                  <p>@dr["Title"]</p><p class="date">发布时间:@dr["WriteTime"].ToString().ToDateTime().ToDateTimeString() 发布人:@dr["WriteUserName"].ToString()</p>
+                </div>
+                <div class="weui-cell__ft">
+                </div>
+            </a>
+            }
+        </div>
+        }}
+        <script src="~/Areas/WeiXin/Scripts/jquery-1.11.1.min.js"></script>
+        <script src="~/Areas/WeiXin/Scripts/jquery-weui.min.js"></script>
+        <script type="text/javascript">
+            var pagenumber = 1;
+            var loading = false;  //状态标记
+            $(function ()
+            {
+                $(document.body).pullToRefresh();
+                $(document.body).on("pull-to-refresh", function ()
+                {
+                    //do something
+                    window.location = window.location;
+                    $(document.body).pullToRefreshDone();
+                });
+            });
+        </script>
+    </form>

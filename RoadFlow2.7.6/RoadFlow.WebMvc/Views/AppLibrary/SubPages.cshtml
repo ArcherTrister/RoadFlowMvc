@@ -1,0 +1,67 @@
+﻿@{
+    ViewBag.Title = "SubPages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string query = "&pagesize=" + Request.QueryString["pagesize"] + "&pagenumber=" + Request.QueryString["pagenumber"]
+        + "&id=" + Request.QueryString["id"] + "&appid=" + Request.QueryString["appid"]
+        + "&tabid=" + Request.QueryString["tabid"] + "&typeid=" + Request.QueryString["typeid"]
+        + "&iframeid=" + Request.QueryString["iframeid"] + "&openerid=" + Request.QueryString["openerid"];
+}
+<form method="post" id="form1" >
+@Html.AntiForgeryToken()
+<div class="toolbar" style="margin-top:0; border-top:0;">
+    <a href="javascript:void(0);" onclick="add('');return false;"><span style="background-image:url(@Url.Content("~/Images/ico/application_osx_add.png"));">添加页面</span></a>
+    <span class="toolbarsplit">&nbsp;</span>
+    <a href="javascript:void(0);" onclick="del();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/application_osx_remove.png"));">删除页面</span></a>
+    <span class="toolbarsplit">&nbsp;</span>
+    <a href="javascript:void(0);" onclick="new RoadUI.Window().close();return false;"><span style="background-image:url(@Url.Content("~/Images/ico/cancel.gif"));">关闭窗口</span></a>
+</div>
+<table class="listtable">
+    <thead>
+        <tr>
+            <th width="3%" style="text-align:center;"><input type="checkbox" onclick="$('input[name=\'subpagesbox\']').prop('checked', this.checked);" style="vertical-align:middle;" /></th>
+            <th width="25%">名称</th>
+            <th width="25%">地址</th>
+            <th width="25%">按钮</th>
+            <th width="10%"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+        var subpages = new RoadFlow.Platform.AppLibrarySubPages().GetAllByAppID(Request.QueryString["id"].ToGuid());
+        foreach(var page in subpages)
+        {
+        <tr>
+            <td style="text-align:center;"><input type="checkbox" name="subpagesbox" value="@page.ID" /></td>
+            <td>
+                <span style="vertical-align:middle;">@page.Name</span>
+            </td>
+            <td>@page.Address</td>
+            <td></td>
+            <td><a class="editlink" href="javascript:;" onclick="add('@page.ID');">编辑</a></td>
+        </tr>
+        }
+        }
+    </tbody>
+</table>
+</form>
+<script type="text/javascript">
+    function add(id)
+    {
+        window.location = "SubPageEdit?subid=" + (id || "") + "@Html.Raw(query)";
+    }
+    function del()
+    {
+        if ($(":checked[name='subpagesbox']").size() == 0)
+        {
+            alert('您没有选择要删除的子页面!');
+            return false;
+        }
+        if (!confirm('真的要删除所选子页面吗?'))
+        {
+            return false;
+        }
+        var f = document.forms[0];
+        f.action = "SubPageDelete?1=1" + "@Html.Raw(query)";
+        f.submit();
+    }
+</script>

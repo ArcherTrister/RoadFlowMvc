@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{28A16399-C7A6-4A93-B914-8CA7B8BAA4C3}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <LangVersion>4</LangVersion>
+    <AssemblyName>LitJSON</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <HintPath>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="LitJson\ArrayMetadata.cs" />
+    <Compile Include="LitJson\Condition.cs" />
+    <Compile Include="LitJson\ExporterFunc.cs" />
+    <Compile Include="LitJson\FsmContext.cs" />
+    <Compile Include="LitJson\IJsonWrapper.cs" />
+    <Compile Include="LitJson\ImporterFunc.cs" />
+    <Compile Include="LitJson\JsonData.cs" />
+    <Compile Include="LitJson\JsonException.cs" />
+    <Compile Include="LitJson\JsonMapper.cs" />
+    <Compile Include="LitJson\JsonMockWrapper.cs" />
+    <Compile Include="LitJson\JsonReader.cs" />
+    <Compile Include="LitJson\JsonToken.cs" />
+    <Compile Include="LitJson\JsonType.cs" />
+    <Compile Include="LitJson\JsonWriter.cs" />
+    <Compile Include="LitJson\Lexer.cs" />
+    <Compile Include="LitJson\ObjectMetadata.cs" />
+    <Compile Include="LitJson\OrderedDictionaryEnumerator.cs" />
+    <Compile Include="LitJson\ParserToken.cs" />
+    <Compile Include="LitJson\PropertyMetadata.cs" />
+    <Compile Include="LitJson\WrapperFactory.cs" />
+    <Compile Include="LitJson\WriterContext.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

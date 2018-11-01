@@ -1,0 +1,110 @@
+﻿@{
+    ViewBag.Title = "SubTableEdit";
+    string editmodel = Request.QueryString["editmodel"];
+    string prevurl = Request.QueryString["prevurl"];
+}
+    <script type="text/javascript">
+        var win = new RoadUI.Window();
+    </script>
+@{
+    if ("1" == Request.Form["issave"])
+    {
+        RoadFlow.Data.Model.WorkFlowCustomEventParams parmas = new RoadFlow.Data.Model.WorkFlowCustomEventParams();
+        string instanceid1 = new RoadFlow.Platform.WorkFlow().SaveFromData(Request.QueryString["instanceid"], parmas);
+        <script>
+            alert('保存成功!');
+            if ("0" == "@Request.QueryString["editmodel"]")
+            {
+                window.location = "@Html.Raw(Request.QueryString["prevurl"])";
+            }
+            else
+            {
+                try
+                {
+                    if ($.trim("@Request.QueryString["openerid"]").length > 0)
+                    {
+                        new RoadUI.Window().reloadOpener();
+                    }
+                    else if (window.parent)
+                    {
+                        window.parent.location = window.parent.location;
+                    }
+                    new RoadUI.Window().close();
+                }
+                catch (e) { }
+            }
+        </script>
+    }    
+}
+    <form id="form1" method="post">
+    <input type="hidden" name="issave" value="1" />
+    <div class="toolbar" style="margin-top:0; border-top:none 0; position:fixed; top:0; left:0; right:0; margin-left:auto; z-index:999; width:100%; margin-right:auto;">
+        <div>
+            @if("0"==editmodel){
+            <a href="javascript:;" onclick="window.location='@prevurl';return false;" title="">
+                <span style="background:url(@Url.Content("~/Images/ico/arrow_medium_left.png")) no-repeat left center;">返回列表</span>
+            </a>
+            <span class="toolbarsplit">&nbsp;</span>
+            }
+            @if("1"!=Request.QueryString["display"]){
+            <a href="javascript:;" onclick="if(save()){document.forms[0].submit();}" title="">
+                <span style="background:url(@Url.Content("~/Images/ico/save.gif")) no-repeat left center;">提交保存</span>
+            </a>
+            <span class="toolbarsplit">&nbsp;</span>
+            }
+            @if("1"==editmodel){
+            <a href="javascript:;" onclick="new RoadUI.Window().close();return false;" title="">
+                <span style="background:url(@Url.Content("~/Images/ico/cancel.gif")) no-repeat left center;">关闭窗口</span>
+            </a>
+            }
+        </div>
+    </div>
+    <div style="height:35px;"></div>
+    @{ 
+        string secondtableeditform = Request.QueryString["secondtableeditform"];
+        string secondtablerelationfield = Request.QueryString["secondtablerelationfield"];
+    }
+    <div style="padding-top:10px;">
+        <input type="hidden" name="@secondtablerelationfield" id="@secondtablerelationfield" value="@Request.QueryString["primarytableid"]" />
+         @{
+             var form = new RoadFlow.Platform.AppLibrary().Get(secondtableeditform.ToGuid());
+             if (form != null)
+             {
+                 string src = form.Address;
+                 if (!src.IsNullOrEmpty())
+                 {
+                        src = src.Trim1().StartsWith("/") ? WebMvc.Common.Tools.BaseUrl + src : src;
+                        var extName = System.IO.Path.GetExtension(src).ToLower();
+                        if (extName.StartsWith(".cshtml"))
+                        {
+                            @RenderPage(src)
+                        }
+                        else
+                        {
+                            System.Text.StringBuilder sb = new System.Text.StringBuilder();
+                            System.IO.TextWriter tw = new System.IO.StringWriter(sb);
+                            Server.Execute(src, tw);
+                            @Html.Raw(sb.ToString().RemovePageTag())
+                        }
+                 }
+             }
+        }
+    </div>
+    </form>
+    <script type="text/javascript">
+        var isSave = false;
+        $(window).load(function ()
+        {
+            isSave = true;
+        });
+        function save()
+        {
+            if (!isSave)
+            {
+                return false;
+            }
+            var validateAlertType = $("#Form_ValidateAlertType").size() > 0 && !isNaN($("#Form_ValidateAlertType").val()) ? parseInt($("#Form_ValidateAlertType").val()) : 1;
+            var v = new RoadUI.Validate().validateForm(document.forms[0], validateAlertType);
+            return v;
+        }
+    </script>

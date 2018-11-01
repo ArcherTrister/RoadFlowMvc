@@ -1,0 +1,166 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{99914E22-2E64-4B1C-A94A-35F49C895301}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <OutputType>Library</OutputType>
+    <LangVersion>4</LangVersion>
+    <AssemblyName>WebMvc</AssemblyName>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>True</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.AspNet.SignalR.Core, Version=1.2.2.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.SignalR.Core.1.2.2\lib\net40\Microsoft.AspNet.SignalR.Core.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net40\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Web">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_32\System.Web\v4.0_4.0.0.0__b03f5f7f11d50a3a\System.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System\v4.0_4.0.0.0__b77a5c561934e089\System.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Optimization">
+      <HintPath>C:\inetpub\wwwroot\RoadFlowMvc\bin\System.Web.Optimization.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Mvc">
+      <HintPath>C:\inetpub\wwwroot\RoadFlowMvc\bin\System.Web.Mvc.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Data.Model">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.Model.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Platform">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Platform.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Transactions">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_32\System.Transactions\v4.0_4.0.0.0__b77a5c561934e089\System.Transactions.dll</HintPath>
+    </Reference>
+    <Reference Include="LitJSON">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\LitJSON.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <HintPath>C:\WINDOWS\Microsoft.Net\assembly\GAC_MSIL\System.Core\v4.0_4.0.0.0__b77a5c561934e089\System.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Data">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_32\System.Data\v4.0_4.0.0.0__b77a5c561934e089\System.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Utility">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Utility.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Data.MSSQL">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Data.MSSQL.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.SignalR.SystemWeb">
+      <HintPath>C:\inetpub\wwwroot\RoadFlowMvc\bin\Microsoft.AspNet.SignalR.SystemWeb.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp">
+      <HintPath>C:\WINDOWS\Microsoft.NET\assembly\GAC_MSIL\Microsoft.CSharp\v4.0_4.0.0.0__b03f5f7f11d50a3a\Microsoft.CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="RoadFlow.Cache.IO">
+      <HintPath>C:\Users\hz-wn\Desktop\bin\RoadFlow.Cache.IO.dll</HintPath>
+    </Reference>
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Config.cs" />
+    <Compile Include="ConfigHandler.cs" />
+    <Compile Include="Crawler.cs" />
+    <Compile Include="CrawlerHandler.cs" />
+    <Compile Include="Handler.cs" />
+    <Compile Include="ListFileManager.cs" />
+    <Compile Include="NotSupportedHandler.cs" />
+    <Compile Include="PathFormatter.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UEConfig.cs" />
+    <Compile Include="UEConfigHandler.cs" />
+    <Compile Include="UECrawler.cs" />
+    <Compile Include="UECrawlerHandler.cs" />
+    <Compile Include="UEHandler.cs" />
+    <Compile Include="UEListFileManager.cs" />
+    <Compile Include="UENotSupportedHandler.cs" />
+    <Compile Include="UEPathFormatter.cs" />
+    <Compile Include="UEUploadConfig.cs" />
+    <Compile Include="UEUploadHandler.cs" />
+    <Compile Include="UEUploadResult.cs" />
+    <Compile Include="UEUploadState.cs" />
+    <Compile Include="UploadConfig.cs" />
+    <Compile Include="UploadHandler.cs" />
+    <Compile Include="UploadResult.cs" />
+    <Compile Include="UploadState.cs" />
+    <Compile Include="WebMvc.Areas.Controls.Controllers\SelectDictController.cs" />
+    <Compile Include="WebMvc.Areas.Controls.Controllers\SelectDivController.cs" />
+    <Compile Include="WebMvc.Areas.Controls.Controllers\SelectIcoController.cs" />
+    <Compile Include="WebMvc.Areas.Controls.Controllers\SelectMemberController.cs" />
+    <Compile Include="WebMvc.Areas.Controls.Controllers\UploadFilesController.cs" />
+    <Compile Include="WebMvc.Areas.Controls\ControlsAreaRegistration.cs" />
+    <Compile Include="WebMvc.Areas.WeiXin.Controllers\CommonController.cs" />
+    <Compile Include="WebMvc.Areas.WeiXin.Controllers\CompletedTasksController.cs" />
+    <Compile Include="WebMvc.Areas.WeiXin.Controllers\DocumentsController.cs" />
+    <Compile Include="WebMvc.Areas.WeiXin.Controllers\StartFlowsController.cs" />
+    <Compile Include="WebMvc.Areas.WeiXin.Controllers\WaitTasksController.cs" />
+    <Compile Include="WebMvc.Areas.WeiXin\WeiXinAreaRegistration.cs" />
+    <Compile Include="WebMvc.Common\CustomFormSave.cs" />
+    <Compile Include="WebMvc.Common\CustomRequestValidation.cs" />
+    <Compile Include="WebMvc.Common\HomePage.cs" />
+    <Compile Include="WebMvc.Common\Tools.cs" />
+    <Compile Include="WebMvc.Content\Show.cs" />
+    <Compile Include="WebMvc.Controllers\AppLibraryController.cs" />
+    <Compile Include="WebMvc.Controllers\DBConnectionController.cs" />
+    <Compile Include="WebMvc.Controllers\DictController.cs" />
+    <Compile Include="WebMvc.Controllers\DocumentsController.cs" />
+    <Compile Include="WebMvc.Controllers\FilesController.cs" />
+    <Compile Include="WebMvc.Controllers\HomeController.cs" />
+    <Compile Include="WebMvc.Controllers\LogController.cs" />
+    <Compile Include="WebMvc.Controllers\LoginController.cs" />
+    <Compile Include="WebMvc.Controllers\MembersController.cs" />
+    <Compile Include="WebMvc.Controllers\MenuController.cs" />
+    <Compile Include="WebMvc.Controllers\OnlineUsersController.cs" />
+    <Compile Include="WebMvc.Controllers\ProgramBuilderController.cs" />
+    <Compile Include="WebMvc.Controllers\ShortMessageController.cs" />
+    <Compile Include="WebMvc.Controllers\TestController.cs" />
+    <Compile Include="WebMvc.Controllers\UserInfoController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkCalendarController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowArchivesController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowButtonsController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowCommentsController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowDelegationController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowDesignerController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowFormDesignerController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowRunController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowSignController.cs" />
+    <Compile Include="WebMvc.Controllers\WorkFlowTasksController.cs" />
+    <Compile Include="WebMvc\BundleConfig.cs" />
+    <Compile Include="WebMvc\FilterConfig.cs" />
+    <Compile Include="WebMvc\MvcApplication.cs" />
+    <Compile Include="WebMvc\MyAttributeAttribute.cs" />
+    <Compile Include="WebMvc\MyController.cs" />
+    <Compile Include="WebMvc\RouteConfig.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
